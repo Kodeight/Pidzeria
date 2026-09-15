@@ -6,8 +6,8 @@
   }
   body {
     font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-    background-color: #070606;
-    color: #f5f2eb;
+    background-color: #070907;
+    color: #f2e5ce;
     overflow-x: hidden;
   }
   h1, h2, h3, .font-serif {
@@ -15,22 +15,22 @@
   }
 }
 
-/* Custom PIDZERIA Scrollbar (Restrained, elegant, non-intrusive) */
+/* Custom PIDZERIA Scrollbar (Restrained, elegant, non-intrusive in brand leaf green) */
 @media (pointer: fine) {
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
   }
   ::-webkit-scrollbar-track {
-    background: #090808;
+    background: #080b08;
   }
   ::-webkit-scrollbar-thumb {
-    background: #2c2824;
+    background: #233125;
     border-radius: 9999px;
-    border: 1px solid #1c1917;
+    border: 1px solid #131b14;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #d97706;
+    background: #547734;
   }
 }
 
@@ -45,29 +45,29 @@
   }
 }
 
-/* Glassmorphism & Visual Depth Utilities */
+/* Glassmorphism & Visual Depth Utilities with authentic Leaf Green & Ivory accents */
 .glass-panel {
-  background: rgba(18, 16, 16, 0.72);
+  background: rgba(13, 17, 14, 0.76);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(84, 119, 52, 0.18);
 }
 
-.glass-panel-gold {
-  background: rgba(28, 24, 20, 0.85);
+.glass-panel-green {
+  background: rgba(16, 23, 17, 0.85);
   backdrop-filter: blur(24px);
-  border: 1px solid rgba(217, 119, 6, 0.28);
+  border: 1px solid rgba(84, 119, 52, 0.35);
   box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.6);
 }
 
-.text-gradient-gold {
-  background: linear-gradient(135deg, #fef3c7 0%, #f59e0b 50%, #d97706 100%);
+.text-gradient-leaf {
+  background: linear-gradient(135deg, #fbf7ee 0%, #9bc774 45%, #547734 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.text-gradient-red {
-  background: linear-gradient(135deg, #fee2e2 0%, #ef4444 50%, #b91c1c 100%);
+.text-gradient-cream {
+  background: linear-gradient(135deg, #ffffff 0%, #f2e5ce 50%, #cfc0a7 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

@@ -11,7 +11,7 @@ export const PidzeriaLoader: React.FC<PidzeriaLoaderProps> = ({ onComplete }) =>
 
   useEffect(() => {
     const startTime = Date.now();
-    const minDuration = 3200; // 3.2 seconds minimum duration
+    const minDuration = 3000;
 
     const interval = setInterval(() => {
       const elapsed = Date.now() - startTime;
@@ -30,12 +30,11 @@ export const PidzeriaLoader: React.FC<PidzeriaLoaderProps> = ({ onComplete }) =>
 
       if (elapsed >= minDuration) {
         clearInterval(interval);
-        // Stage 1: Trigger the smooth reveal transition (background begins fading, hero reveals)
         setTransitionState('revealing');
         setTimeout(() => {
           setTransitionState('done');
           onComplete();
-        }, 900); // 900ms seamless choreography into hero
+        }, 800);
       }
     }, 40);
 
@@ -46,16 +45,18 @@ export const PidzeriaLoader: React.FC<PidzeriaLoaderProps> = ({ onComplete }) =>
 
   return (
     <div
-      className={`fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#070606] transition-all duration-900 ease-out ${
+      className={`fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#070907] transition-all duration-900 ease-out ${
         transitionState === 'revealing'
           ? 'opacity-0 scale-[1.03] backdrop-blur-xl pointer-events-none'
           : 'opacity-100 scale-100'
       }`}
     >
-      {/* Subtle warm ember / flour glow behind the logo */}
+      {/* Subtle brand leaf green glow behind the logo */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-amber-500/8 rounded-full blur-[120px] pointer-events-none transition-opacity duration-1000" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-red-600/5 rounded-full blur-[80px] pointer-events-none transition-opacity duration-1000" />
+        <div 
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full blur-[140px] pointer-events-none transition-opacity duration-1000 opacity-20"
+          style={{ background: '#547734' }}
+        />
       </div>
 
       <div className="relative z-10 flex flex-col items-center px-6 text-center max-w-lg">
@@ -79,22 +80,25 @@ export const PidzeriaLoader: React.FC<PidzeriaLoaderProps> = ({ onComplete }) =>
           />
         </div>
 
-        {/* Refined Brand Sub-label */}
-        <p className="text-amber-100/70 font-serif italic text-sm sm:text-base tracking-wider mb-8">
+        {/* Refined Brand Sub-label in warm cream */}
+        <p className="text-[#f2e5ce]/80 font-serif italic text-sm sm:text-base tracking-wider mb-8">
           Pizzeria Artisanale • Alger
         </p>
 
-        {/* Minimalist Progress Track */}
-        <div className="w-48 sm:w-64 bg-stone-900/80 border border-stone-800 rounded-full h-[3px] mb-4 overflow-hidden relative">
+        {/* Minimalist Progress Track in Brand Leaf Green */}
+        <div className="w-48 sm:w-64 bg-[#121813] border border-[#243326] rounded-full h-[3px] mb-4 overflow-hidden relative">
           <div
-            className="bg-gradient-to-r from-amber-600 via-amber-400 to-amber-300 h-full rounded-full transition-all duration-150 ease-out shadow-[0_0_10px_rgba(245,158,11,0.6)]"
-            style={{ width: `${progress}%` }}
+            className="h-full rounded-full transition-all duration-150 ease-out shadow-[0_0_10px_rgba(84,119,52,0.6)]"
+            style={{ 
+              width: `${progress}%`,
+              background: 'linear-gradient(90deg, #547734 0%, #7db352 50%, #9bc774 100%)'
+            }}
           />
         </div>
 
         {/* Micro Stage Status Text */}
         <div className="h-5 flex items-center justify-center">
-          <span className="text-[11px] font-mono uppercase tracking-widest text-stone-400">
+          <span className="text-[11px] font-mono uppercase tracking-widest text-[#8a988c]">
             {stageText}
           </span>
         </div>

@@ -1,14 +1,14 @@
 import React from 'react';
 import { useStore } from '../../context/StoreContext';
 import { OrderStatus } from '../../types';
-import { Clock, ChefHat, Sparkles, CheckCheck, UtensilsCrossed, Phone, ArrowRight } from 'lucide-react';
+import { Clock, ChefHat, CheckCheck, UtensilsCrossed, Phone, ArrowRight } from 'lucide-react';
 
 const KANBAN_COLUMNS: { id: OrderStatus; label: string; color: string }[] = [
   { id: 'recue', label: 'Nouvelles', color: 'border-blue-500/40 bg-blue-500/5' },
-  { id: 'acceptee', label: 'Acceptées', color: 'border-amber-500/40 bg-amber-500/5' },
-  { id: 'en_preparation', label: 'En Préparation', color: 'border-orange-500/40 bg-orange-500/5' },
+  { id: 'acceptee', label: 'Acceptées', color: 'border-[#547734]/40 bg-[#547734]/5' },
+  { id: 'en_preparation', label: 'En Préparation', color: 'border-[#7db352]/40 bg-[#7db352]/5' },
   { id: 'prete', label: 'Prêtes', color: 'border-emerald-500/40 bg-emerald-500/5' },
-  { id: 'servie', label: 'Servies / Terminées', color: 'border-stone-800 bg-stone-900/30' },
+  { id: 'servie', label: 'Servies / Terminées', color: 'border-[#243326] bg-[#121813]/30' },
 ];
 
 export const OrderKanban: React.FC = () => {
@@ -37,8 +37,8 @@ export const OrderKanban: React.FC = () => {
   return (
     <div className="space-y-6 animate-fade-in max-w-[1600px] mx-auto">
       <div>
-        <h1 className="text-2xl font-serif font-bold text-amber-50">Gestion des Commandes — Kanban POS</h1>
-        <p className="text-xs text-stone-400 font-mono mt-1">
+        <h1 className="text-2xl font-serif font-bold text-[#fbf7ee]">Gestion des Commandes — Kanban POS</h1>
+        <p className="text-xs text-[#8a988c] font-mono mt-1">
           Suivez la progression en temps réel de la commande client jusqu'au service à table ou livraison.
         </p>
       </div>
@@ -52,11 +52,11 @@ export const OrderKanban: React.FC = () => {
             <div key={col.id} className={`p-4 rounded-3xl border ${col.color} flex flex-col h-[700px] min-w-[280px]`}>
               
               {/* Column Header */}
-              <div className="flex items-center justify-between pb-3 mb-4 border-b border-stone-800">
-                <span className="text-xs font-mono font-bold uppercase tracking-wider text-amber-200">
+              <div className="flex items-center justify-between pb-3 mb-4 border-b border-[#243326]">
+                <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#d4e4c2]">
                   {col.label}
                 </span>
-                <span className="w-6 h-6 rounded-full bg-stone-900 text-amber-400 font-mono font-extrabold text-xs flex items-center justify-center border border-stone-800">
+                <span className="w-6 h-6 rounded-full bg-[#121813] text-[#9bc774] font-mono font-extrabold text-xs flex items-center justify-center border border-[#243326]">
                   {colOrders.length}
                 </span>
               </div>
@@ -69,15 +69,15 @@ export const OrderKanban: React.FC = () => {
                   return (
                     <div
                       key={order.id}
-                      className="p-4 rounded-2xl bg-stone-950/90 border border-stone-800 space-y-3 shadow-lg hover:border-amber-500/30 transition-all"
+                      className="p-4 rounded-2xl bg-[#0c120e] border border-[#243326] space-y-3 shadow-lg hover:border-[#547734]/40 transition-all"
                     >
                       {/* Top Info */}
                       <div className="flex items-center justify-between">
-                        <span className="text-xs font-mono font-black text-amber-400">
+                        <span className="text-xs font-mono font-black text-[#9bc774]">
                           {order.orderNumber}
                         </span>
                         {order.tableNumber && (
-                          <span className="px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-300 text-[10px] font-bold">
+                          <span className="px-2 py-0.5 rounded-full bg-[#547734]/15 border border-[#547734]/30 text-[#9bc774] text-[10px] font-bold">
                             Table {order.tableNumber}
                           </span>
                         )}
@@ -85,41 +85,41 @@ export const OrderKanban: React.FC = () => {
 
                       {/* Customer Info */}
                       <div>
-                        <h4 className="text-xs font-bold text-stone-200">{order.customerName}</h4>
+                        <h4 className="text-xs font-bold text-[#f2e5ce]">{order.customerName}</h4>
                         {order.customerPhone && (
-                          <p className="text-[10px] text-stone-400 flex items-center gap-1 mt-0.5">
-                            <Phone className="w-3 h-3 text-amber-500" />
+                          <p className="text-[10px] text-[#8a988c] flex items-center gap-1 mt-0.5">
+                            <Phone className="w-3 h-3 text-[#7db352]" />
                             <span>{order.customerPhone}</span>
                           </p>
                         )}
                       </div>
 
                       {/* Items */}
-                      <div className="space-y-1 pt-2 border-t border-stone-800/80">
+                      <div className="space-y-1 pt-2 border-t border-[#243326]">
                         {order.items.map(item => (
-                          <div key={item.id} className="text-[11px] text-stone-300 flex justify-between">
+                          <div key={item.id} className="text-[11px] text-[#c7baa4] flex justify-between">
                             <span>{item.quantity}x {item.menuItem.name}</span>
-                            <span className="text-stone-500 font-mono">{item.itemTotal} DA</span>
+                            <span className="text-[#8a988c] font-mono">{item.itemTotal} DA</span>
                           </div>
                         ))}
                       </div>
 
                       {order.notes && (
-                        <p className="text-[10px] italic text-amber-300/80 bg-amber-500/5 p-2 rounded-lg border border-amber-500/10">
+                        <p className="text-[10px] italic text-[#d4e4c2] bg-[#547734]/10 p-2 rounded-lg border border-[#547734]/20">
                           Note: "{order.notes}"
                         </p>
                       )}
 
                       {/* Total & Action */}
-                      <div className="pt-2 border-t border-stone-800 flex items-center justify-between">
-                        <span className="text-xs font-serif font-extrabold text-amber-400">
+                      <div className="pt-2 border-t border-[#243326] flex items-center justify-between">
+                        <span className="text-xs font-serif font-extrabold text-[#9bc774]">
                           {order.total.toLocaleString('fr-DZ')} DA
                         </span>
 
                         {nextStatus && (
                           <button
                             onClick={() => updateOrderStatus(order.id, nextStatus)}
-                            className="px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-[11px] flex items-center gap-1 transition-all cursor-pointer shadow-md"
+                            className="px-3 py-1.5 rounded-xl bg-[#547734] hover:bg-[#628b3d] text-[#fbf7ee] font-bold text-[11px] flex items-center gap-1 transition-all cursor-pointer shadow-md"
                           >
                             <span>{getButtonLabel(order.status)}</span>
                             <ArrowRight className="w-3 h-3" />
@@ -132,7 +132,7 @@ export const OrderKanban: React.FC = () => {
                 })}
 
                 {colOrders.length === 0 && (
-                  <div className="text-center py-12 text-stone-600 text-xs font-mono">
+                  <div className="text-center py-12 text-[#556357] text-xs font-mono">
                     Aucune commande
                   </div>
                 )}

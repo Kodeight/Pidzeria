@@ -35,7 +35,7 @@ function StorefrontApp() {
   }
 
   return (
-    <div className="min-h-screen bg-[#070606] text-[#f5f2eb] font-sans selection:bg-amber-500 selection:text-black relative">
+    <div className="min-h-screen bg-[#070907] text-[#f2e5ce] font-sans selection:bg-[#547734] selection:text-white relative">
       {/* Subtle Scroll Progress Indicator */}
       <ScrollProgress />
 

@@ -2,67 +2,59 @@ import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { PizzaVideoCompositor } from './PizzaVideoCompositor';
-import { Ingredient3DCanvas } from './Ingredient3DCanvas';
-import { ArrowDown, Sparkles, ChefHat, Flame, Utensils } from 'lucide-react';
+import { ArrowDown, ChefHat, Flame, Utensils, Leaf, Clock, Heart } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const STORY_STAGES = [
   {
     step: '01',
-    title: 'LA PÂTE',
-    headline: 'Tout commence par une bonne pâte.',
-    description: 'Levée lente pendant 48 heures, pétrie à la main avec une farine sélectionnée et de l\'huile d\'olive extra-vierge.',
-    icon: ChefHat,
-    accent: 'from-amber-500 to-amber-700'
+    title: 'LA PÂTE AU LEVAIN',
+    headline: 'Tout commence par la fermentation lente.',
+    description: 'Levée pendant 48 heures au levain naturel. Pétrie avec de la farine italienne sélectionnée et de l\'huile d\'olive extra-vierge pour une digestibilité absolue.',
+    icon: Clock,
   },
   {
     step: '02',
-    title: 'LA SAUCE',
-    headline: 'Une sauce préparée avec caractère.',
-    description: 'Tomates San Marzano mûries au soleil, cuites à feu doux avec de l\'ail frais, du basilic et nos épices parfumées.',
-    icon: Sparkles,
-    accent: 'from-red-500 to-red-700'
+    title: 'LA SAUCE SAN MARZANO',
+    headline: 'Le goût solaire et authentique de l\'Italie.',
+    description: 'Tomates San Marzano mûries au soleil volcanique, mijotées avec du basilic frais du potager et une pincée de sel marin.',
+    icon: Leaf,
   },
   {
     step: '03',
-    title: 'LA MOZZARELLA',
-    headline: 'Du fromage fondant & généreux.',
-    description: 'Mozzarella Fior di Latte d\'exception râpée le matin même pour un filant parfait et une texture crémeuse.',
+    title: 'LA MOZZARELLA FIOR DI LATTE',
+    headline: 'Fondante, crémeuse et généreuse.',
+    description: 'Mozzarella fraîche effilochée à la main chaque matin pour garantir une texture crémeuse et un filant inimitable.',
     icon: Utensils,
-    accent: 'from-amber-200 to-amber-400'
   },
   {
     step: '04',
-    title: 'LES INGRÉDIENTS',
-    headline: 'Des produits choisis avec soin.',
-    description: 'Merguez artisanales d\'Alger, poulet mariné aux épices, légumes frais coupés au couteau et olives noires savoureuses.',
-    icon: Sparkles,
-    accent: 'from-emerald-500 to-emerald-700'
+    title: 'TERROIR ALGÉROIS & ÉPICES',
+    headline: 'L\'âme de notre terre dans chaque bouchée.',
+    description: 'Merguez de bœuf artisanales préparées selon notre recette familiale d\'Alger, poivrons rôtis et herbes aromatiques fraîches.',
+    icon: Heart,
   },
   {
     step: '05',
-    title: 'LA CUISSON',
-    headline: 'Une cuisson maîtrisée au feu de bois.',
-    description: 'Cuite à plus de 450°C sur pierre réfractaire pour obtenir cette croûte alvéolée, al dente et délicieusement dorée.',
+    title: 'LA CUISSON AU FEU DE BOIS',
+    headline: 'Saisie à 450°C en 90 secondes.',
+    description: 'Cuite sur pierre volcanique réfractaire. Une croûte alvéolée gonflée à la perfection, croustillante à l\'extérieur et moelleuse à cœur.',
     icon: Flame,
-    accent: 'from-orange-500 to-red-600'
   },
   {
     step: '06',
-    title: 'LA COUPE',
-    headline: 'Chaque part raconte une histoire.',
-    description: 'Découpée avec précision pour libérer les arômes et garantir une répartition parfaite des saveurs.',
-    icon: Utensils,
-    accent: 'from-amber-400 to-orange-500'
+    title: 'L\'HUILE D\'OLIVE & BASILIC',
+    headline: 'La touche finale des maîtres pizzaiolos.',
+    description: 'Un filet d\'huile d\'olive vierge pressée à froid et quelques feuilles de basilic frais cueillies à la minute.',
+    icon: Leaf,
   },
   {
     step: '07',
-    title: 'LE MOMENT PIDZERIA',
-    headline: 'L’art de la vraie pizza à votre table.',
-    description: 'L\'alliance inégalée du savoir-faire italien et de la générosité algérienne. Prête à être dégustée.',
-    icon: Sparkles,
-    accent: 'from-amber-400 via-amber-300 to-amber-500'
+    title: 'LA DÉGUSTATION PIDZERIA',
+    headline: 'L’Italie rencontre l’Algérie à votre table.',
+    description: 'Une harmonie gustative d\'exception partagée dans une ambiance chaleureuse et raffinée.',
+    icon: ChefHat,
   }
 ];
 
@@ -82,14 +74,13 @@ export const PizzaScrollExperience: React.FC<PizzaScrollExperienceProps> = ({ on
     const st = ScrollTrigger.create({
       trigger: container,
       start: 'top top',
-      end: '+=450%', // Scroll length factor
+      end: '+=400%',
       pin: true,
-      scrub: 0.5,
+      scrub: 0.6,
       onUpdate: (self) => {
         const p = self.progress;
         setScrollProgress(p);
 
-        // Map 0-1 to stage index
         const idx = Math.min(
           STORY_STAGES.length - 1,
           Math.floor(p * STORY_STAGES.length)
@@ -107,35 +98,44 @@ export const PizzaScrollExperience: React.FC<PizzaScrollExperienceProps> = ({ on
   const IconComp = currentStage.icon;
 
   return (
-    <section ref={containerRef} className="relative w-full h-screen bg-[#0b0a0a] overflow-hidden flex flex-col justify-between">
-      {/* Background 3D floating ingredient field */}
-      <Ingredient3DCanvas />
+    <section 
+      ref={containerRef} 
+      className="relative w-full h-screen bg-black overflow-hidden flex flex-col justify-between"
+      style={{ backgroundColor: '#000000' }}
+    >
+      {/* Top transition gradient from dark page background into black video stage */}
+      <div className="absolute top-0 inset-x-0 h-28 bg-gradient-to-b from-[#070907] to-transparent pointer-events-none z-10" />
 
-      {/* Decorative ambient background glows */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-amber-600/10 rounded-full blur-[120px]" />
-        <div className="absolute top-1/3 left-1/4 w-[400px] h-[400px] bg-red-600/10 rounded-full blur-[100px]" />
+      {/* Subtle brand green ambient glow in background - strictly natural, no orange */}
+      <div className="absolute inset-0 pointer-events-none z-0">
+        <div 
+          className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[500px] h-[500px] rounded-full blur-[140px] opacity-15"
+          style={{ background: '#547734' }}
+        />
       </div>
 
       {/* Top Header info indicator */}
       <div className="relative z-20 pt-24 px-6 md:px-12 flex items-center justify-between max-w-7xl mx-auto w-full">
-        <div className="flex items-center gap-3 bg-stone-900/80 border border-stone-800 backdrop-blur-md px-4 py-1.5 rounded-full">
+        <div className="flex items-center gap-3 bg-[#111612]/90 border border-[#547734]/30 backdrop-blur-md px-4 py-1.5 rounded-full">
           <span className="flex h-2 w-2 relative">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#74a148] opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#547734]"></span>
           </span>
-          <span className="text-xs font-mono tracking-widest text-amber-200 uppercase">
-            L'Expérience Culinaire — {currentStage.step} / 07
+          <span className="text-xs font-mono tracking-widest text-[#d4e4c2] uppercase font-semibold">
+            Fabrication Artisanale — {currentStage.step} / 07
           </span>
         </div>
 
         {/* Scroll Progress Bar indicator */}
         <div className="hidden sm:flex items-center gap-3">
-          <span className="text-xs text-stone-400 font-mono">Déroulement</span>
-          <div className="w-32 bg-stone-800 h-1 rounded-full overflow-hidden">
+          <span className="text-xs text-[#b8ab96] font-mono">Progression</span>
+          <div className="w-32 bg-[#1a211b] h-1.5 rounded-full overflow-hidden border border-[#2b392d]">
             <div 
-              className="bg-gradient-to-r from-amber-500 to-red-500 h-full transition-all duration-150"
-              style={{ width: `${scrollProgress * 100}%` }}
+              className="h-full transition-all duration-150 rounded-full"
+              style={{ 
+                width: `${scrollProgress * 100}%`,
+                background: 'linear-gradient(90deg, #547734 0%, #7db352 100%)'
+              }}
             />
           </div>
         </div>
@@ -146,40 +146,40 @@ export const PizzaScrollExperience: React.FC<PizzaScrollExperienceProps> = ({ on
         
         {/* Left Column: Storytelling Card */}
         <div className="lg:col-span-5 flex flex-col justify-center order-2 lg:order-1">
-          <div className="glass-panel p-6 md:p-8 rounded-3xl border border-amber-500/15 backdrop-blur-xl relative overflow-hidden transition-all duration-500">
+          <div className="bg-[#0b100c]/85 p-6 md:p-8 rounded-3xl border border-[#547734]/25 backdrop-blur-2xl relative overflow-hidden transition-all duration-500 shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
             {/* Step badge */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold mb-4">
-              <IconComp className="w-3.5 h-3.5 text-amber-400" />
-              <span>ÉTAPE {currentStage.step}</span>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#547734]/15 border border-[#547734]/30 text-[#8ec062] text-xs font-semibold mb-4">
+              <IconComp className="w-3.5 h-3.5 text-[#7db352]" />
+              <span className="tracking-wider uppercase">ÉTAPE {currentStage.step}</span>
             </div>
 
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-amber-50 mb-3 tracking-wide">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-[#fbf7ee] mb-3 tracking-wide">
               {currentStage.title}
             </h2>
 
-            <p className="text-lg font-semibold text-amber-400/90 mb-3 font-serif italic">
+            <p className="text-base sm:text-lg font-medium text-[#d4e4c2] mb-3 font-serif italic">
               "{currentStage.headline}"
             </p>
 
-            <p className="text-stone-300 text-sm md:text-base leading-relaxed mb-6 font-sans">
+            <p className="text-[#c7baa4] text-sm md:text-base leading-relaxed mb-6 font-sans">
               {currentStage.description}
             </p>
 
-            {/* Quick Action Button on Final Stage */}
+            {/* Quick Action Button on Final Stages */}
             {currentStageIdx >= 5 && (
               <button
                 onClick={onScrollToMenu}
-                className="w-full sm:w-auto px-6 py-3 rounded-full bg-gradient-to-r from-amber-500 via-amber-600 to-red-600 text-stone-950 font-bold text-sm tracking-wide shadow-lg shadow-amber-500/20 hover:scale-[1.02] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full sm:w-auto px-7 py-3.5 rounded-full bg-[#547734] hover:bg-[#628b3d] text-[#fbf7ee] font-bold text-xs tracking-wider uppercase transition-all duration-300 shadow-[0_10px_25px_rgba(84,119,52,0.35)] flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.02]"
               >
-                <span>Découvrir le Menu Complêt</span>
+                <span>Découvrir la carte</span>
                 <ArrowDown className="w-4 h-4 transform -rotate-90" />
               </button>
             )}
           </div>
         </div>
 
-        {/* Center/Right Column: Composited Pizza Video */}
-        <div className="lg:col-span-7 flex items-center justify-center order-1 lg:order-2 h-[380px] sm:h-[450px] md:h-[520px]">
+        {/* Center/Right Column: Composited Real Pizza Video from pizza.mp4 */}
+        <div className="lg:col-span-7 flex items-center justify-center order-1 lg:order-2 h-[340px] sm:h-[440px] md:h-[500px]">
           <PizzaVideoCompositor 
             scrollProgress={scrollProgress} 
           />
@@ -189,13 +189,16 @@ export const PizzaScrollExperience: React.FC<PizzaScrollExperienceProps> = ({ on
 
       {/* Bottom Scroll Prompt */}
       <div className="relative z-20 pb-8 px-6 text-center">
-        <div className="inline-flex flex-col items-center gap-2 text-stone-400 hover:text-amber-400 transition-colors">
+        <div className="inline-flex flex-col items-center gap-2 text-[#b8ab96] hover:text-[#7db352] transition-colors">
           <span className="text-xs uppercase tracking-widest font-mono">
-            {scrollProgress > 0.9 ? 'Faites défiler pour le menu' : 'Faites défiler pour composer la pizza'}
+            {scrollProgress > 0.9 ? 'Faites défiler pour voir le menu' : 'Faites défiler pour explorer la cuisson'}
           </span>
-          <ArrowDown className="w-4 h-4 animate-bounce text-amber-500" />
+          <ArrowDown className="w-4 h-4 animate-bounce text-[#7db352]" />
         </div>
       </div>
+
+      {/* Bottom transition gradient into the next section */}
+      <div className="absolute bottom-0 inset-x-0 h-28 bg-gradient-to-t from-[#070907] to-transparent pointer-events-none z-10" />
     </section>
   );
 };

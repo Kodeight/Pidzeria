@@ -9,8 +9,7 @@ import {
   BarChart3,
   Volume2,
   VolumeX,
-  ArrowLeft,
-  Settings
+  ArrowLeft
 } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 import { DashboardOverview } from './DashboardOverview';
@@ -33,26 +32,26 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ onReturnToStor
   const activeOrdersCount = orders.filter(o => o.status !== 'servie' && o.status !== 'annulee').length;
 
   return (
-    <div className="min-h-screen bg-[#070606] text-stone-200 flex flex-col md:flex-row font-sans">
+    <div className="min-h-screen bg-[#070907] text-[#f2e5ce] flex flex-col md:flex-row font-sans">
       
       {/* Sidebar Navigation */}
-      <aside className="w-full md:w-64 bg-[#0d0b0b] border-r border-stone-800 shrink-0 p-6 flex flex-col justify-between">
+      <aside className="w-full md:w-64 bg-[#0a0f0c] border-r border-[#243326] shrink-0 p-6 flex flex-col justify-between">
         <div>
           {/* Brand header */}
           <div className="flex items-center justify-between mb-8">
             <Logo size="md" />
             <button
               onClick={onReturnToStorefront}
-              className="p-2 rounded-xl bg-stone-900 hover:bg-stone-800 text-stone-400 hover:text-white transition-colors border border-stone-800"
+              className="p-2 rounded-xl bg-[#121813] hover:bg-[#1b251d] text-[#8a988c] hover:text-[#fbf7ee] transition-colors border border-[#243326]"
               title="Retour au site client"
             >
               <ArrowLeft className="w-4 h-4" />
             </button>
           </div>
 
-          <div className="px-3 py-1.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-mono font-bold uppercase tracking-wider mb-6 flex items-center justify-between">
+          <div className="px-3 py-1.5 rounded-xl bg-[#547734]/15 border border-[#547734]/30 text-[#9bc774] text-xs font-mono font-bold uppercase tracking-wider mb-6 flex items-center justify-between">
             <span>GESTION RESTAURANT</span>
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-[#7db352] animate-pulse" />
           </div>
 
           {/* Navigation Items */}
@@ -61,8 +60,8 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ onReturnToStor
               onClick={() => setActiveTab('overview')}
               className={`w-full px-4 py-3 rounded-2xl text-xs font-bold flex items-center justify-between transition-all cursor-pointer ${
                 activeTab === 'overview'
-                  ? 'bg-amber-500 text-stone-950 font-black shadow-lg shadow-amber-500/20'
-                  : 'hover:bg-stone-900 text-stone-400 hover:text-stone-200'
+                  ? 'bg-[#547734] text-[#fbf7ee] font-black shadow-lg shadow-[#547734]/25'
+                  : 'hover:bg-[#121813] text-[#8a988c] hover:text-[#f2e5ce]'
               }`}
             >
               <div className="flex items-center gap-3">
@@ -75,8 +74,8 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ onReturnToStor
               onClick={() => setActiveTab('orders')}
               className={`w-full px-4 py-3 rounded-2xl text-xs font-bold flex items-center justify-between transition-all cursor-pointer ${
                 activeTab === 'orders'
-                  ? 'bg-amber-500 text-stone-950 font-black shadow-lg shadow-amber-500/20'
-                  : 'hover:bg-stone-900 text-stone-400 hover:text-stone-200'
+                  ? 'bg-[#547734] text-[#fbf7ee] font-black shadow-lg shadow-[#547734]/25'
+                  : 'hover:bg-[#121813] text-[#8a988c] hover:text-[#f2e5ce]'
               }`}
             >
               <div className="flex items-center gap-3">
@@ -94,13 +93,13 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ onReturnToStor
               onClick={() => setActiveTab('kitchen')}
               className={`w-full px-4 py-3 rounded-2xl text-xs font-bold flex items-center justify-between transition-all cursor-pointer ${
                 activeTab === 'kitchen'
-                  ? 'bg-amber-500 text-stone-950 font-black shadow-lg shadow-amber-500/20'
-                  : 'hover:bg-stone-900 text-stone-400 hover:text-stone-200'
+                  ? 'bg-[#547734] text-[#fbf7ee] font-black shadow-lg shadow-[#547734]/25'
+                  : 'hover:bg-[#121813] text-[#8a988c] hover:text-[#f2e5ce]'
               }`}
             >
               <div className="flex items-center gap-3">
                 <ChefHat className="w-4 h-4" />
-                <span>Ecran Cuisine KDS</span>
+                <span>Écran Cuisine KDS</span>
               </div>
             </button>
 
@@ -108,8 +107,8 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ onReturnToStor
               onClick={() => setActiveTab('tables')}
               className={`w-full px-4 py-3 rounded-2xl text-xs font-bold flex items-center justify-between transition-all cursor-pointer ${
                 activeTab === 'tables'
-                  ? 'bg-amber-500 text-stone-950 font-black shadow-lg shadow-amber-500/20'
-                  : 'hover:bg-stone-900 text-stone-400 hover:text-stone-200'
+                  ? 'bg-[#547734] text-[#fbf7ee] font-black shadow-lg shadow-[#547734]/25'
+                  : 'hover:bg-[#121813] text-[#8a988c] hover:text-[#f2e5ce]'
               }`}
             >
               <div className="flex items-center gap-3">
@@ -122,8 +121,8 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ onReturnToStor
               onClick={() => setActiveTab('menu')}
               className={`w-full px-4 py-3 rounded-2xl text-xs font-bold flex items-center justify-between transition-all cursor-pointer ${
                 activeTab === 'menu'
-                  ? 'bg-amber-500 text-stone-950 font-black shadow-lg shadow-amber-500/20'
-                  : 'hover:bg-stone-900 text-stone-400 hover:text-stone-200'
+                  ? 'bg-[#547734] text-[#fbf7ee] font-black shadow-lg shadow-[#547734]/25'
+                  : 'hover:bg-[#121813] text-[#8a988c] hover:text-[#f2e5ce]'
               }`}
             >
               <div className="flex items-center gap-3">
@@ -136,8 +135,8 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ onReturnToStor
               onClick={() => setActiveTab('analytics')}
               className={`w-full px-4 py-3 rounded-2xl text-xs font-bold flex items-center justify-between transition-all cursor-pointer ${
                 activeTab === 'analytics'
-                  ? 'bg-amber-500 text-stone-950 font-black shadow-lg shadow-amber-500/20'
-                  : 'hover:bg-stone-900 text-stone-400 hover:text-stone-200'
+                  ? 'bg-[#547734] text-[#fbf7ee] font-black shadow-lg shadow-[#547734]/25'
+                  : 'hover:bg-[#121813] text-[#8a988c] hover:text-[#f2e5ce]'
               }`}
             >
               <div className="flex items-center gap-3">
@@ -149,17 +148,17 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ onReturnToStor
         </div>
 
         {/* Bottom Sound Alert Toggle */}
-        <div className="pt-6 border-t border-stone-800">
+        <div className="pt-6 border-t border-[#243326]">
           <button
             onClick={() => setSoundEnabled(!soundEnabled)}
-            className="w-full p-3 rounded-2xl bg-stone-900/80 hover:bg-stone-800 border border-stone-800 text-xs font-medium flex items-center justify-between text-stone-300 cursor-pointer"
+            className="w-full p-3 rounded-2xl bg-[#121813] hover:bg-[#1b251d] border border-[#243326] text-xs font-medium flex items-center justify-between text-[#8a988c] cursor-pointer"
           >
             <div className="flex items-center gap-2">
-              {soundEnabled ? <Volume2 className="w-4 h-4 text-emerald-400" /> : <VolumeX className="w-4 h-4 text-stone-500" />}
+              {soundEnabled ? <Volume2 className="w-4 h-4 text-[#7db352]" /> : <VolumeX className="w-4 h-4 text-stone-500" />}
               <span>Alertes Sonores</span>
             </div>
             <span className={`text-[10px] font-mono uppercase font-bold px-2 py-0.5 rounded-md ${
-              soundEnabled ? 'bg-emerald-500/20 text-emerald-300' : 'bg-stone-800 text-stone-500'
+              soundEnabled ? 'bg-[#547734]/20 text-[#9bc774]' : 'bg-[#1b251d] text-stone-500'
             }`}>
               {soundEnabled ? 'ON' : 'OFF'}
             </span>

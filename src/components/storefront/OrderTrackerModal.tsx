@@ -1,7 +1,7 @@
 import React from 'react';
 import { useStore } from '../../context/StoreContext';
 import { OrderStatus } from '../../types';
-import { X, CheckCircle2, Clock, ChefHat, Sparkles, Utensils, CheckCheck } from 'lucide-react';
+import { X, CheckCircle2, Clock, ChefHat, Utensils, CheckCheck, Flame } from 'lucide-react';
 
 interface OrderTrackerModalProps {
   isOpen: boolean;
@@ -10,8 +10,8 @@ interface OrderTrackerModalProps {
 
 const STATUS_STEPS: { key: OrderStatus; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
   { key: 'recue', label: 'Reçue', icon: Clock },
-  { key: 'acceptee', label: 'Acceptée', icon: Sparkles },
-  { key: 'en_preparation', label: 'En préparation', icon: ChefHat },
+  { key: 'acceptee', label: 'Validée', icon: CheckCircle2 },
+  { key: 'en_preparation', label: 'Au four', icon: Flame },
   { key: 'prete', label: 'Prête', icon: Utensils },
   { key: 'servie', label: 'Servie', icon: CheckCheck },
 ];
@@ -37,21 +37,21 @@ export const OrderTrackerModal: React.FC<OrderTrackerModalProps> = ({ isOpen, on
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
       <div 
-        className="relative w-full max-w-xl bg-[#121010] border border-amber-500/30 rounded-3xl p-6 md:p-8 shadow-2xl space-y-6"
+        className="relative w-full max-w-xl bg-[#0c120e] border border-[#547734]/30 rounded-3xl p-6 md:p-8 shadow-2xl space-y-6"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between pb-4 border-b border-stone-800">
+        <div className="flex items-center justify-between pb-4 border-b border-[#243326]">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold mb-1">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#547734]/15 border border-[#547734]/30 text-[#9bc774] text-xs font-semibold mb-1">
               <CheckCircle2 className="w-3.5 h-3.5" />
-              <span>Commande Confirmée</span>
+              <span>Commande Enregistrée</span>
             </div>
-            <h2 className="text-2xl font-serif font-bold text-amber-50">
+            <h2 className="text-2xl font-serif font-bold text-[#fbf7ee]">
               Commande {activeOrder.orderNumber}
             </h2>
             {activeOrder.tableNumber && (
-              <p className="text-xs text-amber-400 font-mono mt-0.5">
+              <p className="text-xs text-[#9bc774] font-mono mt-0.5">
                 Table {activeOrder.tableNumber}
               </p>
             )}
@@ -59,7 +59,7 @@ export const OrderTrackerModal: React.FC<OrderTrackerModalProps> = ({ isOpen, on
 
           <button
             onClick={onClose}
-            className="p-2 rounded-full bg-stone-900 hover:bg-stone-800 text-stone-400 hover:text-white transition-colors cursor-pointer"
+            className="p-2 rounded-full bg-[#121813] hover:bg-[#1a231b] text-[#8a988c] hover:text-white transition-colors cursor-pointer border border-[#243326]"
           >
             <X className="w-5 h-5" />
           </button>
@@ -77,15 +77,15 @@ export const OrderTrackerModal: React.FC<OrderTrackerModalProps> = ({ isOpen, on
                 <div key={step.key} className="flex flex-col items-center flex-1">
                   <div className={`w-10 h-10 rounded-full flex items-center justify-center border transition-all ${
                     isCurrent
-                      ? 'bg-amber-500 border-amber-400 text-stone-950 shadow-lg shadow-amber-500/30 scale-110'
+                      ? 'bg-[#547734] border-[#7db352] text-[#fbf7ee] shadow-lg shadow-[#547734]/35 scale-110'
                       : isCompleted
-                      ? 'bg-emerald-600 border-emerald-500 text-white'
-                      : 'bg-stone-900 border-stone-800 text-stone-600'
+                      ? 'bg-[#233325] border-[#547734] text-[#9bc774]'
+                      : 'bg-[#121813] border-[#243326] text-[#556357]'
                   }`}>
                     <IconComp className="w-5 h-5" />
                   </div>
                   <span className={`text-[11px] font-medium mt-2 text-center hidden sm:block ${
-                    isCurrent ? 'text-amber-300 font-bold' : isCompleted ? 'text-stone-300' : 'text-stone-600'
+                    isCurrent ? 'text-[#9bc774] font-bold' : isCompleted ? 'text-[#c7baa4]' : 'text-[#556357]'
                   }`}>
                     {step.label}
                   </span>
@@ -95,54 +95,54 @@ export const OrderTrackerModal: React.FC<OrderTrackerModalProps> = ({ isOpen, on
           </div>
 
           {/* Stepper Bar */}
-          <div className="w-full bg-stone-900 h-1.5 rounded-full overflow-hidden p-0.5">
+          <div className="w-full bg-[#121813] h-1.5 rounded-full overflow-hidden p-0.5 border border-[#243326]">
             <div 
-              className="bg-gradient-to-r from-amber-500 to-emerald-500 h-full rounded-full transition-all duration-500"
+              className="bg-[#547734] h-full rounded-full transition-all duration-500"
               style={{ width: `${((currentStepIdx + 1) / STATUS_STEPS.length) * 100}%` }}
             />
           </div>
         </div>
 
         {/* Estimated Time */}
-        <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-center">
-          <p className="text-xs text-amber-200/80 uppercase font-mono tracking-wider">
+        <div className="p-4 rounded-2xl bg-[#547734]/10 border border-[#547734]/20 text-center">
+          <p className="text-xs text-[#d4e4c2] uppercase font-mono tracking-wider">
             Temps de préparation estimé
           </p>
-          <p className="text-3xl font-serif font-extrabold text-amber-400 my-1">
+          <p className="text-3xl font-serif font-extrabold text-[#9bc774] my-1">
             ~15 - 20 minutes
           </p>
-          <p className="text-xs text-stone-400">
-            Notre chef prépare votre pizza avec des ingrédients frais.
+          <p className="text-xs text-[#a89c89]">
+            Nos pizzaiolos préparent votre commande avec soin au feu de bois.
           </p>
         </div>
 
         {/* Order Summary Items */}
         <div>
-          <h4 className="text-xs font-mono uppercase tracking-widest text-stone-400 mb-3">
+          <h4 className="text-xs font-mono uppercase tracking-widest text-[#8a988c] mb-3">
             Détails des articles
           </h4>
           <div className="space-y-2 max-h-40 overflow-y-auto pr-1">
             {activeOrder.items.map(item => (
-              <div key={item.id} className="flex items-center justify-between text-xs text-stone-300 p-2.5 rounded-xl bg-stone-900/60">
+              <div key={item.id} className="flex items-center justify-between text-xs text-[#c7baa4] p-2.5 rounded-xl bg-[#121813]/60 border border-[#243326]">
                 <span>{item.quantity}x {item.menuItem.name}</span>
-                <span className="font-mono font-bold text-amber-400">{item.itemTotal.toLocaleString('fr-DZ')} DA</span>
+                <span className="font-mono font-bold text-[#9bc774]">{item.itemTotal.toLocaleString('fr-DZ')} DA</span>
               </div>
             ))}
           </div>
         </div>
 
         {/* Total & Action */}
-        <div className="pt-4 border-t border-stone-800 flex items-center justify-between">
+        <div className="pt-4 border-t border-[#243326] flex items-center justify-between">
           <div>
-            <span className="text-xs text-stone-400 block">Total réglé</span>
-            <span className="text-xl font-serif font-bold text-amber-400">
+            <span className="text-xs text-[#8a988c] block">Total</span>
+            <span className="text-xl font-serif font-bold text-[#9bc774]">
               {activeOrder.total.toLocaleString('fr-DZ')} DA
             </span>
           </div>
 
           <button
             onClick={onClose}
-            className="px-6 py-2.5 rounded-full bg-stone-800 hover:bg-stone-700 text-stone-200 text-xs font-bold transition-all cursor-pointer"
+            className="px-6 py-2.5 rounded-full bg-[#121813] hover:bg-[#1a231b] border border-[#243326] text-[#c7baa4] text-xs font-bold transition-all cursor-pointer"
           >
             Fermer le suivi
           </button>
