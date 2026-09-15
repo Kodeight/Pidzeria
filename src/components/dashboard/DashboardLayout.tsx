@@ -32,26 +32,26 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ onReturnToStor
   const activeOrdersCount = orders.filter(o => o.status !== 'servie' && o.status !== 'annulee').length;
 
   return (
-    <div className="min-h-screen bg-[#070907] text-[#f2e5ce] flex flex-col md:flex-row font-sans">
+    <div className="min-h-screen bg-black text-[#f7f2e7] flex flex-col md:flex-row font-sans">
       
       {/* Sidebar Navigation */}
-      <aside className="w-full md:w-64 bg-[#0a0f0c] border-r border-[#243326] shrink-0 p-6 flex flex-col justify-between">
+      <aside className="w-full md:w-64 bg-[#0a0807] border-r border-[#26221d] shrink-0 p-6 flex flex-col justify-between">
         <div>
           {/* Brand header */}
           <div className="flex items-center justify-between mb-8">
             <Logo size="md" />
             <button
               onClick={onReturnToStorefront}
-              className="p-2 rounded-xl bg-[#121813] hover:bg-[#1b251d] text-[#8a988c] hover:text-[#fbf7ee] transition-colors border border-[#243326]"
+              className="p-2 rounded-xl bg-[#141210] hover:bg-[#1f1b18] text-[#8c7e6c] hover:text-[#f7f2e7] transition-colors border border-[#2a241f] cursor-pointer"
               title="Retour au site client"
             >
               <ArrowLeft className="w-4 h-4" />
             </button>
           </div>
 
-          <div className="px-3 py-1.5 rounded-xl bg-[#547734]/15 border border-[#547734]/30 text-[#9bc774] text-xs font-mono font-bold uppercase tracking-wider mb-6 flex items-center justify-between">
+          <div className="px-3 py-1.5 rounded-xl bg-[#161311] border border-[#2e2823] text-[#dfd0ba] text-xs font-mono font-bold uppercase tracking-wider mb-6 flex items-center justify-between">
             <span>GESTION RESTAURANT</span>
-            <span className="w-2 h-2 rounded-full bg-[#7db352] animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-[#dfd0ba] animate-pulse" />
           </div>
 
           {/* Navigation Items */}
@@ -60,8 +60,8 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ onReturnToStor
               onClick={() => setActiveTab('overview')}
               className={`w-full px-4 py-3 rounded-2xl text-xs font-bold flex items-center justify-between transition-all cursor-pointer ${
                 activeTab === 'overview'
-                  ? 'bg-[#547734] text-[#fbf7ee] font-black shadow-lg shadow-[#547734]/25'
-                  : 'hover:bg-[#121813] text-[#8a988c] hover:text-[#f2e5ce]'
+                  ? 'bg-[#dfd0ba] text-[#0a0a0a] font-black shadow-lg shadow-black/80'
+                  : 'hover:bg-[#141210] text-[#8c7e6c] hover:text-[#f7f2e7]'
               }`}
             >
               <div className="flex items-center gap-3">
@@ -74,8 +74,8 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ onReturnToStor
               onClick={() => setActiveTab('orders')}
               className={`w-full px-4 py-3 rounded-2xl text-xs font-bold flex items-center justify-between transition-all cursor-pointer ${
                 activeTab === 'orders'
-                  ? 'bg-[#547734] text-[#fbf7ee] font-black shadow-lg shadow-[#547734]/25'
-                  : 'hover:bg-[#121813] text-[#8a988c] hover:text-[#f2e5ce]'
+                  ? 'bg-[#dfd0ba] text-[#0a0a0a] font-black shadow-lg shadow-black/80'
+                  : 'hover:bg-[#141210] text-[#8c7e6c] hover:text-[#f7f2e7]'
               }`}
             >
               <div className="flex items-center gap-3">
@@ -93,8 +93,8 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ onReturnToStor
               onClick={() => setActiveTab('kitchen')}
               className={`w-full px-4 py-3 rounded-2xl text-xs font-bold flex items-center justify-between transition-all cursor-pointer ${
                 activeTab === 'kitchen'
-                  ? 'bg-[#547734] text-[#fbf7ee] font-black shadow-lg shadow-[#547734]/25'
-                  : 'hover:bg-[#121813] text-[#8a988c] hover:text-[#f2e5ce]'
+                  ? 'bg-[#dfd0ba] text-[#0a0a0a] font-black shadow-lg shadow-black/80'
+                  : 'hover:bg-[#141210] text-[#8c7e6c] hover:text-[#f7f2e7]'
               }`}
             >
               <div className="flex items-center gap-3">
@@ -107,8 +107,8 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ onReturnToStor
               onClick={() => setActiveTab('tables')}
               className={`w-full px-4 py-3 rounded-2xl text-xs font-bold flex items-center justify-between transition-all cursor-pointer ${
                 activeTab === 'tables'
-                  ? 'bg-[#547734] text-[#fbf7ee] font-black shadow-lg shadow-[#547734]/25'
-                  : 'hover:bg-[#121813] text-[#8a988c] hover:text-[#f2e5ce]'
+                  ? 'bg-[#dfd0ba] text-[#0a0a0a] font-black shadow-lg shadow-black/80'
+                  : 'hover:bg-[#141210] text-[#8c7e6c] hover:text-[#f7f2e7]'
               }`}
             >
               <div className="flex items-center gap-3">
@@ -121,8 +121,8 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ onReturnToStor
               onClick={() => setActiveTab('menu')}
               className={`w-full px-4 py-3 rounded-2xl text-xs font-bold flex items-center justify-between transition-all cursor-pointer ${
                 activeTab === 'menu'
-                  ? 'bg-[#547734] text-[#fbf7ee] font-black shadow-lg shadow-[#547734]/25'
-                  : 'hover:bg-[#121813] text-[#8a988c] hover:text-[#f2e5ce]'
+                  ? 'bg-[#dfd0ba] text-[#0a0a0a] font-black shadow-lg shadow-black/80'
+                  : 'hover:bg-[#141210] text-[#8c7e6c] hover:text-[#f7f2e7]'
               }`}
             >
               <div className="flex items-center gap-3">
@@ -135,8 +135,8 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ onReturnToStor
               onClick={() => setActiveTab('analytics')}
               className={`w-full px-4 py-3 rounded-2xl text-xs font-bold flex items-center justify-between transition-all cursor-pointer ${
                 activeTab === 'analytics'
-                  ? 'bg-[#547734] text-[#fbf7ee] font-black shadow-lg shadow-[#547734]/25'
-                  : 'hover:bg-[#121813] text-[#8a988c] hover:text-[#f2e5ce]'
+                  ? 'bg-[#dfd0ba] text-[#0a0a0a] font-black shadow-lg shadow-black/80'
+                  : 'hover:bg-[#141210] text-[#8c7e6c] hover:text-[#f7f2e7]'
               }`}
             >
               <div className="flex items-center gap-3">
@@ -148,17 +148,17 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ onReturnToStor
         </div>
 
         {/* Bottom Sound Alert Toggle */}
-        <div className="pt-6 border-t border-[#243326]">
+        <div className="pt-6 border-t border-[#26221d]">
           <button
             onClick={() => setSoundEnabled(!soundEnabled)}
-            className="w-full p-3 rounded-2xl bg-[#121813] hover:bg-[#1b251d] border border-[#243326] text-xs font-medium flex items-center justify-between text-[#8a988c] cursor-pointer"
+            className="w-full p-3 rounded-2xl bg-[#141210] hover:bg-[#1f1b18] border border-[#2a241f] text-xs font-medium flex items-center justify-between text-[#8c7e6c] cursor-pointer"
           >
             <div className="flex items-center gap-2">
-              {soundEnabled ? <Volume2 className="w-4 h-4 text-[#7db352]" /> : <VolumeX className="w-4 h-4 text-stone-500" />}
+              {soundEnabled ? <Volume2 className="w-4 h-4 text-[#dfd0ba]" /> : <VolumeX className="w-4 h-4 text-stone-500" />}
               <span>Alertes Sonores</span>
             </div>
             <span className={`text-[10px] font-mono uppercase font-bold px-2 py-0.5 rounded-md ${
-              soundEnabled ? 'bg-[#547734]/20 text-[#9bc774]' : 'bg-[#1b251d] text-stone-500'
+              soundEnabled ? 'bg-[#221e1a] text-[#dfd0ba] border border-[#3d3730]' : 'bg-[#141210] text-stone-500'
             }`}>
               {soundEnabled ? 'ON' : 'OFF'}
             </span>
@@ -167,7 +167,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ onReturnToStor
       </aside>
 
       {/* Main Tab Content */}
-      <main className="flex-1 p-6 sm:p-10 overflow-y-auto">
+      <main className="flex-1 p-6 sm:p-10 overflow-y-auto bg-black">
         {activeTab === 'overview' && <DashboardOverview onNavigateTab={(t) => setActiveTab(t as DashboardTab)} />}
         {activeTab === 'orders' && <OrderKanban />}
         {activeTab === 'kitchen' && <KitchenDisplay />}

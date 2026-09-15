@@ -32,35 +32,35 @@ export const ReservationSection: React.FC = () => {
   return (
     <section id="reservation" className="py-28 px-6 md:px-12 max-w-5xl mx-auto w-full">
       <ScaleReveal initialScale={0.96} duration={0.9} distance={30}>
-        <div className="glass-panel p-8 sm:p-12 rounded-3xl border border-[#243326] shadow-2xl relative overflow-hidden bg-[#0c120e]/90">
+        <div className="glass-panel p-8 sm:p-12 rounded-3xl border border-[#2a241f] shadow-2xl relative overflow-hidden bg-[#0c0a09]/95">
           
           <div className="text-center max-w-xl mx-auto mb-10">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#547734]/15 border border-[#547734]/30 text-[#9bc774] text-xs font-mono uppercase tracking-widest mb-3">
-              <Calendar className="w-3.5 h-3.5 text-[#7db352]" />
-              <span>Espace Table</span>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#161311] border border-[#2d2823] text-[#dfd0ba] text-xs font-mono uppercase tracking-widest mb-3">
+              <Calendar className="w-3.5 h-3.5 text-[#cbb89d]" />
+              <span>Table & Service</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-serif font-extrabold text-[#fbf7ee] mb-3">
-              Réserver une Table chez PIDZERIA
+            <h2 className="text-3xl sm:text-4xl font-serif font-extrabold text-[#f7f2e7] mb-3">
+              Réserver une table chez PIDZERIA
             </h2>
-            <p className="text-[#a89c89] text-sm">
-              Réservez en ligne à l'avance pour garantir une expérience culinaire chaleureuse et raffinée avec vos proches.
+            <p className="text-[#a69684] text-sm">
+              Réservez votre table pour savourer une expérience culinaire raffinée et chaleureuse entre proches à Alger.
             </p>
           </div>
 
           {isSuccess ? (
             <FadeUp distance={20} className="text-center py-12 space-y-4">
-              <div className="w-16 h-16 rounded-full bg-[#547734]/20 border border-[#547734] text-[#9bc774] mx-auto flex items-center justify-center">
+              <div className="w-16 h-16 rounded-full bg-[#1c1814] border border-[#dfd0ba]/40 text-[#dfd0ba] mx-auto flex items-center justify-center">
                 <CheckCircle2 className="w-8 h-8" />
               </div>
-              <h3 className="text-2xl font-serif font-bold text-[#fbf7ee]">
-                Demande de Réservation Enregistrée !
+              <h3 className="text-2xl font-serif font-bold text-[#f7f2e7]">
+                Demande de réservation enregistrée !
               </h3>
-              <p className="text-[#c7baa4] text-sm max-w-md mx-auto">
-                Merci {name}. Notre équipe va confirmer votre table pour {guests} personne{guests > 1 ? 's' : ''} le {date} à {time} par SMS.
+              <p className="text-[#cbb89d] text-sm max-w-md mx-auto">
+                Merci {name}. Notre équipe vous contactera pour confirmer votre table pour {guests} personne{guests > 1 ? 's' : ''} le {date} à {time}.
               </p>
               <button
                 onClick={() => setIsSuccess(false)}
-                className="px-6 py-2.5 rounded-full bg-[#547734] text-[#fbf7ee] font-bold text-xs cursor-pointer hover:bg-[#628b3d] transition-colors"
+                className="px-6 py-2.5 rounded-full bg-[#dfd0ba] text-[#0a0a0a] font-bold text-xs cursor-pointer hover:bg-[#f3eadc] transition-colors"
               >
                 Faire une autre réservation
               </button>
@@ -69,23 +69,23 @@ export const ReservationSection: React.FC = () => {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-mono uppercase tracking-widest text-[#8a988c] block mb-2 flex items-center gap-1.5">
-                    <User className="w-3.5 h-3.5 text-[#9bc774]" />
-                    <span>Nom complet</span>
+                  <label className="text-xs font-mono uppercase tracking-widest text-[#8c7e6c] block mb-2 flex items-center gap-1.5">
+                    <User className="w-3.5 h-3.5 text-[#cbb89d]" />
+                    <span>Nom</span>
                   </label>
                   <input
                     type="text"
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="Ex: Sofiane Benali"
-                    className="w-full bg-[#121813] border border-[#243326] rounded-2xl px-4 py-3 text-sm text-[#f2e5ce] placeholder:text-[#556357] focus:outline-none focus:border-[#547734]"
+                    placeholder="Votre nom complet"
+                    className="w-full bg-[#12100e] border border-[#2a241f] rounded-2xl px-4 py-3 text-sm text-[#f7f2e7] placeholder:text-[#6a5e51] focus:outline-none focus:border-[#dfd0ba]/60"
                   />
                 </div>
 
                 <div>
-                  <label className="text-xs font-mono uppercase tracking-widest text-[#8a988c] block mb-2 flex items-center gap-1.5">
-                    <Phone className="w-3.5 h-3.5 text-[#9bc774]" />
+                  <label className="text-xs font-mono uppercase tracking-widest text-[#8c7e6c] block mb-2 flex items-center gap-1.5">
+                    <Phone className="w-3.5 h-3.5 text-[#cbb89d]" />
                     <span>Téléphone</span>
                   </label>
                   <input
@@ -93,16 +93,16 @@ export const ReservationSection: React.FC = () => {
                     required
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    placeholder="Ex: 0550 12 34 56"
-                    className="w-full bg-[#121813] border border-[#243326] rounded-2xl px-4 py-3 text-sm text-[#f2e5ce] placeholder:text-[#556357] focus:outline-none focus:border-[#547734]"
+                    placeholder="0550..."
+                    className="w-full bg-[#12100e] border border-[#2a241f] rounded-2xl px-4 py-3 text-sm text-[#f7f2e7] placeholder:text-[#6a5e51] focus:outline-none focus:border-[#dfd0ba]/60"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
-                  <label className="text-xs font-mono uppercase tracking-widest text-[#8a988c] block mb-2 flex items-center gap-1.5">
-                    <Calendar className="w-3.5 h-3.5 text-[#9bc774]" />
+                  <label className="text-xs font-mono uppercase tracking-widest text-[#8c7e6c] block mb-2 flex items-center gap-1.5">
+                    <Calendar className="w-3.5 h-3.5 text-[#cbb89d]" />
                     <span>Date</span>
                   </label>
                   <input
@@ -110,19 +110,19 @@ export const ReservationSection: React.FC = () => {
                     required
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
-                    className="w-full bg-[#121813] border border-[#243326] rounded-2xl px-4 py-3 text-sm text-[#f2e5ce] focus:outline-none focus:border-[#547734]"
+                    className="w-full bg-[#12100e] border border-[#2a241f] rounded-2xl px-4 py-3 text-sm text-[#f7f2e7] focus:outline-none focus:border-[#dfd0ba]/60"
                   />
                 </div>
 
                 <div>
-                  <label className="text-xs font-mono uppercase tracking-widest text-[#8a988c] block mb-2 flex items-center gap-1.5">
-                    <Clock className="w-3.5 h-3.5 text-[#9bc774]" />
+                  <label className="text-xs font-mono uppercase tracking-widest text-[#8c7e6c] block mb-2 flex items-center gap-1.5">
+                    <Clock className="w-3.5 h-3.5 text-[#cbb89d]" />
                     <span>Heure</span>
                   </label>
                   <select
                     value={time}
                     onChange={(e) => setTime(e.target.value)}
-                    className="w-full bg-[#121813] border border-[#243326] rounded-2xl px-4 py-3 text-sm text-[#f2e5ce] focus:outline-none focus:border-[#547734]"
+                    className="w-full bg-[#12100e] border border-[#2a241f] rounded-2xl px-4 py-3 text-sm text-[#f7f2e7] focus:outline-none focus:border-[#dfd0ba]/60"
                   >
                     <option value="12:00">12:00 - Déjeuner</option>
                     <option value="13:30">13:30 - Déjeuner</option>
@@ -133,8 +133,8 @@ export const ReservationSection: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="text-xs font-mono uppercase tracking-widest text-[#8a988c] block mb-2 flex items-center gap-1.5">
-                    <Users className="w-3.5 h-3.5 text-[#9bc774]" />
+                  <label className="text-xs font-mono uppercase tracking-widest text-[#8c7e6c] block mb-2 flex items-center gap-1.5">
+                    <Users className="w-3.5 h-3.5 text-[#cbb89d]" />
                     <span>Nombre de personnes</span>
                   </label>
                   <input
@@ -143,30 +143,30 @@ export const ReservationSection: React.FC = () => {
                     max={12}
                     value={guests}
                     onChange={(e) => setGuests(parseInt(e.target.value, 10) || 1)}
-                    className="w-full bg-[#121813] border border-[#243326] rounded-2xl px-4 py-3 text-sm text-[#f2e5ce] focus:outline-none focus:border-[#547734] font-bold"
+                    className="w-full bg-[#12100e] border border-[#2a241f] rounded-2xl px-4 py-3 text-sm text-[#f7f2e7] focus:outline-none focus:border-[#dfd0ba]/60 font-bold"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="text-xs font-mono uppercase tracking-widest text-[#8a988c] block mb-2">
+                <label className="text-xs font-mono uppercase tracking-widest text-[#8c7e6c] block mb-2">
                   Demandes particulières (Optionnel)
                 </label>
                 <textarea
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  placeholder="Ex: Chaise haute pour enfant, anniversaire, table au calme..."
+                  placeholder="Ex: Table au calme, célébration, chaise enfant..."
                   rows={2}
-                  className="w-full bg-[#121813] border border-[#243326] rounded-2xl p-4 text-sm text-[#f2e5ce] placeholder:text-[#556357] focus:outline-none focus:border-[#547734]"
+                  className="w-full bg-[#12100e] border border-[#2a241f] rounded-2xl p-4 text-sm text-[#f7f2e7] placeholder:text-[#6a5e51] focus:outline-none focus:border-[#dfd0ba]/60"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full py-4 rounded-full bg-[#547734] hover:bg-[#628b3d] text-[#fbf7ee] font-bold text-xs tracking-wider uppercase shadow-xl hover:scale-[1.01] transition-all cursor-pointer flex items-center justify-center gap-2"
+                className="w-full py-4 rounded-full bg-[#dfd0ba] hover:bg-[#f3eadc] text-[#0a0a0a] font-bold text-xs tracking-wider uppercase shadow-xl hover:scale-[1.01] transition-all cursor-pointer flex items-center justify-center gap-2"
               >
                 <Calendar className="w-4 h-4" />
-                <span>Confirmer la réservation</span>
+                <span>Réserver une table</span>
               </button>
             </form>
           )}

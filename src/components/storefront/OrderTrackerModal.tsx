@@ -35,23 +35,23 @@ export const OrderTrackerModal: React.FC<OrderTrackerModalProps> = ({ isOpen, on
   const currentStepIdx = getStepIndex(activeOrder.status);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fade-in">
       <div 
-        className="relative w-full max-w-xl bg-[#0c120e] border border-[#547734]/30 rounded-3xl p-6 md:p-8 shadow-2xl space-y-6"
+        className="relative w-full max-w-xl bg-[#0e0c0b] border border-[#2e2823] rounded-3xl p-6 md:p-8 shadow-2xl space-y-6"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between pb-4 border-b border-[#243326]">
+        <div className="flex items-center justify-between pb-4 border-b border-[#26221d]">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#547734]/15 border border-[#547734]/30 text-[#9bc774] text-xs font-semibold mb-1">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1c1814] border border-[#dfd0ba]/30 text-[#dfd0ba] text-xs font-semibold mb-1">
               <CheckCircle2 className="w-3.5 h-3.5" />
               <span>Commande Enregistrée</span>
             </div>
-            <h2 className="text-2xl font-serif font-bold text-[#fbf7ee]">
+            <h2 className="text-2xl font-serif font-bold text-[#f7f2e7]">
               Commande {activeOrder.orderNumber}
             </h2>
             {activeOrder.tableNumber && (
-              <p className="text-xs text-[#9bc774] font-mono mt-0.5">
+              <p className="text-xs text-[#dfd0ba] font-mono mt-0.5">
                 Table {activeOrder.tableNumber}
               </p>
             )}
@@ -59,7 +59,7 @@ export const OrderTrackerModal: React.FC<OrderTrackerModalProps> = ({ isOpen, on
 
           <button
             onClick={onClose}
-            className="p-2 rounded-full bg-[#121813] hover:bg-[#1a231b] text-[#8a988c] hover:text-white transition-colors cursor-pointer border border-[#243326]"
+            className="p-2 rounded-full bg-[#141210] hover:bg-[#201d19] text-[#8c7e6c] hover:text-white transition-colors cursor-pointer border border-[#2a241f]"
           >
             <X className="w-5 h-5" />
           </button>
@@ -77,15 +77,15 @@ export const OrderTrackerModal: React.FC<OrderTrackerModalProps> = ({ isOpen, on
                 <div key={step.key} className="flex flex-col items-center flex-1">
                   <div className={`w-10 h-10 rounded-full flex items-center justify-center border transition-all ${
                     isCurrent
-                      ? 'bg-[#547734] border-[#7db352] text-[#fbf7ee] shadow-lg shadow-[#547734]/35 scale-110'
+                      ? 'bg-[#dfd0ba] border-[#f3eadc] text-black shadow-lg shadow-black/80 scale-110'
                       : isCompleted
-                      ? 'bg-[#233325] border-[#547734] text-[#9bc774]'
-                      : 'bg-[#121813] border-[#243326] text-[#556357]'
+                      ? 'bg-[#221e1a] border-[#dfd0ba]/50 text-[#dfd0ba]'
+                      : 'bg-[#141210] border-[#2a241f] text-[#554d44]'
                   }`}>
                     <IconComp className="w-5 h-5" />
                   </div>
                   <span className={`text-[11px] font-medium mt-2 text-center hidden sm:block ${
-                    isCurrent ? 'text-[#9bc774] font-bold' : isCompleted ? 'text-[#c7baa4]' : 'text-[#556357]'
+                    isCurrent ? 'text-[#dfd0ba] font-bold' : isCompleted ? 'text-[#cbb89d]' : 'text-[#554d44]'
                   }`}>
                     {step.label}
                   </span>
@@ -95,54 +95,54 @@ export const OrderTrackerModal: React.FC<OrderTrackerModalProps> = ({ isOpen, on
           </div>
 
           {/* Stepper Bar */}
-          <div className="w-full bg-[#121813] h-1.5 rounded-full overflow-hidden p-0.5 border border-[#243326]">
+          <div className="w-full bg-[#141210] h-1.5 rounded-full overflow-hidden p-0.5 border border-[#2a241f]">
             <div 
-              className="bg-[#547734] h-full rounded-full transition-all duration-500"
+              className="bg-[#dfd0ba] h-full rounded-full transition-all duration-500"
               style={{ width: `${((currentStepIdx + 1) / STATUS_STEPS.length) * 100}%` }}
             />
           </div>
         </div>
 
         {/* Estimated Time */}
-        <div className="p-4 rounded-2xl bg-[#547734]/10 border border-[#547734]/20 text-center">
-          <p className="text-xs text-[#d4e4c2] uppercase font-mono tracking-wider">
+        <div className="p-4 rounded-2xl bg-[#141210] border border-[#2a241f] text-center">
+          <p className="text-xs text-[#cbb89d] uppercase font-mono tracking-wider">
             Temps de préparation estimé
           </p>
-          <p className="text-3xl font-serif font-extrabold text-[#9bc774] my-1">
+          <p className="text-3xl font-serif font-extrabold text-[#dfd0ba] my-1">
             ~15 - 20 minutes
           </p>
-          <p className="text-xs text-[#a89c89]">
-            Nos pizzaiolos préparent votre commande avec soin au feu de bois.
+          <p className="text-xs text-[#8c7e6c]">
+            Nos pizzaiolos préparent votre commande avec soin au four à 450°C.
           </p>
         </div>
 
         {/* Order Summary Items */}
         <div>
-          <h4 className="text-xs font-mono uppercase tracking-widest text-[#8a988c] mb-3">
+          <h4 className="text-xs font-mono uppercase tracking-widest text-[#8c7e6c] mb-3">
             Détails des articles
           </h4>
           <div className="space-y-2 max-h-40 overflow-y-auto pr-1">
             {activeOrder.items.map(item => (
-              <div key={item.id} className="flex items-center justify-between text-xs text-[#c7baa4] p-2.5 rounded-xl bg-[#121813]/60 border border-[#243326]">
+              <div key={item.id} className="flex items-center justify-between text-xs text-[#cbb89d] p-2.5 rounded-xl bg-[#141210]/60 border border-[#26221d]">
                 <span>{item.quantity}x {item.menuItem.name}</span>
-                <span className="font-mono font-bold text-[#9bc774]">{item.itemTotal.toLocaleString('fr-DZ')} DA</span>
+                <span className="font-mono font-bold text-[#dfd0ba]">{item.itemTotal.toLocaleString('fr-DZ')} DA</span>
               </div>
             ))}
           </div>
         </div>
 
         {/* Total & Action */}
-        <div className="pt-4 border-t border-[#243326] flex items-center justify-between">
+        <div className="pt-4 border-t border-[#26221d] flex items-center justify-between">
           <div>
-            <span className="text-xs text-[#8a988c] block">Total</span>
-            <span className="text-xl font-serif font-bold text-[#9bc774]">
+            <span className="text-xs text-[#8c7e6c] block">Total</span>
+            <span className="text-xl font-serif font-bold text-[#dfd0ba]">
               {activeOrder.total.toLocaleString('fr-DZ')} DA
             </span>
           </div>
 
           <button
             onClick={onClose}
-            className="px-6 py-2.5 rounded-full bg-[#121813] hover:bg-[#1a231b] border border-[#243326] text-[#c7baa4] text-xs font-bold transition-all cursor-pointer"
+            className="px-6 py-2.5 rounded-full bg-[#141210] hover:bg-[#201d19] border border-[#2a241f] text-[#cbb89d] text-xs font-bold transition-all cursor-pointer"
           >
             Fermer le suivi
           </button>

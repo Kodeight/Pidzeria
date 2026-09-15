@@ -1,83 +1,138 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StoreProvider } from './context/StoreContext';
 import { PidzeriaLoader } from './components/loader/PidzeriaLoader';
 import { Navbar } from './components/layout/Navbar';
-import { HeroSection } from './components/storefront/HeroSection';
-import { PizzaScrollExperience } from './components/cinematic/PizzaScrollExperience';
-import { MenuSection } from './components/storefront/MenuSection';
+import { CinematicExperience } from './components/cinematic/CinematicExperience';
+import { MenuInvitationSection } from './components/storefront/MenuInvitationSection';
 import { StorySection } from './components/storefront/StorySection';
 import { TestimonialsSection } from './components/storefront/TestimonialsSection';
 import { ReservationSection } from './components/storefront/ReservationSection';
 import { Footer } from './components/layout/Footer';
+import { MenuPage } from './components/menu/MenuPage';
 import { CartDrawer } from './components/storefront/CartDrawer';
 import { OrderTrackerModal } from './components/storefront/OrderTrackerModal';
 import { DashboardLayout } from './components/dashboard/DashboardLayout';
 import { ScrollProgress } from './components/motion/ScrollProgress';
 
+type AppRoute = 'home' | 'menu' | 'dashboard';
+
 function StorefrontApp() {
-  const [currentView, setCurrentView] = useState<'storefront' | 'dashboard'>('storefront');
+  const [currentRoute, setCurrentRoute] = useState<AppRoute>(() => {
+    const path = window.location.pathname;
+    if (path.startsWith('/menu')) return 'menu';
+    if (path.startsWith('/dashboard')) return 'dashboard';
+    return 'home';
+  });
+
   const [cartOpen, setCartOpen] = useState(false);
   const [trackerOpen, setTrackerOpen] = useState(false);
 
+  // Sync browser back/forward history navigation
+  useEffect(() => {
+    const handlePopState = () => {
+      const path = window.location.pathname;
+      if (path.startsWith('/menu')) {
+        setCurrentRoute('menu');
+      } else if (path.startsWith('/dashboard')) {
+        setCurrentRoute('dashboard');
+      } else {
+        setCurrentRoute('home');
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  const navigateTo = (route: AppRoute, path: string) => {
+    setCurrentRoute(route);
+    window.history.pushState(null, '', path);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const scrollToSection = (sectionId: string) => {
-    const el = document.getElementById(sectionId);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
+    if (currentRoute !== 'home') {
+      navigateTo('home', '/');
+      setTimeout(() => {
+        const el = document.getElementById(sectionId);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 150);
+    } else {
+      const el = document.getElementById(sectionId);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
-  if (currentView === 'dashboard') {
+  if (currentRoute === 'dashboard') {
     return (
       <DashboardLayout
-        onReturnToStorefront={() => setCurrentView('storefront')}
+        onReturnToStorefront={() => navigateTo('home', '/')}
       />
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#070907] text-[#f2e5ce] font-sans selection:bg-[#547734] selection:text-white relative">
-      {/* Subtle Scroll Progress Indicator */}
+    <div className="min-h-screen bg-black text-[#f7f2e7] font-sans selection:bg-[#dfd0ba] selection:text-black relative">
+      {/* Subtle Scroll Progress Indicator in Warm Cream */}
       <ScrollProgress />
 
-      {/* Responsive Liquid Glass Navbar */}
+      {/* Responsive Liquid Glass Navbar with official pidzeria.png */}
       <Navbar
         onOpenCart={() => setCartOpen(true)}
         onOpenOrderTracker={() => setTrackerOpen(true)}
+        onNavigateToHome={() => navigateTo('home', '/')}
+        onNavigateToMenu={() => navigateTo('menu', '/menu')}
         onNavigateToSection={scrollToSection}
-        currentView={currentView}
-        setCurrentView={setCurrentView}
+        currentRoute={currentRoute}
+        onNavigateToDashboard={() => navigateTo('dashboard', '/dashboard')}
       />
 
-      {/* Main Storefront Experience */}
-      <main className="relative">
-        {/* 1. Cinematic Hero with Official PIDZERIA Branding */}
-        <HeroSection
-          onGoToMenu={() => scrollToSection('menu')}
-          onGoToReservation={() => scrollToSection('reservation')}
-        />
+      {/* VIEW ROUTING: Home Page vs Dedicated /menu Page */}
+      {currentRoute === 'home' ? (
+        <main className="relative">
+          {/* 1. Cinematic Story: Unified Hero + 5 Narrative Stages scrubbed with pizza.mp4 */}
+          <CinematicExperience
+            onNavigateToMenu={() => navigateTo('menu', '/menu')}
+            onNavigateToReservation={() => scrollToSection('reservation')}
+          />
 
-        {/* 2. Scroll-Driven 3D/Composited Pizza Journey with Story Stages */}
-        <PizzaScrollExperience
-          onScrollToMenu={() => scrollToSection('menu')}
-        />
+          {/* 2. Editorial Transition Section inviting user to the /menu destination */}
+          <MenuInvitationSection
+            onGoToMenu={() => navigateTo('menu', '/menu')}
+          />
 
-        {/* 3. Interactive Menu & Specialities with Staggered Motion */}
-        <MenuSection />
+          {/* 3. Heritage Story & Artisanal Philosophy */}
+          <StorySection />
 
-        {/* 4. Heritage Story & Artisanal Philosophy with FadeLeft/FadeRight */}
-        <StorySection />
+          {/* 4. Verified Customer Testimonials */}
+          <TestimonialsSection />
 
-        {/* 5. Customer Testimonials */}
-        <TestimonialsSection />
+          {/* 5. Table Reservation Form */}
+          <ReservationSection />
 
-        {/* 6. Table Reservation Form */}
-        <ReservationSection />
-      </main>
+          {/* Storefront Footer */}
+          <Footer
+            onNavigateToSection={scrollToSection}
+            onNavigateToMenu={() => navigateTo('menu', '/menu')}
+          />
+        </main>
+      ) : (
+        <main className="relative">
+          {/* Dedicated /menu Page */}
+          <MenuPage
+            onBackToHome={() => navigateTo('home', '/')}
+            onOpenCart={() => setCartOpen(true)}
+          />
 
-      {/* Footer */}
-      <Footer onNavigateToSection={scrollToSection} />
+          {/* Storefront Footer */}
+          <Footer
+            onNavigateToSection={scrollToSection}
+            onNavigateToMenu={() => navigateTo('menu', '/menu')}
+          />
+        </main>
+      )}
 
-      {/* Slide-over Cart Drawer */}
+      {/* Slide-over Cart Drawer in Luxury Black & Cream */}
       <CartDrawer
         isOpen={cartOpen}
         onClose={() => setCartOpen(false)}

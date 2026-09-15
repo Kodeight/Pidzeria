@@ -6,17 +6,21 @@ import { useStore } from '../../context/StoreContext';
 interface NavbarProps {
   onOpenCart: () => void;
   onOpenOrderTracker: () => void;
+  onNavigateToHome: () => void;
+  onNavigateToMenu: () => void;
   onNavigateToSection: (sectionId: string) => void;
-  currentView: 'storefront' | 'dashboard';
-  setCurrentView: (view: 'storefront' | 'dashboard') => void;
+  currentRoute: 'home' | 'menu' | 'dashboard';
+  onNavigateToDashboard: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
   onOpenCart,
   onOpenOrderTracker,
+  onNavigateToHome,
+  onNavigateToMenu,
   onNavigateToSection,
-  currentView,
-  setCurrentView,
+  currentRoute,
+  onNavigateToDashboard,
 }) => {
   const { cartItems, activeTableNumber, activeOrder } = useStore();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -37,39 +41,52 @@ export const Navbar: React.FC<NavbarProps> = ({
   // Scroll listener for liquid glass navbar transition
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 40);
+      setIsScrolled(window.scrollY > 30);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleNavClick = (id: string) => {
+  const handleSectionClick = (sectionId: string) => {
     setMobileMenuOpen(false);
-    if (currentView !== 'storefront') {
-      setCurrentView('storefront');
-      setTimeout(() => onNavigateToSection(id), 100);
+    if (currentRoute !== 'home') {
+      onNavigateToHome();
+      setTimeout(() => {
+        onNavigateToSection(sectionId);
+      }, 150);
     } else {
-      onNavigateToSection(id);
+      onNavigateToSection(sectionId);
     }
   };
 
+  const handleHomeClick = () => {
+    setMobileMenuOpen(false);
+    onNavigateToHome();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleMenuClick = () => {
+    setMobileMenuOpen(false);
+    onNavigateToMenu();
+  };
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-40 px-4 sm:px-6 lg:px-12 py-3 transition-all duration-500 ease-out">
+    <header className="fixed top-0 left-0 right-0 z-40 px-3 sm:px-6 lg:px-12 py-3 transition-all duration-500 ease-out">
       <div
         className={`max-w-7xl mx-auto rounded-full px-4 sm:px-6 py-2.5 flex items-center justify-between transition-all duration-500 ease-out ${
           isScrolled
-            ? 'bg-[#0b100c]/85 backdrop-blur-xl border border-[#233125]/80 shadow-2xl shadow-black/70 scale-[0.99]'
-            : 'bg-transparent border border-transparent backdrop-blur-none'
+            ? 'bg-[#0a0908]/90 backdrop-blur-xl border border-[#2e2823] shadow-2xl shadow-black/80 scale-[0.99]'
+            : 'bg-black/40 backdrop-blur-md border border-[#221e1a]/60'
         }`}
       >
-        {/* Brand Logo */}
+        {/* Brand Logo - The official pidzeria.png */}
         <div className="flex items-center gap-3">
-          <Logo onClick={() => handleNavClick('hero')} size="md" className="cursor-pointer" />
+          <Logo onClick={handleHomeClick} size="md" className="cursor-pointer" />
           
           {/* Active Table Badge */}
           {activeTableNumber && (
-            <div className="hidden sm:inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#547734]/15 border border-[#547734]/30 text-[#8ec062] text-xs font-semibold">
+            <div className="hidden sm:inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#1c1814] border border-[#dfd0ba]/30 text-[#dfd0ba] text-xs font-semibold">
               <UtensilsCrossed className="w-3 h-3" />
               <span>Table {activeTableNumber}</span>
             </div>
@@ -77,40 +94,44 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-xs lg:text-sm font-medium text-[#c7baa4]">
+        <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-xs lg:text-sm font-medium text-[#cbb89d]">
           <button 
-            onClick={() => handleNavClick('hero')}
-            className="hover:text-[#9bc774] transition-colors cursor-pointer"
+            onClick={handleHomeClick}
+            className={`transition-colors cursor-pointer ${
+              currentRoute === 'home' ? 'text-[#f7f2e7] font-bold' : 'hover:text-[#f7f2e7]'
+            }`}
           >
             Accueil
           </button>
           <button 
-            onClick={() => handleNavClick('menu')}
-            className="hover:text-[#9bc774] transition-colors cursor-pointer"
+            onClick={handleMenuClick}
+            className={`transition-colors cursor-pointer ${
+              currentRoute === 'menu' ? 'text-[#f7f2e7] font-bold' : 'hover:text-[#f7f2e7]'
+            }`}
           >
             Menu
           </button>
           <button 
-            onClick={() => handleNavClick('histoire')}
-            className="hover:text-[#9bc774] transition-colors cursor-pointer"
+            onClick={() => handleSectionClick('histoire')}
+            className="hover:text-[#f7f2e7] transition-colors cursor-pointer"
           >
             Notre Histoire
           </button>
           <button 
-            onClick={() => handleNavClick('avis')}
-            className="hover:text-[#9bc774] transition-colors cursor-pointer"
+            onClick={() => handleSectionClick('avis')}
+            className="hover:text-[#f7f2e7] transition-colors cursor-pointer"
           >
             Avis
           </button>
           <button 
-            onClick={() => handleNavClick('reservation')}
-            className="hover:text-[#9bc774] transition-colors cursor-pointer"
+            onClick={() => handleSectionClick('reservation')}
+            className="hover:text-[#f7f2e7] transition-colors cursor-pointer"
           >
             Réservation
           </button>
           <button 
-            onClick={() => handleNavClick('contact')}
-            className="hover:text-[#9bc774] transition-colors cursor-pointer"
+            onClick={() => handleSectionClick('contact')}
+            className="hover:text-[#f7f2e7] transition-colors cursor-pointer"
           >
             Nous trouver
           </button>
@@ -119,42 +140,46 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Right Controls */}
         <div className="flex items-center gap-2.5 sm:gap-3">
           {/* Algerian Flag Badge */}
-          <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#111712]/80 border border-[#233125] text-xs font-medium text-[#c7baa4]" title="Origine Algérie">
+          <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#141210] border border-[#2a241f] text-xs font-medium text-[#cbb89d]" title="Pizzeria artisanale à Alger">
             <span className="text-base leading-none">🇩🇿</span>
-            <span className="text-[11px] font-mono text-[#8a988c]">Alger</span>
+            <span className="text-[11px] font-mono text-[#8c7e6c]">Alger</span>
           </div>
 
           {/* Active Order Tracker Button */}
           {activeOrder && (
             <button
               onClick={onOpenOrderTracker}
-              className="relative px-3 py-1.5 rounded-full bg-[#547734]/20 border border-[#547734]/40 text-[#a4d47c] text-xs font-semibold flex items-center gap-1.5 hover:bg-[#547734]/30 transition-all cursor-pointer animate-pulse"
+              className="relative px-3 py-1.5 rounded-full bg-[#1e1a16] border border-[#dfd0ba]/40 text-[#dfd0ba] text-xs font-semibold flex items-center gap-1.5 hover:bg-[#2b241e] transition-all cursor-pointer animate-pulse"
             >
               <Clock className="w-3.5 h-3.5" />
               <span>Suivi {activeOrder.orderNumber}</span>
             </button>
           )}
 
-          {/* Dashboard Toggle Link */}
+          {/* Restaurant Dashboard Toggle Link */}
           <button
-            onClick={() => setCurrentView(currentView === 'storefront' ? 'dashboard' : 'storefront')}
-            className="p-2 rounded-full bg-[#111712]/80 hover:bg-[#1a231b] text-[#c7baa4] hover:text-[#9bc774] transition-all border border-[#233125] cursor-pointer"
-            title={currentView === 'storefront' ? 'Espace Restaurant / Dashboard' : 'Retour au site client'}
+            onClick={onNavigateToDashboard}
+            className={`p-2 rounded-full transition-all border cursor-pointer ${
+              currentRoute === 'dashboard'
+                ? 'bg-[#dfd0ba] text-black border-[#dfd0ba]'
+                : 'bg-[#141210] hover:bg-[#1f1b18] text-[#cbb89d] hover:text-[#f7f2e7] border-[#2a241f]'
+            }`}
+            title={currentRoute === 'dashboard' ? 'Retour au site client' : 'Accéder au Dashboard Restaurant'}
           >
             <LayoutDashboard className="w-4 h-4" />
           </button>
 
-          {/* Cart Drawer Trigger Button in Leaf Green */}
+          {/* Cart Drawer Trigger Button in Luxury Cream / Warm Beige */}
           <button
             onClick={onOpenCart}
-            className={`relative px-4 py-2 rounded-full bg-[#547734] hover:bg-[#628b3d] text-[#fbf7ee] font-bold text-xs tracking-wide flex items-center gap-2 shadow-lg shadow-[#547734]/25 transition-all duration-300 cursor-pointer ${
-              cartAnimate ? 'scale-105 ring-2 ring-[#7db352]' : 'scale-100 hover:scale-[1.02]'
+            className={`relative px-4 py-2 rounded-full bg-[#dfd0ba] hover:bg-[#f3eadc] text-[#0a0a0a] font-bold text-xs tracking-wide flex items-center gap-2 shadow-lg shadow-black/60 transition-all duration-300 cursor-pointer ${
+              cartAnimate ? 'scale-105 ring-2 ring-[#dfd0ba]' : 'scale-100 hover:scale-[1.02]'
             }`}
           >
-            <ShoppingBag className="w-4 h-4" />
+            <ShoppingBag className="w-4 h-4 text-black" />
             <span className="hidden sm:inline">Panier</span>
             {cartCount > 0 && (
-              <span className="w-5 h-5 rounded-full bg-[#101711] text-[#9bc774] text-[11px] font-extrabold flex items-center justify-center border border-[#547734]/40">
+              <span className="w-5 h-5 rounded-full bg-black text-[#dfd0ba] text-[11px] font-extrabold flex items-center justify-center border border-[#332e29]">
                 {cartCount}
               </span>
             )}
@@ -163,7 +188,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 rounded-full bg-[#111712] text-[#c7baa4] hover:text-[#9bc774] cursor-pointer border border-[#233125]"
+            className="md:hidden p-2 rounded-full bg-[#141210] text-[#cbb89d] hover:text-white cursor-pointer border border-[#2a241f]"
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -172,40 +197,40 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden mt-2 glass-panel rounded-3xl p-6 border border-[#233125] shadow-2xl flex flex-col gap-4 text-center animate-fade-in">
+        <div className="md:hidden mt-2 glass-panel rounded-3xl p-6 border border-[#2a241f] shadow-2xl flex flex-col gap-4 text-center bg-[#0d0b0a]/95">
           <button 
-            onClick={() => handleNavClick('hero')} 
-            className="py-2 text-[#e2d5bf] font-medium hover:text-[#9bc774]"
+            onClick={handleHomeClick} 
+            className="py-2 text-[#dfd0ba] font-medium hover:text-white"
           >
             Accueil
           </button>
           <button 
-            onClick={() => handleNavClick('menu')} 
-            className="py-2 text-[#e2d5bf] font-medium hover:text-[#9bc774]"
+            onClick={handleMenuClick} 
+            className="py-2 text-[#dfd0ba] font-bold hover:text-white"
           >
-            Menu
+            Menu (/menu)
           </button>
           <button 
-            onClick={() => handleNavClick('histoire')} 
-            className="py-2 text-[#e2d5bf] font-medium hover:text-[#9bc774]"
+            onClick={() => handleSectionClick('histoire')} 
+            className="py-2 text-[#cbb89d] font-medium hover:text-white"
           >
             Notre Histoire
           </button>
           <button 
-            onClick={() => handleNavClick('avis')} 
-            className="py-2 text-[#e2d5bf] font-medium hover:text-[#9bc774]"
+            onClick={() => handleSectionClick('avis')} 
+            className="py-2 text-[#cbb89d] font-medium hover:text-white"
           >
-            Avis
+            Avis Clients
           </button>
           <button 
-            onClick={() => handleNavClick('reservation')} 
-            className="py-2 text-[#e2d5bf] font-medium hover:text-[#9bc774]"
+            onClick={() => handleSectionClick('reservation')} 
+            className="py-2 text-[#cbb89d] font-medium hover:text-white"
           >
             Réservation
           </button>
           <button 
-            onClick={() => handleNavClick('contact')} 
-            className="py-2 text-[#e2d5bf] font-medium hover:text-[#9bc774]"
+            onClick={() => handleSectionClick('contact')} 
+            className="py-2 text-[#cbb89d] font-medium hover:text-white"
           >
             Nous trouver
           </button>

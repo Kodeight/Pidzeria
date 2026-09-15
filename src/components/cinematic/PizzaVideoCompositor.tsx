@@ -28,7 +28,6 @@ export const PizzaVideoCompositor: React.FC<PizzaVideoCompositorProps> = ({
         setDuration(video.duration);
       }
       setIsVideoLoaded(true);
-      // Cue first frame
       video.currentTime = 0.01;
       currentTimeRef.current = 0.01;
     };
@@ -40,7 +39,6 @@ export const PizzaVideoCompositor: React.FC<PizzaVideoCompositorProps> = ({
     video.addEventListener('loadedmetadata', handleLoadedMetadata);
     video.addEventListener('canplay', handleCanPlay);
 
-    // Initial load
     video.load();
 
     return () => {
@@ -49,20 +47,18 @@ export const PizzaVideoCompositor: React.FC<PizzaVideoCompositorProps> = ({
     };
   }, []);
 
-  // Update target time smoothly based on scroll progress
+  // Sync target time with scroll progress (clamped 0 to 1)
   useEffect(() => {
-    // Clamp progress between 0 and 1
     const clampedProgress = Math.max(0, Math.min(1, scrollProgress));
     targetTimeRef.current = clampedProgress * duration;
 
-    // Notify parent of stage index (0 to 6)
     if (onStageChange) {
-      const stage = Math.min(6, Math.floor(clampedProgress * 7));
+      const stage = Math.min(4, Math.floor(clampedProgress * 5));
       onStageChange(stage);
     }
   }, [scrollProgress, duration, onStageChange]);
 
-  // Smooth frame interpolation loop via requestAnimationFrame
+  // Smooth frame interpolation loop via requestAnimationFrame (buttery smooth scrubbing)
   useEffect(() => {
     let isMounted = true;
 
@@ -73,15 +69,13 @@ export const PizzaVideoCompositor: React.FC<PizzaVideoCompositorProps> = ({
         const current = currentTimeRef.current;
         const diff = target - current;
 
-        // Smooth interpolation (lerp)
-        if (Math.abs(diff) > 0.005) {
-          // Adjust lerp speed for responsive yet smooth transitions
-          const step = diff * 0.18;
+        // Smooth interpolation
+        if (Math.abs(diff) > 0.004) {
+          const step = diff * 0.22;
           const nextTime = current + step;
           currentTimeRef.current = nextTime;
 
           if (isFinite(nextTime) && nextTime >= 0 && nextTime <= duration) {
-            // fast seek to the exact interpolated frame
             video.currentTime = nextTime;
           }
         }
@@ -104,30 +98,30 @@ export const PizzaVideoCompositor: React.FC<PizzaVideoCompositorProps> = ({
 
   return (
     <div className="relative w-full h-full flex items-center justify-center select-none bg-black overflow-hidden">
-      {/* Ambient background matching pure black background of pizza.mp4 */}
+      {/* Background matches pure black #000000 of the video */}
       <div className="absolute inset-0 bg-black pointer-events-none" />
 
-      {/* Subtle organic backlight behind the pizza using authentic brand leaf green */}
+      {/* Subtle organic warm backlight behind the pizza using authentic warm cream/amber */}
       <div 
-        className="absolute w-[360px] sm:w-[500px] md:w-[600px] aspect-square rounded-full pointer-events-none opacity-20 blur-[100px] -z-0"
+        className="absolute w-[360px] sm:w-[500px] md:w-[650px] aspect-square rounded-full pointer-events-none opacity-20 blur-[130px] -z-0"
         style={{
-          background: 'radial-gradient(circle, #547734 0%, #2b3d1b 45%, transparent 70%)'
+          background: 'radial-gradient(circle, #dfd0ba 0%, #8c7e6c 35%, transparent 70%)'
         }}
       />
 
-      {/* Video Container with radial edge feathering for 100% seamless boundary blend */}
-      <div className="relative w-full max-w-[850px] aspect-[16/9] sm:aspect-[16/10] flex items-center justify-center z-10">
+      {/* Video Container with radial edge feathering for 100% seamless boundary blend into black */}
+      <div className="relative w-full max-w-[850px] aspect-[16/10] flex items-center justify-center z-10">
         <video
           ref={videoRef}
           src={videoSource}
           muted
           playsInline
           preload="auto"
-          className="w-full h-full object-contain pointer-events-none select-none transition-opacity duration-700"
+          className="w-full h-full object-contain pointer-events-none select-none transition-opacity duration-500"
           style={{
             // Radial vignette mask softens the 1280x720 video edges directly into #000000
-            maskImage: 'radial-gradient(ellipse 75% 72% at 50% 50%, black 55%, rgba(0,0,0,0.6) 82%, transparent 100%)',
-            WebkitMaskImage: 'radial-gradient(ellipse 75% 72% at 50% 50%, black 55%, rgba(0,0,0,0.6) 82%, transparent 100%)',
+            maskImage: 'radial-gradient(ellipse 72% 70% at 50% 50%, black 50%, rgba(0,0,0,0.7) 78%, transparent 100%)',
+            WebkitMaskImage: 'radial-gradient(ellipse 72% 70% at 50% 50%, black 50%, rgba(0,0,0,0.7) 78%, transparent 100%)',
             opacity: isVideoLoaded ? 1 : 0.4
           }}
           onError={(e) => {
@@ -138,10 +132,10 @@ export const PizzaVideoCompositor: React.FC<PizzaVideoCompositorProps> = ({
           }}
         />
 
-        {/* Loading placeholder while video loads */}
+        {/* Subtle loading placeholder */}
         {!isVideoLoaded && (
-          <div className="absolute inset-0 flex items-center justify-center text-xs font-mono text-[#547734] uppercase tracking-widest">
-            Chargement de la pizza artisanale...
+          <div className="absolute inset-0 flex items-center justify-center text-xs font-mono text-[#cbb89d] uppercase tracking-widest">
+            Chargement de la cinématique PIDZERIA...
           </div>
         )}
       </div>

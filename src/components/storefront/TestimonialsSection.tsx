@@ -1,20 +1,20 @@
 import React from 'react';
 import { TESTIMONIALS } from '../../data/mockData';
-import { Star, MessageSquareQuote, MapPin, Pizza } from 'lucide-react';
+import { Star, MessageSquareQuote, MapPin, Utensils } from 'lucide-react';
 import { FadeUp, StaggerReveal } from '../motion/MotionSystem';
 
 export const TestimonialsSection: React.FC = () => {
   return (
     <section id="avis" className="py-24 px-6 md:px-12 max-w-7xl mx-auto w-full">
       <FadeUp distance={30} className="text-center max-w-2xl mx-auto mb-16">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#547734]/15 border border-[#547734]/30 text-[#9bc774] text-xs font-mono uppercase tracking-widest mb-4">
-          <MessageSquareQuote className="w-3.5 h-3.5 text-[#7db352]" />
-          <span>Avis Clients</span>
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#161311] border border-[#2d2823] text-[#dfd0ba] text-xs font-mono uppercase tracking-widest mb-4">
+          <MessageSquareQuote className="w-3.5 h-3.5 text-[#cbb89d]" />
+          <span>Avis Vérifiés</span>
         </div>
-        <h2 className="text-3xl sm:text-5xl font-serif font-extrabold text-[#fbf7ee] mb-4">
+        <h2 className="text-3xl sm:text-5xl font-serif font-extrabold text-[#f7f2e7] mb-4">
           Ils en parlent mieux que nous.
         </h2>
-        <p className="text-[#a89c89] text-sm sm:text-base">
+        <p className="text-[#a69684] text-sm sm:text-base">
           Découvrez les retours authentiques de nos clients fidèles à Alger.
         </p>
       </FadeUp>
@@ -23,35 +23,35 @@ export const TestimonialsSection: React.FC = () => {
         {TESTIMONIALS.map(item => (
           <div 
             key={item.id}
-            className="glass-panel p-8 rounded-3xl border border-[#243326] hover:border-[#547734]/40 transition-all duration-300 flex flex-col justify-between hover:scale-[1.01]"
+            className="glass-panel p-8 rounded-3xl border border-[#26221d] hover:border-[#dfd0ba]/40 transition-all duration-300 flex flex-col justify-between hover:scale-[1.01] bg-[#0c0a09]"
           >
             <div>
-              {/* Rating stars */}
-              <div className="flex items-center gap-1 text-[#d4b067] mb-6">
+              {/* Rating stars in warm gold */}
+              <div className="flex items-center gap-1 text-[#dfd0ba] mb-6">
                 {[...Array(item.rating)].map((_, i) => (
                   <Star key={i} className="w-4 h-4 fill-current" />
                 ))}
               </div>
 
-              <p className="text-[#f2e5ce] text-sm leading-relaxed mb-6 font-serif italic">
+              <p className="text-[#f7f2e7] text-sm leading-relaxed mb-6 font-serif italic">
                 "{item.review}"
               </p>
             </div>
 
-            <div className="pt-4 border-t border-[#243326] flex items-center gap-4">
+            <div className="pt-4 border-t border-[#221e1a] flex items-center gap-4">
               <img
                 src={item.avatar}
                 alt={item.name}
-                className="w-12 h-12 rounded-full object-cover border border-[#547734]/40 shrink-0"
+                className="w-12 h-12 rounded-full object-cover border border-[#3d3730] shrink-0"
               />
               <div>
-                <h4 className="text-sm font-bold text-[#fbf7ee]">{item.name}</h4>
-                <div className="flex items-center gap-1 text-xs text-[#8a988c]">
-                  <MapPin className="w-3 h-3 text-[#7db352]" />
+                <h4 className="text-sm font-bold text-[#f7f2e7]">{item.name}</h4>
+                <div className="flex items-center gap-1 text-xs text-[#8c7e6c]">
+                  <MapPin className="w-3 h-3 text-[#cbb89d]" />
                   <span>{item.location}</span>
                 </div>
-                <div className="flex items-center gap-1 text-[11px] text-[#9bc774] mt-0.5">
-                  <Pizza className="w-3 h-3" />
+                <div className="flex items-center gap-1 text-[11px] text-[#dfd0ba] mt-0.5">
+                  <Utensils className="w-3 h-3 text-[#cbb89d]" />
                   <span>Coup de cœur : {item.favoritePizza}</span>
                 </div>
               </div>

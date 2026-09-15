@@ -45,17 +45,17 @@ export const PidzeriaLoader: React.FC<PidzeriaLoaderProps> = ({ onComplete }) =>
 
   return (
     <div
-      className={`fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#070907] transition-all duration-900 ease-out ${
+      className={`fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black transition-all duration-900 ease-out ${
         transitionState === 'revealing'
           ? 'opacity-0 scale-[1.03] backdrop-blur-xl pointer-events-none'
           : 'opacity-100 scale-100'
       }`}
     >
-      {/* Subtle brand leaf green glow behind the logo */}
+      {/* Subtle warm amber/cream ambient backlight behind the logo */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div 
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full blur-[140px] pointer-events-none transition-opacity duration-1000 opacity-20"
-          style={{ background: '#547734' }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] rounded-full blur-[140px] pointer-events-none transition-opacity duration-1000 opacity-15"
+          style={{ background: '#dfd0ba' }}
         />
       </div>
 
@@ -68,7 +68,7 @@ export const PidzeriaLoader: React.FC<PidzeriaLoaderProps> = ({ onComplete }) =>
           <img
             src="/pidzeria.png"
             alt="PIDZERIA"
-            className="w-auto h-16 sm:h-20 md:h-24 object-contain drop-shadow-[0_8px_30px_rgba(0,0,0,0.9)]"
+            className="w-auto h-16 sm:h-20 md:h-24 object-contain drop-shadow-[0_8px_30px_rgba(0,0,0,0.95)]"
             loading="eager"
             decoding="sync"
             onError={(e) => {
@@ -81,24 +81,24 @@ export const PidzeriaLoader: React.FC<PidzeriaLoaderProps> = ({ onComplete }) =>
         </div>
 
         {/* Refined Brand Sub-label in warm cream */}
-        <p className="text-[#f2e5ce]/80 font-serif italic text-sm sm:text-base tracking-wider mb-8">
+        <p className="text-[#dfd0ba]/90 font-serif italic text-sm sm:text-base tracking-wider mb-8">
           Pizzeria Artisanale • Alger
         </p>
 
-        {/* Minimalist Progress Track in Brand Leaf Green */}
-        <div className="w-48 sm:w-64 bg-[#121813] border border-[#243326] rounded-full h-[3px] mb-4 overflow-hidden relative">
+        {/* Minimalist Progress Track in Cream / Warm Beige */}
+        <div className="w-48 sm:w-64 bg-[#141210] border border-[#2e2924] rounded-full h-[2.5px] mb-4 overflow-hidden relative">
           <div
-            className="h-full rounded-full transition-all duration-150 ease-out shadow-[0_0_10px_rgba(84,119,52,0.6)]"
+            className="h-full rounded-full transition-all duration-150 ease-out shadow-[0_0_8px_rgba(223,208,186,0.5)]"
             style={{ 
               width: `${progress}%`,
-              background: 'linear-gradient(90deg, #547734 0%, #7db352 50%, #9bc774 100%)'
+              background: 'linear-gradient(90deg, #8c7e6c 0%, #dfd0ba 50%, #f7f2e7 100%)'
             }}
           />
         </div>
 
         {/* Micro Stage Status Text */}
         <div className="h-5 flex items-center justify-center">
-          <span className="text-[11px] font-mono uppercase tracking-widest text-[#8a988c]">
+          <span className="text-[11px] font-mono uppercase tracking-widest text-[#9c8e7e]">
             {stageText}
           </span>
         </div>

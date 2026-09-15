@@ -3,11 +3,12 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    background-color: #000000;
   }
   body {
     font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-    background-color: #070907;
-    color: #f2e5ce;
+    background-color: #000000;
+    color: #f7f2e7;
     overflow-x: hidden;
   }
   h1, h2, h3, .font-serif {
@@ -15,22 +16,22 @@
   }
 }
 
-/* Custom PIDZERIA Scrollbar (Restrained, elegant, non-intrusive in brand leaf green) */
+/* Custom PIDZERIA Desktop Scrollbar (Thin, minimal, luxury cream/beige thumb on dark track) */
 @media (pointer: fine) {
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
   }
   ::-webkit-scrollbar-track {
-    background: #080b08;
+    background: #080808;
   }
   ::-webkit-scrollbar-thumb {
-    background: #233125;
+    background: #4a433a;
     border-radius: 9999px;
-    border: 1px solid #131b14;
+    border: 1px solid #1c1916;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #547734;
+    background: #dfd0ba;
   }
 }
 
@@ -45,45 +46,45 @@
   }
 }
 
-/* Glassmorphism & Visual Depth Utilities with authentic Leaf Green & Ivory accents */
+/* Editorial Glass & Visual Depth Utilities with warm cream & deep charcoal accents */
 .glass-panel {
-  background: rgba(13, 17, 14, 0.76);
+  background: rgba(14, 13, 12, 0.85);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(84, 119, 52, 0.18);
+  border: 1px solid rgba(223, 208, 186, 0.12);
 }
 
-.glass-panel-green {
-  background: rgba(16, 23, 17, 0.85);
+.glass-panel-accent {
+  background: rgba(18, 16, 14, 0.9);
   backdrop-filter: blur(24px);
-  border: 1px solid rgba(84, 119, 52, 0.35);
-  box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.6);
-}
-
-.text-gradient-leaf {
-  background: linear-gradient(135deg, #fbf7ee 0%, #9bc774 45%, #547734 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  border: 1px solid rgba(223, 208, 186, 0.22);
+  box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.8);
 }
 
 .text-gradient-cream {
-  background: linear-gradient(135deg, #ffffff 0%, #f2e5ce 50%, #cfc0a7 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #f7f2e7 50%, #dfd0ba 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-/* Hide video controls natively if any */
+.text-gradient-gold {
+  background: linear-gradient(135deg, #f7f2e7 0%, #dfd0ba 50%, #cbb89d 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Hide video controls natively */
 video::-webkit-media-controls {
   display: none !important;
 }
 
-/* Subtle float animations */
+/* Subtle float animation */
 @keyframes float-subtle {
   0%, 100% {
     transform: translateY(0px) scale(1);
   }
   50% {
-    transform: translateY(-8px) scale(1.01);
+    transform: translateY(-6px) scale(1.01);
   }
 }
 
