@@ -70,6 +70,12 @@ export const PidzeriaLoader: React.FC<PidzeriaLoaderProps> = ({ onComplete }) =>
             className="w-auto h-16 sm:h-20 md:h-24 object-contain drop-shadow-[0_8px_30px_rgba(0,0,0,0.9)]"
             loading="eager"
             decoding="sync"
+            onError={(e) => {
+              const img = e.currentTarget;
+              if (!img.src.endsWith('/pidzeria.PNG')) {
+                img.src = '/pidzeria.PNG';
+              }
+            }}
           />
         </div>
 

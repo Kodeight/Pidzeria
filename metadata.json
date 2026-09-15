@@ -2,5 +2,7 @@
   "name": "PIDZERIA",
   "description": "PIDZERIA — Pizzeria artisanale algérienne & italienne. Pizzas d'exception, ingrédients frais et recettes gourmandes.",
   "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }

@@ -25,6 +25,12 @@ export const Logo: React.FC<LogoProps> = ({ className = '', size = 'md', onClick
         className={`w-auto object-contain ${heightClasses[size]} drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]`}
         loading="eager"
         decoding="sync"
+        onError={(e) => {
+          const img = e.currentTarget;
+          if (!img.src.endsWith('/pidzeria.PNG')) {
+            img.src = '/pidzeria.PNG';
+          }
+        }}
       />
     </div>
   );
