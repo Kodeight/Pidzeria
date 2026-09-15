@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 520" width="1600" height="520">
+  <defs>
+    <style>
+      .brand-char {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        fill: #F5EEDB;
+      }
+      .brand-p {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        fill: #F5EEDB;
+        font-size: 340px;
+      }
+    </style>
+  </defs>
+
+  <g transform="translate(50, 40)">
+    <!-- P with elegant bottom flourish -->
+    <text x="60" y="370" class="brand-p">P</text>
+    <path d="M85 370 C70 380 40 400 30 420 C20 435 30 445 45 440 C65 435 85 410 95 375 Z" fill="#F5EEDB" />
+
+    <!-- í without dot -->
+    <text x="285" y="370" class="brand-char" font-size="240px">ı</text>
+    <!-- The official olive/basil green leaf replacing the dot of the i -->
+    <g transform="translate(300, 110) rotate(24) scale(0.62)">
+      <!-- Leaf body -->
+      <path d="M48 0 C16 35 0 85 0 135 C0 185 32 215 65 215 C98 215 130 185 130 135 C130 85 80 35 48 0 Z" fill="#587C49" />
+      <!-- Subtle darker leaf spine -->
+      <path d="M48 5 C45 65 52 135 65 210" stroke="#426235" stroke-width="4.5" stroke-linecap="round" fill="none" />
+      <!-- Subtle leaf highlight -->
+      <path d="M48 20 C25 50 15 90 18 130" stroke="#6E965C" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.6" />
+    </g>
+
+    <!-- d -->
+    <text x="395" y="370" class="brand-char" font-size="240px">d</text>
+
+    <!-- ZERIA -->
+    <text x="545" y="370" class="brand-char" font-size="340px" letter-spacing="4px">ZERIA</text>
+  </g>
+</svg>
