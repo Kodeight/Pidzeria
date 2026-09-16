@@ -4,11 +4,11 @@ import { OrderStatus } from '../../types';
 import { Clock, ChefHat, CheckCheck, UtensilsCrossed, Phone, ArrowRight } from 'lucide-react';
 
 const KANBAN_COLUMNS: { id: OrderStatus; label: string; color: string }[] = [
-  { id: 'recue', label: 'Nouvelles', color: 'border-blue-500/40 bg-blue-500/5' },
-  { id: 'acceptee', label: 'Acceptées', color: 'border-[#547734]/40 bg-[#547734]/5' },
-  { id: 'en_preparation', label: 'En Préparation', color: 'border-[#7db352]/40 bg-[#7db352]/5' },
-  { id: 'prete', label: 'Prêtes', color: 'border-emerald-500/40 bg-emerald-500/5' },
-  { id: 'servie', label: 'Servies / Terminées', color: 'border-[#243326] bg-[#121813]/30' },
+  { id: 'recue', label: 'Nouvelles', color: 'border-[#3a3229] bg-[#12100e]/70' },
+  { id: 'acceptee', label: 'Acceptées', color: 'border-[#4a3f33] bg-[#14120f]/70' },
+  { id: 'en_preparation', label: 'En Préparation', color: 'border-[#dfd0ba]/30 bg-[#1a1714]/80' },
+  { id: 'prete', label: 'Prêtes', color: 'border-[#dfd0ba]/50 bg-[#221e1a]/80' },
+  { id: 'servie', label: 'Servies / Terminées', color: 'border-[#26211c] bg-[#0c0a09]/50' },
 ];
 
 export const OrderKanban: React.FC = () => {
@@ -37,8 +37,8 @@ export const OrderKanban: React.FC = () => {
   return (
     <div className="space-y-6 animate-fade-in max-w-[1600px] mx-auto">
       <div>
-        <h1 className="text-2xl font-serif font-bold text-[#fbf7ee]">Gestion des Commandes — Kanban POS</h1>
-        <p className="text-xs text-[#8a988c] font-mono mt-1">
+        <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#f7f2e7]">Gestion des Commandes — Kanban POS</h1>
+        <p className="text-xs text-[#8c7e6c] font-mono mt-1">
           Suivez la progression en temps réel de la commande client jusqu'au service à table ou livraison.
         </p>
       </div>
@@ -49,14 +49,14 @@ export const OrderKanban: React.FC = () => {
           const colOrders = orders.filter(o => o.status === col.id);
 
           return (
-            <div key={col.id} className={`p-4 rounded-3xl border ${col.color} flex flex-col h-[700px] min-w-[280px]`}>
+            <div key={col.id} className={`p-4 rounded-3xl border ${col.color} flex flex-col h-[700px] min-w-[280px] shadow-2xl`}>
               
               {/* Column Header */}
-              <div className="flex items-center justify-between pb-3 mb-4 border-b border-[#243326]">
-                <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#d4e4c2]">
+              <div className="flex items-center justify-between pb-3 mb-4 border-b border-[#26211c]">
+                <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#dfd0ba]">
                   {col.label}
                 </span>
-                <span className="w-6 h-6 rounded-full bg-[#121813] text-[#9bc774] font-mono font-extrabold text-xs flex items-center justify-center border border-[#243326]">
+                <span className="w-6 h-6 rounded-full bg-[#080706] text-[#dfd0ba] font-mono font-extrabold text-xs flex items-center justify-center border border-[#26211c]">
                   {colOrders.length}
                 </span>
               </div>
@@ -69,15 +69,15 @@ export const OrderKanban: React.FC = () => {
                   return (
                     <div
                       key={order.id}
-                      className="p-4 rounded-2xl bg-[#0c120e] border border-[#243326] space-y-3 shadow-lg hover:border-[#547734]/40 transition-all"
+                      className="p-4 rounded-2xl bg-[#080706] border border-[#221e1a] space-y-3 shadow-lg hover:border-[#dfd0ba]/40 transition-all"
                     >
                       {/* Top Info */}
                       <div className="flex items-center justify-between">
-                        <span className="text-xs font-mono font-black text-[#9bc774]">
+                        <span className="text-xs font-mono font-black text-[#dfd0ba]">
                           {order.orderNumber}
                         </span>
                         {order.tableNumber && (
-                          <span className="px-2 py-0.5 rounded-full bg-[#547734]/15 border border-[#547734]/30 text-[#9bc774] text-[10px] font-bold">
+                          <span className="px-2 py-0.5 rounded-full bg-[#161311] border border-[#2e2823] text-[#dfd0ba] text-[10px] font-bold font-mono">
                             Table {order.tableNumber}
                           </span>
                         )}
@@ -85,44 +85,44 @@ export const OrderKanban: React.FC = () => {
 
                       {/* Customer Info */}
                       <div>
-                        <h4 className="text-xs font-bold text-[#f2e5ce]">{order.customerName}</h4>
+                        <h4 className="text-xs font-bold text-[#f7f2e7]">{order.customerName}</h4>
                         {order.customerPhone && (
-                          <p className="text-[10px] text-[#8a988c] flex items-center gap-1 mt-0.5">
-                            <Phone className="w-3 h-3 text-[#7db352]" />
+                          <p className="text-[10px] text-[#8c7e6c] flex items-center gap-1 mt-0.5 font-mono">
+                            <Phone className="w-3 h-3 text-[#dfd0ba]" />
                             <span>{order.customerPhone}</span>
                           </p>
                         )}
                       </div>
 
                       {/* Items */}
-                      <div className="space-y-1 pt-2 border-t border-[#243326]">
+                      <div className="space-y-1 pt-2 border-t border-[#221e1a]">
                         {order.items.map(item => (
-                          <div key={item.id} className="text-[11px] text-[#c7baa4] flex justify-between">
+                          <div key={item.id} className="text-[11px] text-[#cbb89d] flex justify-between">
                             <span>{item.quantity}x {item.menuItem.name}</span>
-                            <span className="text-[#8a988c] font-mono">{item.itemTotal} DA</span>
+                            <span className="text-[#8c7e6c] font-mono">{item.itemTotal} DA</span>
                           </div>
                         ))}
                       </div>
 
                       {order.notes && (
-                        <p className="text-[10px] italic text-[#d4e4c2] bg-[#547734]/10 p-2 rounded-lg border border-[#547734]/20">
+                        <p className="text-[10px] italic text-[#dfd0ba] bg-[#161311] p-2 rounded-lg border border-[#2a241f]">
                           Note: "{order.notes}"
                         </p>
                       )}
 
                       {/* Total & Action */}
-                      <div className="pt-2 border-t border-[#243326] flex items-center justify-between">
-                        <span className="text-xs font-serif font-extrabold text-[#9bc774]">
+                      <div className="pt-2 border-t border-[#221e1a] flex items-center justify-between">
+                        <span className="text-xs font-serif font-extrabold text-[#dfd0ba]">
                           {order.total.toLocaleString('fr-DZ')} DA
                         </span>
 
                         {nextStatus && (
                           <button
                             onClick={() => updateOrderStatus(order.id, nextStatus)}
-                            className="px-3 py-1.5 rounded-xl bg-[#547734] hover:bg-[#628b3d] text-[#fbf7ee] font-bold text-[11px] flex items-center gap-1 transition-all cursor-pointer shadow-md"
+                            className="px-3.5 py-1.5 rounded-full bg-[#dfd0ba] hover:bg-[#f3eadc] text-[#0a0a0a] font-bold text-[11px] flex items-center gap-1 transition-all cursor-pointer shadow-md active:scale-95"
                           >
                             <span>{getButtonLabel(order.status)}</span>
-                            <ArrowRight className="w-3 h-3" />
+                            <ArrowRight className="w-3 h-3 text-[#0a0a0a]" />
                           </button>
                         )}
                       </div>
@@ -132,7 +132,7 @@ export const OrderKanban: React.FC = () => {
                 })}
 
                 {colOrders.length === 0 && (
-                  <div className="text-center py-12 text-[#556357] text-xs font-mono">
+                  <div className="text-center py-12 text-[#5a5045] text-xs font-mono">
                     Aucune commande
                   </div>
                 )}
@@ -145,3 +145,4 @@ export const OrderKanban: React.FC = () => {
     </div>
   );
 };
+

@@ -10,11 +10,11 @@ export const TableMap: React.FC = () => {
   const getStatusBadge = (status: TableInfo['status']) => {
     switch (status) {
       case 'libre':
-        return <span className="px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold">Libre</span>;
+        return <span className="px-2.5 py-1 rounded-full bg-[#182014] border border-[#2f3d26] text-[#9bc774] text-[10px] font-bold font-mono">Libre</span>;
       case 'en_commande':
-        return <span className="px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-[10px] font-bold animate-pulse">En commande</span>;
+        return <span className="px-2.5 py-1 rounded-full bg-[#201912] border border-[#3d2f20] text-[#dfd0ba] text-[10px] font-bold font-mono animate-pulse">En commande</span>;
       case 'occupee':
-        return <span className="px-2.5 py-1 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 text-[10px] font-bold">Occupée</span>;
+        return <span className="px-2.5 py-1 rounded-full bg-[#241310] border border-[#42201b] text-[#df8b80] text-[10px] font-bold font-mono">Occupée</span>;
     }
   };
 
@@ -22,8 +22,8 @@ export const TableMap: React.FC = () => {
     <div className="space-y-6 animate-fade-in max-w-7xl mx-auto">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-serif font-bold text-amber-50">Plan de Salle & QR Codes Tables</h1>
-          <p className="text-xs text-stone-400 font-mono mt-1">
+          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#f7f2e7]">Plan de Salle & QR Codes Tables</h1>
+          <p className="text-xs text-[#8c7e6c] font-mono mt-1">
             Gérez la disponibilité des tables en direct et génerer les QR codes de commande autonome.
           </p>
         </div>
@@ -39,55 +39,55 @@ export const TableMap: React.FC = () => {
               key={table.id}
               className={`p-5 rounded-3xl border transition-all flex flex-col justify-between space-y-4 shadow-xl ${
                 table.status === 'libre'
-                  ? 'bg-stone-900/80 border-stone-800 hover:border-emerald-500/40'
+                  ? 'bg-[#0e0c0a] border-[#221e1a] hover:border-[#dfd0ba]/40'
                   : table.status === 'en_commande'
-                  ? 'bg-amber-950/30 border-amber-500/40'
-                  : 'bg-red-950/20 border-red-500/30'
+                  ? 'bg-[#14100c] border-[#dfd0ba]/30'
+                  : 'bg-[#140c0b] border-[#381c18]'
               }`}
             >
               {/* Header */}
               <div className="flex items-center justify-between">
-                <span className="text-lg font-serif font-black text-amber-400">
+                <span className="text-lg font-serif font-black text-[#dfd0ba]">
                   T-{table.number}
                 </span>
                 {getStatusBadge(table.status)}
               </div>
 
               {/* Seats count */}
-              <div className="text-xs text-stone-400 flex items-center gap-1.5 font-mono">
-                <Users className="w-3.5 h-3.5 text-stone-500" />
+              <div className="text-xs text-[#8c7e6c] flex items-center gap-1.5 font-mono">
+                <Users className="w-3.5 h-3.5 text-[#8c7e6c]" />
                 <span>{table.seats} places</span>
               </div>
 
               {currentOrder && (
-                <div className="p-2 rounded-xl bg-stone-950 text-[10px] text-amber-300 font-mono">
-                  Order {currentOrder.orderNumber} • {currentOrder.total} DA
+                <div className="p-2 rounded-xl bg-[#080706] border border-[#221e1a] text-[10px] text-[#dfd0ba] font-mono">
+                  Cmd {currentOrder.orderNumber} • {currentOrder.total} DA
                 </div>
               )}
 
               {/* Status Action Buttons */}
-              <div className="pt-2 border-t border-stone-800/80 space-y-1.5">
+              <div className="pt-2 border-t border-[#221e1a] space-y-1.5">
                 <div className="grid grid-cols-3 gap-1">
                   <button
                     onClick={() => updateTableStatus(table.id, 'libre')}
-                    className={`py-1 rounded-lg text-[9px] font-bold ${
-                      table.status === 'libre' ? 'bg-emerald-500 text-black' : 'bg-stone-950 text-stone-400 hover:text-white'
+                    className={`py-1 rounded-lg text-[9px] font-bold font-mono transition-colors ${
+                      table.status === 'libre' ? 'bg-[#9bc774] text-[#0a0a0a]' : 'bg-[#161311] text-[#8c7e6c] hover:text-[#f7f2e7]'
                     }`}
                   >
                     Libre
                   </button>
                   <button
                     onClick={() => updateTableStatus(table.id, 'en_commande')}
-                    className={`py-1 rounded-lg text-[9px] font-bold ${
-                      table.status === 'en_commande' ? 'bg-amber-500 text-black' : 'bg-stone-950 text-stone-400 hover:text-white'
+                    className={`py-1 rounded-lg text-[9px] font-bold font-mono transition-colors ${
+                      table.status === 'en_commande' ? 'bg-[#dfd0ba] text-[#0a0a0a]' : 'bg-[#161311] text-[#8c7e6c] hover:text-[#f7f2e7]'
                     }`}
                   >
                     Cmd
                   </button>
                   <button
                     onClick={() => updateTableStatus(table.id, 'occupee')}
-                    className={`py-1 rounded-lg text-[9px] font-bold ${
-                      table.status === 'occupee' ? 'bg-red-500 text-white' : 'bg-stone-950 text-stone-400 hover:text-white'
+                    className={`py-1 rounded-lg text-[9px] font-bold font-mono transition-colors ${
+                      table.status === 'occupee' ? 'bg-[#c95a4f] text-white' : 'bg-[#161311] text-[#8c7e6c] hover:text-[#f7f2e7]'
                     }`}
                   >
                     Occ
@@ -96,9 +96,9 @@ export const TableMap: React.FC = () => {
 
                 <button
                   onClick={() => setSelectedTableForQR(table)}
-                  className="w-full py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/20 text-[10px] font-bold flex items-center justify-center gap-1 transition-all cursor-pointer"
+                  className="w-full py-1.5 rounded-xl bg-[#161311] hover:bg-[#221e1a] text-[#dfd0ba] border border-[#2a241f] text-[10px] font-bold flex items-center justify-center gap-1 transition-all cursor-pointer"
                 >
-                  <QrCode className="w-3 h-3" />
+                  <QrCode className="w-3 h-3 text-[#dfd0ba]" />
                   <span>Générer QR</span>
                 </button>
               </div>
@@ -110,26 +110,26 @@ export const TableMap: React.FC = () => {
 
       {/* Table QR Modal Generator */}
       {selectedTableForQR && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-          <div className="bg-[#121010] border border-amber-500/30 rounded-3xl p-8 max-w-md w-full text-center space-y-6 relative shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+          <div className="bg-[#0e0c0a] border border-[#3d352d] rounded-3xl p-8 max-w-md w-full text-center space-y-6 relative shadow-2xl">
             <button
               onClick={() => setSelectedTableForQR(null)}
-              className="absolute top-4 right-4 p-2 rounded-full bg-stone-900 text-stone-400 hover:text-white"
+              className="absolute top-4 right-4 p-2 rounded-full bg-[#161311] text-[#8c7e6c] hover:text-[#f7f2e7] border border-[#2a241f] cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
 
             <div>
-              <span className="text-xs font-mono uppercase tracking-widest text-amber-400">QR Code Table Autonome</span>
-              <h2 className="text-3xl font-serif font-black text-amber-50 mt-1">
+              <span className="text-xs font-mono uppercase tracking-widest text-[#dfd0ba]">QR Code Table Autonome</span>
+              <h2 className="text-3xl font-serif font-black text-[#f7f2e7] mt-1">
                 Table #{selectedTableForQR.number}
               </h2>
             </div>
 
-            {/* Simulated High Quality SVG QR Code */}
-            <div className="bg-white p-6 rounded-3xl inline-block shadow-2xl border-4 border-amber-500">
+            {/* High Quality QR Code in clean container */}
+            <div className="bg-[#f7f2e7] p-6 rounded-3xl inline-block shadow-2xl border-4 border-[#dfd0ba]">
               <svg className="w-48 h-48 mx-auto" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="100" height="100" fill="white"/>
+                <rect width="100" height="100" fill="#f7f2e7"/>
                 {/* QR Code matrix pattern */}
                 <path fill="#0d0b0b" d="M10,10 h25 v25 h-25 z M15,15 h15 v15 h-15 z M20,20 h5 v5 h-5 z"/>
                 <path fill="#0d0b0b" d="M65,10 h25 v25 h-25 z M70,15 h15 v15 h-15 z M75,20 h5 v5 h-5 z"/>
@@ -144,7 +144,7 @@ export const TableMap: React.FC = () => {
               </svg>
             </div>
 
-            <div className="p-3 rounded-2xl bg-stone-900 border border-stone-800 text-xs font-mono text-stone-300 break-all">
+            <div className="p-3 rounded-2xl bg-[#080706] border border-[#221e1a] text-xs font-mono text-[#cbb89d] break-all">
               {window.location.origin}/menu?table={selectedTableForQR.number}
             </div>
 
@@ -152,10 +152,10 @@ export const TableMap: React.FC = () => {
               href={`/menu?table=${selectedTableForQR.number}`}
               target="_blank"
               rel="noreferrer"
-              className="w-full py-3 rounded-full bg-amber-500 text-stone-950 font-bold text-xs flex items-center justify-center gap-2 cursor-pointer shadow-lg"
+              className="w-full py-3.5 rounded-full bg-[#dfd0ba] hover:bg-[#f3eadc] text-[#0a0a0a] font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer shadow-lg active:scale-95 transition-all"
             >
               <span>Tester le lien client (Table {selectedTableForQR.number})</span>
-              <ExternalLink className="w-4 h-4" />
+              <ExternalLink className="w-4 h-4 text-[#0a0a0a]" />
             </a>
           </div>
         </div>
@@ -163,3 +163,4 @@ export const TableMap: React.FC = () => {
     </div>
   );
 };
+

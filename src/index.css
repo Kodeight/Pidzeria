@@ -1,5 +1,18 @@
 @import "tailwindcss";
 
+:root {
+  --bg-primary: #000000;
+  --bg-surface: #080706;
+  --bg-card: #0e0c0a;
+  --bg-card-hover: #161310;
+  --border-subtle: #221e1a;
+  --border-accent: #3d352d;
+  --text-primary: #f7f2e7;
+  --text-cream: #dfd0ba;
+  --text-muted: #cbb89d;
+  --text-dim: #8c7e6c;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -44,6 +57,29 @@
     -ms-overflow-style: auto;
     scrollbar-width: auto;
   }
+}
+
+/* Blurry Fade-In Entrance Animation for Hero Items */
+@keyframes blur-in-up {
+  0% {
+    opacity: 0;
+    filter: blur(18px);
+    transform: translateY(26px) scale(0.97);
+  }
+  60% {
+    opacity: 0.85;
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateY(0px) scale(1);
+  }
+}
+
+.animate-blur-enter {
+  animation: blur-in-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+  will-change: transform, filter, opacity;
 }
 
 /* Editorial Glass & Visual Depth Utilities with warm cream & deep charcoal accents */
@@ -99,4 +135,11 @@ video::-webkit-media-controls {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+  .animate-blur-enter {
+    animation: none !important;
+    filter: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
+

@@ -134,7 +134,10 @@ export const MobileEditorialHero: React.FC<MobileEditorialHeroProps> = ({
       <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[340px] h-[340px] bg-[#dfd0ba]/5 rounded-full blur-[100px] pointer-events-none" />
 
       {/* 1. TOP SECTION: ROTATABLE ARTISANAL PIZZA (Touch & Drag in a Circle) */}
-      <div className="relative z-10 w-full max-w-[310px] sm:max-w-[360px] aspect-square flex items-center justify-center my-2">
+      <div 
+        className="relative z-10 w-full max-w-[310px] sm:max-w-[360px] aspect-square flex items-center justify-center my-2 animate-blur-enter"
+        style={{ animationDelay: '100ms' }}
+      >
         <div
           onTouchStart={(e) => {
             if (e.touches.length > 0) {
@@ -178,25 +181,28 @@ export const MobileEditorialHero: React.FC<MobileEditorialHeroProps> = ({
 
       {/* 2. BOTTOM SECTION: HERO EDITORIAL CONTENT & ACTIONS */}
       <div className="relative z-20 max-w-lg mx-auto w-full flex flex-col items-start text-left mt-4">
-        
-        {/* Brand / Category label */}
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#12100e] border border-[#2a241f] text-[#dfd0ba] text-[11px] font-mono tracking-widest uppercase mb-3.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#dfd0ba] animate-pulse" />
-          <span>Pizzeria Artisanale • Alger</span>
-        </div>
 
-        {/* Big Editorial Headline */}
-        <h1 className="text-3xl sm:text-4xl font-serif font-extrabold text-[#f7f2e7] leading-[1.12] tracking-tight mb-2.5">
+        {/* Big Editorial Headline with Blurry Entrance */}
+        <h1 
+          className="text-3xl sm:text-4xl font-serif font-extrabold text-[#f7f2e7] leading-[1.12] tracking-tight mb-2.5 animate-blur-enter"
+          style={{ animationDelay: '260ms' }}
+        >
           L’Italie rencontre l’Algérie.
         </h1>
 
-        {/* Short supporting description */}
-        <p className="text-sm sm:text-base text-[#cbb89d] font-light leading-relaxed mb-5 max-w-md">
+        {/* Short supporting description with Blurry Entrance */}
+        <p 
+          className="text-sm sm:text-base text-[#cbb89d] font-light leading-relaxed mb-5 max-w-md animate-blur-enter"
+          style={{ animationDelay: '420ms' }}
+        >
           L’art noble de la pizza napolitaine au levain naturel, sublimé par la générosité et les épices authentiques de notre terroir algérois.
         </p>
 
-        {/* Action CTAs */}
-        <div className="flex flex-col sm:flex-row items-center gap-3 w-full mb-5">
+        {/* Action CTAs with Blurry Entrance */}
+        <div 
+          className="flex flex-col sm:flex-row items-center gap-3 w-full mb-5 animate-blur-enter"
+          style={{ animationDelay: '580ms' }}
+        >
           <button
             onClick={onNavigateToMenu}
             className="w-full sm:w-auto px-7 py-3.5 rounded-full bg-[#dfd0ba] hover:bg-[#f3eadc] active:scale-[0.98] text-[#0a0a0a] font-bold text-xs tracking-wider uppercase transition-all shadow-xl shadow-black/80 flex items-center justify-center gap-2 cursor-pointer"
@@ -214,8 +220,11 @@ export const MobileEditorialHero: React.FC<MobileEditorialHeroProps> = ({
           </button>
         </div>
 
-        {/* Artisanal Feature Badges */}
-        <div className="flex items-center gap-2.5 text-[11px] font-mono text-[#8c7e6c] pt-1 pb-1 overflow-x-auto no-scrollbar w-full">
+        {/* Artisanal Feature Badges with Blurry Entrance */}
+        <div 
+          className="flex items-center gap-2.5 text-[11px] font-mono text-[#8c7e6c] pt-1 pb-1 overflow-x-auto no-scrollbar w-full animate-blur-enter"
+          style={{ animationDelay: '740ms' }}
+        >
           <span className="inline-flex items-center gap-1 shrink-0 px-2.5 py-1 rounded-md bg-[#100e0d] border border-[#221d18]">
             <Flame className="w-3 h-3 text-[#dfd0ba]" />
             <span>Feu de bois 450°C</span>

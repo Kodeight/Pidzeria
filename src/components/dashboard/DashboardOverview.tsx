@@ -19,10 +19,10 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({ onNavigate
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-amber-50">
+          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#f7f2e7]">
             Aperçu Général — PIDZERIA
           </h1>
-          <p className="text-xs sm:text-sm text-stone-400 font-mono mt-1">
+          <p className="text-xs sm:text-sm text-[#8c7e6c] font-mono mt-1">
             Activité en direct • Restaurant Alger Centre
           </p>
         </div>
@@ -30,85 +30,85 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({ onNavigate
         <div className="flex items-center gap-3">
           <button
             onClick={() => onNavigateTab('kitchen')}
-            className="px-4 py-2.5 rounded-2xl bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-stone-950 border border-amber-500/30 text-xs font-bold transition-all cursor-pointer flex items-center gap-2"
+            className="px-5 py-2.5 rounded-full bg-[#dfd0ba] hover:bg-[#f3eadc] text-[#0a0a0a] font-bold text-xs tracking-wider uppercase transition-all shadow-xl shadow-black/80 flex items-center gap-2 cursor-pointer active:scale-95"
           >
-            <Clock className="w-4 h-4" />
-            <span>Ouvrir Ecran Cuisine</span>
+            <Clock className="w-4 h-4 text-[#0a0a0a]" />
+            <span>Ouvrir Écran Cuisine</span>
           </button>
         </div>
       </div>
 
       {/* Metric Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         
-        <div className="p-6 rounded-3xl bg-stone-900/80 border border-stone-800 space-y-3">
+        <div className="p-6 rounded-3xl bg-[#0e0c0a] border border-[#221e1a] space-y-3 shadow-xl">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-mono uppercase tracking-wider text-stone-400">Commandes du jour</span>
-            <div className="p-2 rounded-xl bg-amber-500/10 text-amber-400">
-              <ShoppingBag className="w-5 h-5" />
+            <span className="text-xs font-mono uppercase tracking-wider text-[#8c7e6c]">Commandes du jour</span>
+            <div className="p-2.5 rounded-xl bg-[#161311] border border-[#2a241f] text-[#dfd0ba]">
+              <ShoppingBag className="w-4 h-4" />
             </div>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-serif font-extrabold text-amber-50">{totalOrdersCount}</span>
-            <span className="text-xs text-emerald-400 font-bold flex items-center">
-              +14% <TrendingUp className="w-3 h-3 ml-0.5" />
+            <span className="text-3xl font-serif font-extrabold text-[#f7f2e7]">{totalOrdersCount}</span>
+            <span className="text-xs text-[#dfd0ba] font-mono font-bold flex items-center gap-0.5">
+              +14% <TrendingUp className="w-3 h-3" />
             </span>
           </div>
-          <p className="text-[11px] text-stone-500">Service en cours à Alger</p>
+          <p className="text-[11px] text-[#8c7e6c]">Service en cours à Alger</p>
         </div>
 
-        <div className="p-6 rounded-3xl bg-stone-900/80 border border-stone-800 space-y-3">
+        <div className="p-6 rounded-3xl bg-[#0e0c0a] border border-[#221e1a] space-y-3 shadow-xl">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-mono uppercase tracking-wider text-stone-400">Chiffre d'Affaires</span>
-            <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-400">
-              <DollarSign className="w-5 h-5" />
+            <span className="text-xs font-mono uppercase tracking-wider text-[#8c7e6c]">Chiffre d'Affaires</span>
+            <div className="p-2.5 rounded-xl bg-[#161311] border border-[#2a241f] text-[#dfd0ba]">
+              <DollarSign className="w-4 h-4" />
             </div>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-serif font-extrabold text-amber-400">
+            <span className="text-3xl font-serif font-extrabold text-[#dfd0ba]">
               {totalRevenue.toLocaleString('fr-DZ')} DA
             </span>
           </div>
-          <p className="text-[11px] text-stone-500">Chiffre calculé en DZD</p>
+          <p className="text-[11px] text-[#8c7e6c]">Chiffre calculé en DZD</p>
         </div>
 
-        <div className="p-6 rounded-3xl bg-stone-900/80 border border-stone-800 space-y-3">
+        <div className="p-6 rounded-3xl bg-[#0e0c0a] border border-[#221e1a] space-y-3 shadow-xl">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-mono uppercase tracking-wider text-stone-400">Tables Actives</span>
-            <div className="p-2 rounded-xl bg-indigo-500/10 text-indigo-400">
-              <Users className="w-5 h-5" />
+            <span className="text-xs font-mono uppercase tracking-wider text-[#8c7e6c]">Tables Actives</span>
+            <div className="p-2.5 rounded-xl bg-[#161311] border border-[#2a241f] text-[#dfd0ba]">
+              <Users className="w-4 h-4" />
             </div>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-serif font-extrabold text-amber-50">{activeTablesCount} / {tables.length}</span>
+            <span className="text-3xl font-serif font-extrabold text-[#f7f2e7]">{activeTablesCount} / {tables.length}</span>
           </div>
-          <p className="text-[11px] text-stone-500">Taux d'occupation en salle</p>
+          <p className="text-[11px] text-[#8c7e6c]">Taux d'occupation en salle</p>
         </div>
 
-        <div className="p-6 rounded-3xl bg-stone-900/80 border border-stone-800 space-y-3">
+        <div className="p-6 rounded-3xl bg-[#0e0c0a] border border-[#221e1a] space-y-3 shadow-xl">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-mono uppercase tracking-wider text-stone-400">En Préparation</span>
-            <div className="p-2 rounded-xl bg-red-500/10 text-red-400">
-              <Utensils className="w-5 h-5" />
+            <span className="text-xs font-mono uppercase tracking-wider text-[#8c7e6c]">En Préparation</span>
+            <div className="p-2.5 rounded-xl bg-[#161311] border border-[#2a241f] text-[#dfd0ba]">
+              <Utensils className="w-4 h-4" />
             </div>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-serif font-extrabold text-red-400">{preparingOrdersCount}</span>
+            <span className="text-3xl font-serif font-extrabold text-[#dfd0ba]">{preparingOrdersCount}</span>
           </div>
-          <p className="text-[11px] text-stone-500">Commandes en cuisine</p>
+          <p className="text-[11px] text-[#8c7e6c]">Commandes au four à bois</p>
         </div>
 
       </div>
 
       {/* Recent Orders Overview */}
-      <div className="p-6 rounded-3xl bg-stone-900/80 border border-stone-800 space-y-4">
+      <div className="p-6 sm:p-8 rounded-3xl bg-[#0e0c0a] border border-[#221e1a] space-y-5 shadow-xl">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-serif font-bold text-amber-50">Dernières Commandes</h3>
+          <h3 className="text-lg font-serif font-bold text-[#f7f2e7]">Dernières Commandes</h3>
           <button
             onClick={() => onNavigateTab('orders')}
-            className="text-xs text-amber-400 hover:underline flex items-center gap-1 cursor-pointer"
+            className="text-xs text-[#dfd0ba] hover:underline flex items-center gap-1 cursor-pointer font-mono"
           >
-            <span>Voir toutes le kanban</span>
+            <span>Voir le kanban complet</span>
             <ArrowUpRight className="w-3.5 h-3.5" />
           </button>
         </div>
@@ -117,32 +117,32 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({ onNavigate
           {orders.slice(0, 5).map(order => (
             <div
               key={order.id}
-              className="p-4 rounded-2xl bg-stone-950/60 border border-stone-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+              className="p-4 sm:p-5 rounded-2xl bg-[#080706] border border-[#221e1a] flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-[#383129] transition-colors"
             >
               <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 font-extrabold text-xs flex items-center justify-center font-mono">
+                <div className="w-10 h-10 rounded-xl bg-[#161311] border border-[#2a241f] text-[#dfd0ba] font-extrabold text-xs flex items-center justify-center font-mono shrink-0">
                   {order.orderNumber}
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-stone-200">
+                  <h4 className="text-sm font-bold text-[#f7f2e7]">
                     {order.customerName} {order.tableNumber ? `(Table ${order.tableNumber})` : ''}
                   </h4>
-                  <p className="text-xs text-stone-400">
+                  <p className="text-xs text-[#8c7e6c] mt-0.5">
                     {order.items.map(i => `${i.quantity}x ${i.menuItem.name}`).join(', ')}
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between sm:justify-end gap-4 border-t sm:border-t-0 pt-2 sm:pt-0 border-stone-800">
-                <span className="text-sm font-serif font-extrabold text-amber-400">
+              <div className="flex items-center justify-between sm:justify-end gap-4 border-t sm:border-t-0 pt-3 sm:pt-0 border-[#221e1a]">
+                <span className="text-sm font-serif font-extrabold text-[#dfd0ba]">
                   {order.total.toLocaleString('fr-DZ')} DA
                 </span>
-                <span className={`px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider ${
+                <span className={`px-3 py-1 rounded-full text-[10px] font-extrabold uppercase font-mono tracking-wider ${
                   order.status === 'prete'
-                    ? 'bg-emerald-500/20 text-emerald-300'
+                    ? 'bg-[#1e2518] text-[#9bc774] border border-[#2f3d26]'
                     : order.status === 'en_preparation'
-                    ? 'bg-amber-500/20 text-amber-300 animate-pulse'
-                    : 'bg-stone-800 text-stone-400'
+                    ? 'bg-[#221a12] text-[#dfd0ba] border border-[#3d2f20] animate-pulse'
+                    : 'bg-[#141210] text-[#8c7e6c] border border-[#221e1a]'
                 }`}>
                   {order.status.replace('_', ' ')}
                 </span>
@@ -154,3 +154,4 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({ onNavigate
     </div>
   );
 };
+

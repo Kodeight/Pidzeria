@@ -11,20 +11,20 @@ export const KitchenDisplay: React.FC = () => {
 
   return (
     <div className="space-y-6 animate-fade-in max-w-[1600px] mx-auto">
-      <div className="flex items-center justify-between bg-stone-900/90 p-6 rounded-3xl border border-stone-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#0e0c0a] p-6 sm:p-8 rounded-3xl border border-[#221e1a] shadow-xl">
         <div>
           <div className="flex items-center gap-3">
-            <ChefHat className="w-8 h-8 text-amber-400" />
-            <h1 className="text-2xl sm:text-3xl font-serif font-extrabold text-amber-50">
+            <ChefHat className="w-8 h-8 text-[#dfd0ba]" />
+            <h1 className="text-2xl sm:text-3xl font-serif font-extrabold text-[#f7f2e7]">
               Écran Cuisine — KDS
             </h1>
           </div>
-          <p className="text-xs text-stone-400 font-mono mt-1">
+          <p className="text-xs text-[#8c7e6c] font-mono mt-1">
             Affichage optimisé pour l'équipe en cuisine • Envoi direct au four
           </p>
         </div>
 
-        <div className="px-4 py-2 rounded-2xl bg-amber-500/20 border border-amber-500/30 text-amber-300 font-mono font-bold text-sm">
+        <div className="px-4 py-2 rounded-full bg-[#161311] border border-[#2e2823] text-[#dfd0ba] font-mono font-bold text-xs">
           {kitchenOrders.length} commande{kitchenOrders.length > 1 ? 's' : ''} en attente
         </div>
       </div>
@@ -37,24 +37,24 @@ export const KitchenDisplay: React.FC = () => {
           return (
             <div
               key={order.id}
-              className={`p-6 rounded-3xl border shadow-2xl flex flex-col justify-between transition-all ${
+              className={`p-6 sm:p-7 rounded-3xl border shadow-2xl flex flex-col justify-between transition-all ${
                 isPreparing
-                  ? 'bg-amber-950/40 border-amber-500/50 shadow-amber-500/10'
-                  : 'bg-stone-900/80 border-stone-800'
+                  ? 'bg-[#14100c] border-[#dfd0ba]/40 shadow-black/80'
+                  : 'bg-[#0e0c0a] border-[#221e1a]'
               }`}
             >
               <div>
                 {/* Order Header */}
-                <div className="flex items-center justify-between pb-4 border-b border-stone-800 mb-4">
-                  <span className="text-3xl font-serif font-black text-amber-400">
+                <div className="flex items-center justify-between pb-4 border-b border-[#221e1a] mb-4">
+                  <span className="text-3xl font-serif font-black text-[#dfd0ba]">
                     {order.orderNumber}
                   </span>
                   {order.tableNumber ? (
-                    <span className="px-4 py-1.5 rounded-full bg-amber-500 text-stone-950 font-black text-sm">
+                    <span className="px-4 py-1.5 rounded-full bg-[#dfd0ba] text-[#0a0a0a] font-black text-xs font-mono">
                       TABLE {order.tableNumber}
                     </span>
                   ) : (
-                    <span className="px-3 py-1 rounded-full bg-stone-800 text-stone-300 text-xs font-bold uppercase">
+                    <span className="px-3 py-1 rounded-full bg-[#161311] text-[#cbb89d] text-xs font-mono font-bold uppercase border border-[#2a241f]">
                       {order.type.replace('_', ' ')}
                     </span>
                   )}
@@ -63,18 +63,18 @@ export const KitchenDisplay: React.FC = () => {
                 {/* Items list with large legible font */}
                 <div className="space-y-3 mb-6">
                   {order.items.map(item => (
-                    <div key={item.id} className="p-3 rounded-2xl bg-stone-950/80 border border-stone-800/80">
-                      <div className="flex items-center justify-between text-base font-bold text-amber-50">
+                    <div key={item.id} className="p-3.5 rounded-2xl bg-[#080706] border border-[#221e1a]">
+                      <div className="flex items-center justify-between text-base font-bold text-[#f7f2e7]">
                         <span>{item.quantity}x {item.menuItem.name}</span>
                       </div>
                       {item.selectedExtras.length > 0 && (
-                        <p className="text-xs text-amber-400 font-semibold mt-1">
+                        <p className="text-xs text-[#dfd0ba] font-mono mt-1">
                           + {item.selectedExtras.map(e => e.name).join(', ')}
                         </p>
                       )}
                       {item.instructions && (
-                        <p className="text-xs italic text-red-400 bg-red-500/10 p-2 rounded-lg mt-2 border border-red-500/20 font-semibold">
-                          ⚠️ Note: {item.instructions}
+                        <p className="text-xs italic text-[#dfd0ba] bg-[#1a1410] p-2.5 rounded-xl mt-2 border border-[#3d2a1d] font-medium">
+                          Note: {item.instructions}
                         </p>
                       )}
                     </div>
@@ -83,22 +83,22 @@ export const KitchenDisplay: React.FC = () => {
               </div>
 
               {/* Large Action Touch Buttons */}
-              <div className="pt-4 border-t border-stone-800 flex items-center gap-3">
+              <div className="pt-4 border-t border-[#221e1a] flex items-center gap-3">
                 {!isPreparing ? (
                   <button
                     onClick={() => updateOrderStatus(order.id, 'en_preparation')}
-                    className="w-full py-4 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 font-black text-base uppercase tracking-wider flex items-center justify-center gap-2 shadow-xl hover:scale-[1.02] cursor-pointer"
+                    className="w-full py-4 rounded-full bg-[#dfd0ba] hover:bg-[#f3eadc] text-[#0a0a0a] font-black text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-xl hover:scale-[1.01] active:scale-95 transition-all cursor-pointer"
                   >
-                    <Flame className="w-5 h-5" />
-                    <span>Commencer la Préparation</span>
+                    <Flame className="w-5 h-5 text-[#0a0a0a]" />
+                    <span>Lancer la Cuisson</span>
                   </button>
                 ) : (
                   <button
                     onClick={() => updateOrderStatus(order.id, 'prete')}
-                    className="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-stone-950 font-black text-base uppercase tracking-wider flex items-center justify-center gap-2 shadow-xl hover:scale-[1.02] cursor-pointer"
+                    className="w-full py-4 rounded-full bg-[#dfd0ba] hover:bg-[#f3eadc] text-[#0a0a0a] font-black text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-xl hover:scale-[1.01] active:scale-95 transition-all cursor-pointer"
                   >
-                    <Check className="w-6 h-6 stroke-[3]" />
-                    <span>Marquer Comme PRÊTE</span>
+                    <Check className="w-5 h-5 stroke-[3] text-[#0a0a0a]" />
+                    <span>Marquer Comme Prête</span>
                   </button>
                 )}
               </div>
@@ -108,13 +108,14 @@ export const KitchenDisplay: React.FC = () => {
         })}
 
         {kitchenOrders.length === 0 && (
-          <div className="col-span-full text-center py-24 glass-panel rounded-3xl border border-stone-800 space-y-3">
-            <Utensils className="w-12 h-12 text-stone-600 mx-auto" />
-            <h3 className="text-lg font-bold text-stone-300">Toutes les commandes sont à jour</h3>
-            <p className="text-stone-500 text-xs">Les nouvelles commandes apparaîtront automatiquement ici.</p>
+          <div className="col-span-full text-center py-24 rounded-3xl bg-[#0e0c0a] border border-[#221e1a] space-y-3">
+            <Utensils className="w-12 h-12 text-[#5a5045] mx-auto" />
+            <h3 className="text-lg font-bold text-[#f7f2e7]">Toutes les commandes sont à jour</h3>
+            <p className="text-[#8c7e6c] text-xs font-mono">Les nouvelles commandes apparaîtront automatiquement ici.</p>
           </div>
         )}
       </div>
     </div>
   );
 };
+

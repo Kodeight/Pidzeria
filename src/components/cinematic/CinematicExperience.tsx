@@ -22,7 +22,7 @@ const CINEMATIC_STAGES: StoryStageData[] = [
   {
     id: 'hero',
     stepNumber: '01',
-    eyebrow: 'PIZZERIA ARTISANALE • ALGER',
+    eyebrow: '',
     headline: 'L’Italie rencontre l’Algérie.',
     description: 'L’art noble de la pizza napolitaine au levain naturel, sublimé par la générosité et les épices authentiques de notre terroir algérois.',
     specs: [
@@ -254,7 +254,12 @@ export const CinematicExperience: React.FC<CinematicExperienceProps> = ({
         <div className="absolute top-0 inset-x-0 h-28 bg-gradient-to-b from-black via-black/80 to-transparent pointer-events-none z-40" />
 
         {/* TOP NARRATIVE BAR: Step Counter & Subtle Progress */}
-        <div className="relative z-40 pt-20 sm:pt-24 px-6 md:px-12 max-w-7xl mx-auto w-full flex items-center justify-between pointer-events-auto">
+        <div 
+          className={`relative z-40 pt-20 sm:pt-24 px-6 md:px-12 max-w-7xl mx-auto w-full flex items-center justify-between pointer-events-auto ${
+            stage.isHero ? 'animate-blur-enter' : ''
+          }`}
+          style={stage.isHero ? { animationDelay: '150ms' } : undefined}
+        >
           {/* Stage counter badge */}
           <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#100e0d]/90 border border-[#26211c] backdrop-blur-md">
             <span className="flex h-1.5 w-1.5 relative">
@@ -262,7 +267,7 @@ export const CinematicExperience: React.FC<CinematicExperienceProps> = ({
               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#dfd0ba]"></span>
             </span>
             <span className="text-[11px] font-mono tracking-widest text-[#dfd0ba] uppercase font-semibold">
-              {stage.stepNumber} / 07 • {stage.eyebrow}
+              {stage.stepNumber} / 07 {stage.eyebrow ? `• ${stage.eyebrow}` : ''}
             </span>
           </div>
 
@@ -285,12 +290,15 @@ export const CinematicExperience: React.FC<CinematicExperienceProps> = ({
             Tied to GSAP ScrollTrigger timeline: changes position (x, y), scale, and depth dynamically */}
         <div
           ref={pizzaLayerRef}
-          className="absolute inset-0 flex items-center justify-center pointer-events-none z-20 will-change-transform bg-transparent"
+          className={`absolute inset-0 flex items-center justify-center pointer-events-none z-20 will-change-transform bg-transparent ${
+            stage.isHero ? 'animate-blur-enter' : ''
+          }`}
           style={{
             // Initial camera position for Stage 1 (Hero)
             transform: isMobile 
               ? 'translate(0vw, 22vh) scale(0.88)' 
               : 'translate(20vw, 1vh) scale(0.96)',
+            animationDelay: stage.isHero ? '100ms' : undefined,
           }}
         >
           <div className="w-[340px] sm:w-[480px] md:w-[620px] lg:w-[760px] aspect-[16/10] flex items-center justify-center">
@@ -316,16 +324,21 @@ export const CinematicExperience: React.FC<CinematicExperienceProps> = ({
                 : 'items-start text-left mr-auto max-w-lg lg:max-w-xl'
             }`}
           >
-            {/* Eyebrow badge */}
-            <div className="inline-flex items-center gap-2 text-xs font-mono tracking-widest text-[#dfd0ba]/90 uppercase mb-3">
-              <span className="w-6 h-[1px] bg-[#dfd0ba]/40" />
-              <span>{stage.eyebrow}</span>
-            </div>
+            {/* Eyebrow badge (only shown on non-hero stages) */}
+            {stage.eyebrow ? (
+              <div className="inline-flex items-center gap-2 text-xs font-mono tracking-widest text-[#dfd0ba]/90 uppercase mb-3">
+                <span className="w-6 h-[1px] bg-[#dfd0ba]/40" />
+                <span>{stage.eyebrow}</span>
+              </div>
+            ) : null}
 
             {/* Large Editorial Headline */}
             <h1 
               key={`headline-${stage.id}`}
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-extrabold text-[#f7f2e7] leading-[1.08] tracking-tight mb-4 transition-all duration-500 ease-out"
+              className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-extrabold text-[#f7f2e7] leading-[1.08] tracking-tight mb-4 transition-all duration-500 ease-out ${
+                stage.isHero ? 'animate-blur-enter' : ''
+              }`}
+              style={stage.isHero ? { animationDelay: '280ms' } : undefined}
             >
               {stage.headline}
             </h1>
@@ -333,15 +346,21 @@ export const CinematicExperience: React.FC<CinematicExperienceProps> = ({
             {/* Supporting paragraph floating directly on the dark canvas */}
             <p 
               key={`desc-${stage.id}`}
-              className="text-sm sm:text-base md:text-lg text-[#cbb89d] font-light leading-relaxed max-w-xl mb-6 transition-all duration-500 ease-out"
+              className={`text-sm sm:text-base md:text-lg text-[#cbb89d] font-light leading-relaxed max-w-xl mb-6 transition-all duration-500 ease-out ${
+                stage.isHero ? 'animate-blur-enter' : ''
+              }`}
+              style={stage.isHero ? { animationDelay: '440ms' } : undefined}
             >
               {stage.description}
             </p>
 
-            {/* Editorial Specs Bar (kept subtle & minimal for the climax) */}
+            {/* Editorial Specs Bar */}
             <div 
               key={`specs-${stage.id}`}
-              className="grid grid-cols-3 gap-3 pt-4 border-t border-[#26211c] mb-8 w-full max-w-lg transition-all duration-500"
+              className={`grid grid-cols-3 gap-3 pt-4 border-t border-[#26211c] mb-8 w-full max-w-lg transition-all duration-500 ${
+                stage.isHero ? 'animate-blur-enter' : ''
+              }`}
+              style={stage.isHero ? { animationDelay: '600ms' } : undefined}
             >
               {stage.specs.map((s, idx) => (
                 <div key={idx} className="space-y-0.5">
@@ -357,7 +376,10 @@ export const CinematicExperience: React.FC<CinematicExperienceProps> = ({
 
             {/* Stage-specific Actions */}
             {stage.isHero ? (
-              <div className="flex flex-col sm:flex-row items-center gap-3.5 w-full sm:w-auto">
+              <div 
+                className="flex flex-col sm:flex-row items-center gap-3.5 w-full sm:w-auto animate-blur-enter"
+                style={{ animationDelay: '760ms' }}
+              >
                 <button
                   onClick={onNavigateToMenu}
                   className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-[#dfd0ba] hover:bg-[#f3eadc] text-[#0a0a0a] font-bold text-xs sm:text-sm tracking-wider uppercase transition-all duration-300 shadow-2xl shadow-black/80 flex items-center justify-center gap-2.5 cursor-pointer hover:scale-[1.02]"
@@ -392,7 +414,12 @@ export const CinematicExperience: React.FC<CinematicExperienceProps> = ({
         </div>
 
         {/* BOTTOM BAR: Scroll prompt & instruction indicator */}
-        <div className="relative z-40 pb-6 sm:pb-8 px-6 text-center pointer-events-none">
+        <div 
+          className={`relative z-40 pb-6 sm:pb-8 px-6 text-center pointer-events-none ${
+            stage.isHero ? 'animate-blur-enter' : ''
+          }`}
+          style={stage.isHero ? { animationDelay: '920ms' } : undefined}
+        >
           <div className="inline-flex flex-col items-center gap-1.5 text-[#8c7e6c]">
             <span className="text-[10px] sm:text-[11px] uppercase tracking-widest font-mono">
               {scrollProgress >= 0.92
