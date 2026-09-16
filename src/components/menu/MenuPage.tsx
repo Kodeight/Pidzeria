@@ -23,12 +23,22 @@ interface MenuPageProps {
 
 export const MenuPage: React.FC<MenuPageProps> = ({ onBackToHome, onOpenCart }) => {
   const { menuItems, addToCart, activeTableNumber, setActiveTableNumber } = useStore();
-  const [selectedCategory, setSelectedCategory] = useState<PizzaCategory | 'toutes'>('toutes');
+  
+  // Initialize category from URL parameter if present
+  const [selectedCategory, setSelectedCategory] = useState<PizzaCategory | 'toutes'>(() => {
+    const params = new URLSearchParams(window.location.search);
+    const cat = params.get('category') as PizzaCategory | null;
+    if (cat && ['italiennes', 'algeriennes', 'carrees', 'americaines', 'accompagnements', 'boissons', 'desserts'].includes(cat)) {
+      return cat;
+    }
+    return 'toutes';
+  });
+
   const [searchQuery, setSearchQuery] = useState('');
   const [activeModalItem, setActiveModalItem] = useState<MenuItem | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
-  // Check URL query parameters for ?table=X
+  // Check URL query parameters for ?table=X or ?category=Y
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const tableParam = params.get('table');
@@ -37,6 +47,10 @@ export const MenuPage: React.FC<MenuPageProps> = ({ onBackToHome, onOpenCart }) 
       if (!isNaN(num) && num > 0) {
         setActiveTableNumber(num);
       }
+    }
+    const catParam = params.get('category') as PizzaCategory | null;
+    if (catParam && ['italiennes', 'algeriennes', 'carrees', 'americaines', 'accompagnements', 'boissons', 'desserts'].includes(catParam)) {
+      setSelectedCategory(catParam);
     }
   }, [setActiveTableNumber]);
 
@@ -56,10 +70,17 @@ export const MenuPage: React.FC<MenuPageProps> = ({ onBackToHome, onOpenCart }) 
   const handleCategoryChange = (catId: PizzaCategory | 'toutes') => {
     if (catId === selectedCategory) return;
     setIsTransitioning(true);
+    
+    // Update URL query string without reloading page
+    const newUrl = catId === 'toutes' 
+      ? '/menu' 
+      : `/menu?category=${encodeURIComponent(catId)}`;
+    window.history.replaceState(null, '', newUrl);
+
     setTimeout(() => {
       setSelectedCategory(catId);
       setIsTransitioning(false);
-    }, 180);
+    }, 150);
   };
 
   const handleQuickAdd = (item: MenuItem) => {

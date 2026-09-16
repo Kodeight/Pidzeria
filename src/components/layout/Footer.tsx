@@ -45,7 +45,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateToSection, onNavigateT
                 }} 
                 className="hover:text-[#f7f2e7] transition-colors cursor-pointer text-[#dfd0ba] font-semibold"
               >
-                La Carte Complète (/menu)
+                La Carte Complète
               </button>
             </li>
             <li>
