@@ -44,26 +44,28 @@ export const FloatingIngredient: React.FC<FloatingIngredientProps> = ({
     const effectiveParallax = isMobile ? parallaxSpeed * 0.4 : parallaxSpeed;
     const effectiveRotation = isMobile ? rotationSpeed * 0.5 : rotationSpeed;
 
-    const st = ScrollTrigger.create({
-      trigger: el,
-      start: 'top bottom',
-      end: 'bottom top',
-      scrub: 1.2,
-      onUpdate: (self) => {
-        const p = self.progress; // 0 to 1
-        const yOffset = (p - 0.5) * effectiveParallax;
-        const rot = (p - 0.5) * effectiveRotation;
+    const ctx = gsap.context(() => {
+      ScrollTrigger.create({
+        trigger: el,
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: 1.2,
+        onUpdate: (self) => {
+          const p = self.progress; // 0 to 1
+          const yOffset = (p - 0.5) * effectiveParallax;
+          const rot = (p - 0.5) * effectiveRotation;
 
-        gsap.set(el, {
-          y: yOffset,
-          rotation: rot,
-          force3D: true,
-        });
-      },
-    });
+          gsap.set(el, {
+            y: yOffset,
+            rotation: rot,
+            force3D: true,
+          });
+        },
+      });
+    }, elRef);
 
     return () => {
-      st.kill();
+      ctx.revert();
     };
   }, [parallaxSpeed, rotationSpeed]);
 
