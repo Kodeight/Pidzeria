@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { INITIAL_MENU_ITEMS } from '../../data/mockData';
 import { MenuItem, MenuCategory } from '../../types';
 import { useStore } from '../../context/StoreContext';
-import { ArrowRight, Plus, Check, Flame, Award, ArrowUpRight } from 'lucide-react';
+import { ArrowRight, Plus, Check, Flame, Award, ArrowUpRight, Sparkles } from 'lucide-react';
 import { FloatingIngredient } from '../cinematic/FloatingIngredient';
+import { FadeUp, FadeLeft, FadeRight, ScaleReveal, StaggerReveal } from '../motion/MotionSystem';
 
 interface HomepageMenuDiscoveryProps {
   onGoToMenu: (category?: MenuCategory) => void;
@@ -152,9 +153,9 @@ export const HomepageMenuDiscovery: React.FC<HomepageMenuDiscoveryProps> = ({
         
         {/* EDITORIAL HEADER */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
-          <div className="max-w-2xl">
+          <FadeLeft distance={-40} duration={0.9} className="max-w-2xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#141210] border border-[#2a241f] mb-4">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#dfd0ba]"></span>
+              <span className="w-1.5 h-1.5 rounded-full bg-[#dfd0ba] animate-pulse"></span>
               <span className="text-[11px] font-mono tracking-widest text-[#dfd0ba] uppercase font-semibold">
                 La Carte PIDZERIA
               </span>
@@ -168,10 +169,10 @@ export const HomepageMenuDiscovery: React.FC<HomepageMenuDiscoveryProps> = ({
               Des classiques italiens aux créations algériennes, pensées pour toutes les envies. 
               Pâte au levain 48h, merguez maison d’Alger, sauces mijotées et cuisson au feu de bois.
             </p>
-          </div>
+          </FadeLeft>
 
           {/* CTA: Go directly to the full menu */}
-          <div className="flex-shrink-0">
+          <FadeRight distance={40} duration={0.9} className="flex-shrink-0">
             <button
               onClick={() => onGoToMenu()}
               className="inline-flex items-center gap-3 px-7 py-3.5 rounded-full bg-[#dfd0ba] hover:bg-[#f3eadc] text-[#0a0a0a] font-bold text-xs uppercase tracking-wider transition-all duration-300 shadow-xl shadow-black/80 hover:scale-[1.02] cursor-pointer"
@@ -179,21 +180,22 @@ export const HomepageMenuDiscovery: React.FC<HomepageMenuDiscoveryProps> = ({
               <span>Voir toute la carte</span>
               <ArrowUpRight className="w-4 h-4 text-black" />
             </button>
-          </div>
+          </FadeRight>
         </div>
 
         {/* HORIZONTAL CATEGORY NAVIGATION BAR */}
-        <div className="relative mb-12">
+        <FadeUp distance={25} duration={0.8} className="relative mb-12">
           <div className="flex items-center gap-2 pb-3 overflow-x-auto no-scrollbar scroll-smooth">
-            {CATEGORY_TABS.map((tab) => {
+            {CATEGORY_TABS.map((tab, tabIdx) => {
               const isActive = activeTab === tab.id;
               return (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
+                  style={{ animationDelay: `${tabIdx * 60}ms` }}
                   className={`flex-shrink-0 px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider transition-all duration-300 cursor-pointer flex items-center gap-2 border ${
                     isActive
-                      ? 'bg-[#dfd0ba] text-[#0a0a0a] border-[#dfd0ba] shadow-lg shadow-[#dfd0ba]/10'
+                      ? 'bg-[#dfd0ba] text-[#0a0a0a] border-[#dfd0ba] shadow-lg shadow-[#dfd0ba]/10 scale-105'
                       : 'bg-[#100e0c]/90 text-[#cbb89d] border-[#26211c] hover:border-[#dfd0ba]/50 hover:text-[#f7f2e7]'
                   }`}
                 >
@@ -219,20 +221,21 @@ export const HomepageMenuDiscovery: React.FC<HomepageMenuDiscoveryProps> = ({
             <span className="w-4 h-[1px] bg-[#3d3730]"></span>
             <span>{currentTabInfo.subtitle}</span>
           </div>
-        </div>
+        </FadeUp>
 
-        {/* REPRESENTATIVE PRODUCTS GRID (Asymmetric Editorial Rhythm) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        {/* REPRESENTATIVE PRODUCTS GRID (Directionally Animated Fade-Up, Fade-Left, Fade-Right) */}
+        <div key={activeTab} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {displayedItems.map((item, idx) => {
             const isAdded = !!addedItemIds[item.id];
-            // Give the first item extra visual presence
             const isHeroCard = idx === 0 && activeTab === 'featured';
+            
+            // Alternating directional reveals
+            const animVariant = idx % 3 === 0 ? 'fade-up' : idx % 3 === 1 ? 'fade-left' : 'fade-right';
 
-            return (
+            const cardContent = (
               <div
-                key={item.id}
                 onClick={() => onGoToMenu(item.category)}
-                className={`group relative rounded-2xl bg-[#0d0c0a] border border-[#211c17] hover:border-[#dfd0ba]/50 transition-all duration-500 overflow-hidden flex flex-col justify-between cursor-pointer ${
+                className={`group relative rounded-2xl bg-[#0d0c0a] border border-[#211c17] hover:border-[#dfd0ba]/50 transition-all duration-500 overflow-hidden flex flex-col justify-between cursor-pointer h-full ${
                   isHeroCard ? 'md:col-span-2 lg:col-span-2' : 'col-span-1'
                 }`}
               >
@@ -346,31 +349,65 @@ export const HomepageMenuDiscovery: React.FC<HomepageMenuDiscoveryProps> = ({
                 </div>
               </div>
             );
+
+            if (isHeroCard) {
+              return (
+                <div key={item.id} className="md:col-span-2 lg:col-span-2">
+                  <FadeUp delay={idx * 0.1} distance={30} duration={0.8}>
+                    {cardContent}
+                  </FadeUp>
+                </div>
+              );
+            }
+
+            if (animVariant === 'fade-left') {
+              return (
+                <FadeLeft key={item.id} delay={idx * 0.08} distance={-35} duration={0.8} className="h-full">
+                  {cardContent}
+                </FadeLeft>
+              );
+            }
+
+            if (animVariant === 'fade-right') {
+              return (
+                <FadeRight key={item.id} delay={idx * 0.08} distance={35} duration={0.8} className="h-full">
+                  {cardContent}
+                </FadeRight>
+              );
+            }
+
+            return (
+              <FadeUp key={item.id} delay={idx * 0.08} distance={35} duration={0.8} className="h-full">
+                {cardContent}
+              </FadeUp>
+            );
           })}
         </div>
 
         {/* BOTTOM CALL TO ACTION BANNER */}
-        <div className="mt-16 p-8 md:p-12 rounded-3xl bg-gradient-to-r from-[#12100d] via-[#16130f] to-[#12100d] border border-[#2d251d] text-center flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl">
-          <div className="text-left max-w-xl">
-            <span className="text-[11px] font-mono uppercase tracking-widest text-[#dfd0ba] font-semibold block mb-1">
-              Carte Complète • 24 Créations Artisanales
-            </span>
-            <h3 className="text-xl sm:text-2xl font-serif font-bold text-[#f7f2e7]">
-              Envie de découvrir toutes nos recettes et formules ?
-            </h3>
-            <p className="mt-1 text-xs sm:text-sm text-[#cbb89d] font-light">
-              Pizzas napolitaines, spécialités algéroises au feu de bois, formats carrés, entrées à partager et desserts maison.
-            </p>
-          </div>
+        <FadeUp distance={40} duration={0.9} className="mt-16">
+          <div className="p-8 md:p-12 rounded-3xl bg-gradient-to-r from-[#12100d] via-[#16130f] to-[#12100d] border border-[#2d251d] text-center flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl">
+            <div className="text-left max-w-xl">
+              <span className="text-[11px] font-mono uppercase tracking-widest text-[#dfd0ba] font-semibold block mb-1">
+                Carte Complète • 24 Créations Artisanales
+              </span>
+              <h3 className="text-xl sm:text-2xl font-serif font-bold text-[#f7f2e7]">
+                Envie de découvrir toutes nos recettes et formules ?
+              </h3>
+              <p className="mt-1 text-xs sm:text-sm text-[#cbb89d] font-light">
+                Pizzas napolitaines, spécialités algéroises au feu de bois, formats carrés, entrées à partager et desserts maison.
+              </p>
+            </div>
 
-          <button
-            onClick={() => onGoToMenu()}
-            className="flex-shrink-0 px-8 py-4 rounded-full bg-[#dfd0ba] hover:bg-[#f3eadc] text-[#0a0a0a] font-bold text-xs sm:text-sm uppercase tracking-widest transition-all duration-300 shadow-xl shadow-black/80 hover:scale-[1.02] flex items-center gap-3 cursor-pointer"
-          >
-            <span>Explorer le menu complet</span>
-            <ArrowRight className="w-4 h-4 text-black" />
-          </button>
-        </div>
+            <button
+              onClick={() => onGoToMenu()}
+              className="flex-shrink-0 px-8 py-4 rounded-full bg-[#dfd0ba] hover:bg-[#f3eadc] text-[#0a0a0a] font-bold text-xs sm:text-sm uppercase tracking-widest transition-all duration-300 shadow-xl shadow-black/80 hover:scale-[1.02] flex items-center gap-3 cursor-pointer"
+            >
+              <span>Explorer le menu complet</span>
+              <ArrowRight className="w-4 h-4 text-black" />
+            </button>
+          </div>
+        </FadeUp>
 
       </div>
     </section>

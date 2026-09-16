@@ -1,4 +1,5 @@
 import { MenuItem, TableInfo, Testimonial, Order } from '../types';
+import testimonialWomanImg from '../assets/images/testimonial_customer_woman_1789520108462.jpg';
 
 export const INITIAL_MENU_ITEMS: MenuItem[] = [
   // PIZZAS ITALIENNES
@@ -290,11 +291,11 @@ export const INITIAL_TABLES: TableInfo[] = [
 export const TESTIMONIALS: Testimonial[] = [
   {
     id: 't1',
-    name: 'Karim Bennani',
+    name: 'Amira Benali',
     location: 'Hydra, Alger',
     rating: 5,
     review: 'Sans doute la meilleure pâte à pizza d\'Alger ! La Merguez artisanale a le goût authentique du terroir marié à une cuisson italienne parfaite.',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop',
+    avatar: testimonialWomanImg,
     favoritePizza: 'La Merguez Artisanale'
   },
   {

@@ -4,6 +4,7 @@ import { PizzaCategory, MenuItem } from '../../types';
 import { MenuCard } from '../storefront/MenuCard';
 import { ProductModal } from '../storefront/ProductModal';
 import { Search, ArrowLeft, UtensilsCrossed, Sparkles } from 'lucide-react';
+import { FadeUp, FadeLeft, FadeRight, ScaleReveal, StaggerReveal } from '../motion/MotionSystem';
 
 const CATEGORIES: { id: PizzaCategory | 'toutes'; label: string; flag?: string }[] = [
   { id: 'toutes', label: 'Toutes les créations' },
@@ -97,25 +98,29 @@ export const MenuPage: React.FC<MenuPageProps> = ({ onBackToHome, onOpenCart }) 
         
         {/* Navigation Breadcrumb / Back Button */}
         <div className="flex items-center justify-between mb-8">
-          <button
-            onClick={onBackToHome}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#12100e] hover:bg-[#1f1b18] border border-[#2e2823] text-xs font-mono tracking-wider uppercase text-[#cbb89d] hover:text-[#dfd0ba] transition-colors cursor-pointer"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Retour à l'accueil</span>
-          </button>
+          <FadeLeft distance={-30} duration={0.7}>
+            <button
+              onClick={onBackToHome}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#12100e] hover:bg-[#1f1b18] border border-[#2e2823] text-xs font-mono tracking-wider uppercase text-[#cbb89d] hover:text-[#dfd0ba] transition-colors cursor-pointer"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Retour à l'accueil</span>
+            </button>
+          </FadeLeft>
 
           {/* Table indicator if ordering in-house */}
           {activeTableNumber && (
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1c1814] border border-[#dfd0ba]/30 text-[#dfd0ba] text-xs font-semibold">
-              <UtensilsCrossed className="w-3.5 h-3.5 text-[#dfd0ba]" />
-              <span>Commande en salle • Table {activeTableNumber}</span>
-            </div>
+            <FadeRight distance={30} duration={0.7}>
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1c1814] border border-[#dfd0ba]/30 text-[#dfd0ba] text-xs font-semibold">
+                <UtensilsCrossed className="w-3.5 h-3.5 text-[#dfd0ba]" />
+                <span>Commande en salle • Table {activeTableNumber}</span>
+              </div>
+            </FadeRight>
           )}
         </div>
 
         {/* Page Title & Editorial Presentation */}
-        <div className="text-center max-w-3xl mx-auto mb-10">
+        <FadeUp distance={35} duration={0.8} className="text-center max-w-3xl mx-auto mb-10">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#141210] border border-[#2d2823] text-[#dfd0ba] text-xs font-mono uppercase tracking-widest mb-4">
             <span>PIDZERIA • Carte des Pizzas</span>
           </div>
@@ -125,10 +130,10 @@ export const MenuPage: React.FC<MenuPageProps> = ({ onBackToHome, onOpenCart }) 
           <p className="text-[#cbb89d] text-sm sm:text-base leading-relaxed max-w-xl mx-auto">
             Recettes napolitaines à croûte alvéolée, créations algéroises épicées et la légendaire pizza carrée. Préparées artisanalement à chaque commande.
           </p>
-        </div>
+        </FadeUp>
 
         {/* Search Bar */}
-        <div className="relative max-w-md mx-auto mb-8">
+        <FadeUp distance={25} duration={0.7} className="relative max-w-md mx-auto mb-8">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8c7e6c]" />
           <input
             type="text"
@@ -145,10 +150,10 @@ export const MenuPage: React.FC<MenuPageProps> = ({ onBackToHome, onOpenCart }) 
               Effacer
             </button>
           )}
-        </div>
+        </FadeUp>
 
         {/* Category Filter Pills in Warm Cream / Dark Charcoal */}
-        <div className="flex items-center gap-2.5 overflow-x-auto pb-4 mb-10 no-scrollbar scroll-smooth">
+        <FadeRight distance={40} duration={0.8} className="flex items-center gap-2.5 overflow-x-auto pb-4 mb-10 no-scrollbar scroll-smooth">
           {CATEGORIES.map(cat => {
             const isSelected = selectedCategory === cat.id;
             return (
@@ -166,20 +171,49 @@ export const MenuPage: React.FC<MenuPageProps> = ({ onBackToHome, onOpenCart }) 
               </button>
             );
           })}
-        </div>
+        </FadeRight>
 
-        {/* Products Grid with smooth transition */}
-        <div className={`transition-all duration-200 ease-out ${isTransitioning ? 'opacity-0 scale-[0.99]' : 'opacity-100 scale-100'}`}>
+        {/* Products Grid with smooth transition & directional animation */}
+        <div className={`transition-all duration-300 ease-out ${isTransitioning ? 'opacity-0 scale-[0.98]' : 'opacity-100 scale-100'}`}>
           {filteredItems.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {filteredItems.map(item => (
-                <MenuCard
-                  key={item.id}
-                  item={item}
-                  onSelect={(selected) => setActiveModalItem(selected)}
-                  onQuickAdd={(selected) => handleQuickAdd(selected)}
-                />
-              ))}
+            <div key={`${selectedCategory}-${searchQuery}`} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {filteredItems.map((item, idx) => {
+                const animDir = idx % 3 === 0 ? 'fade-up' : idx % 3 === 1 ? 'fade-left' : 'fade-right';
+                
+                if (animDir === 'fade-left') {
+                  return (
+                    <FadeLeft key={item.id} delay={idx * 0.05} distance={-30} duration={0.7} className="h-full">
+                      <MenuCard
+                        item={item}
+                        onSelect={(selected) => setActiveModalItem(selected)}
+                        onQuickAdd={(selected) => handleQuickAdd(selected)}
+                      />
+                    </FadeLeft>
+                  );
+                }
+
+                if (animDir === 'fade-right') {
+                  return (
+                    <FadeRight key={item.id} delay={idx * 0.05} distance={30} duration={0.7} className="h-full">
+                      <MenuCard
+                        item={item}
+                        onSelect={(selected) => setActiveModalItem(selected)}
+                        onQuickAdd={(selected) => handleQuickAdd(selected)}
+                      />
+                    </FadeRight>
+                  );
+                }
+
+                return (
+                  <FadeUp key={item.id} delay={idx * 0.05} distance={30} duration={0.7} className="h-full">
+                    <MenuCard
+                      item={item}
+                      onSelect={(selected) => setActiveModalItem(selected)}
+                      onQuickAdd={(selected) => handleQuickAdd(selected)}
+                    />
+                  </FadeUp>
+                );
+              })}
             </div>
           ) : (
             <div className="text-center py-20 bg-[#0e0c0b] border border-[#221e1a] rounded-3xl max-w-md mx-auto">

@@ -263,51 +263,69 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Navigation Links list */}
           <div className="px-6 py-8 flex-1 flex flex-col justify-center max-w-md mx-auto w-full">
             <div className="space-y-1 divide-y divide-[#171412]">
-              {navLinks.map((link) => (
-                <button
-                  key={link.number}
-                  onClick={link.action}
-                  className={`w-full py-4 flex items-center justify-between text-left group transition-all cursor-pointer ${
-                    link.active ? 'text-[#f7f2e7]' : 'text-[#cbb89d] hover:text-[#f7f2e7]'
-                  }`}
-                >
-                  <div className="flex items-center gap-4">
-                    <span className="font-mono text-xs text-[#8c7e6c] group-hover:text-[#dfd0ba] transition-colors">
-                      {link.number}
-                    </span>
-                    <span className={`text-xl sm:text-2xl font-serif tracking-tight ${
-                      link.active ? 'font-bold text-[#dfd0ba]' : 'font-medium'
-                    }`}>
-                      {link.label}
-                    </span>
+              {navLinks.map((link, idx) => {
+                const isEven = idx % 2 === 0;
+                return (
+                  <div
+                    key={link.number}
+                    className={`transition-all duration-500 ease-out animate-in ${
+                      isEven ? 'slide-in-from-left-6' : 'slide-in-from-right-6'
+                    } fade-in fill-mode-both`}
+                    style={{ animationDelay: `${idx * 70 + 80}ms`, animationDuration: '450ms' }}
+                  >
+                    <button
+                      onClick={link.action}
+                      className={`w-full py-4 flex items-center justify-between text-left group transition-all cursor-pointer ${
+                        link.active ? 'text-[#f7f2e7]' : 'text-[#cbb89d] hover:text-[#f7f2e7]'
+                      }`}
+                    >
+                      <div className="flex items-center gap-4">
+                        <span className="font-mono text-xs text-[#8c7e6c] group-hover:text-[#dfd0ba] transition-colors">
+                          {link.number}
+                        </span>
+                        <span className={`text-xl sm:text-2xl font-serif tracking-tight ${
+                          link.active ? 'font-bold text-[#dfd0ba]' : 'font-medium'
+                        }`}>
+                          {link.label}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {link.active && (
+                          <span className="w-2 h-2 rounded-full bg-[#dfd0ba] animate-pulse" />
+                        )}
+                        <ChevronRight className="w-4 h-4 text-[#5a5045] group-hover:text-[#dfd0ba] group-hover:translate-x-1 transition-all" />
+                      </div>
+                    </button>
                   </div>
-                  <div className="flex items-center gap-2">
-                    {link.active && (
-                      <span className="w-2 h-2 rounded-full bg-[#dfd0ba]" />
-                    )}
-                    <ChevronRight className="w-4 h-4 text-[#5a5045] group-hover:text-[#dfd0ba] group-hover:translate-x-1 transition-all" />
-                  </div>
-                </button>
-              ))}
+                );
+              })}
 
               {/* Dashboard Link for Restaurant Staff */}
-              <button
-                onClick={handleDashboardClick}
-                className="w-full py-4 flex items-center justify-between text-left group transition-all cursor-pointer text-[#8c7e6c] hover:text-[#dfd0ba]"
+              <div
+                className="transition-all duration-500 ease-out animate-in slide-in-from-bottom-4 fade-in fill-mode-both"
+                style={{ animationDelay: `${navLinks.length * 70 + 100}ms`, animationDuration: '450ms' }}
               >
-                <div className="flex items-center gap-4">
-                  <span className="font-mono text-xs text-[#5a5045]">07</span>
-                  <span className="text-base font-sans font-medium flex items-center gap-2">
-                    <LayoutDashboard className="w-4 h-4 text-[#8c7e6c]" />
-                    <span>Espace Équipe / Dashboard</span>
-                  </span>
-                </div>
-                <ChevronRight className="w-4 h-4 text-[#5a5045]" />
-              </button>
+                <button
+                  onClick={handleDashboardClick}
+                  className="w-full py-4 flex items-center justify-between text-left group transition-all cursor-pointer text-[#8c7e6c] hover:text-[#dfd0ba]"
+                >
+                  <div className="flex items-center gap-4">
+                    <span className="font-mono text-xs text-[#5a5045]">07</span>
+                    <span className="text-base font-sans font-medium flex items-center gap-2">
+                      <LayoutDashboard className="w-4 h-4 text-[#8c7e6c]" />
+                      <span>Espace Équipe / Dashboard</span>
+                    </span>
+                  </div>
+                  <ChevronRight className="w-4 h-4 text-[#5a5045]" />
+                </button>
+              </div>
             </div>
 
             {/* Quick Action CTAs */}
-            <div className="mt-8 space-y-3 pt-6 border-t border-[#1a1714]">
+            <div 
+              className="mt-8 space-y-3 pt-6 border-t border-[#1a1714] animate-in slide-in-from-bottom-6 fade-in fill-mode-both"
+              style={{ animationDelay: '520ms', animationDuration: '500ms' }}
+            >
               <button
                 onClick={handleMenuClick}
                 className="w-full py-3.5 px-6 rounded-full bg-[#dfd0ba] hover:bg-[#f3eadc] active:scale-[0.98] text-[#0a0a0a] font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-xl shadow-black/80 transition-all cursor-pointer"
