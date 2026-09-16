@@ -7,6 +7,8 @@ export type PizzaCategory =
   | 'boissons'
   | 'desserts';
 
+export type MenuCategory = PizzaCategory;
+
 export interface MenuItem {
   id: string;
   name: string;

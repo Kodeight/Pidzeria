@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useStore } from '../../context/StoreContext';
 import { Calendar, Users, Clock, CheckCircle2, Phone, User } from 'lucide-react';
 import { FadeUp, ScaleReveal } from '../motion/MotionSystem';
+import { FloatingIngredient } from '../cinematic/FloatingIngredient';
 
 export const ReservationSection: React.FC = () => {
   const { addReservation } = useStore();
@@ -30,8 +31,32 @@ export const ReservationSection: React.FC = () => {
   };
 
   return (
-    <section id="reservation" className="py-28 px-6 md:px-12 max-w-5xl mx-auto w-full">
-      <ScaleReveal initialScale={0.96} duration={0.9} distance={30}>
+    <section id="reservation" className="py-28 px-6 md:px-12 max-w-5xl mx-auto w-full relative overflow-hidden">
+      {/* FLOATING INGREDIENTS AROUND RESERVATION */}
+      {/* 1. Tomato slice hovering top left of reservation card */}
+      <div className="absolute top-8 -left-6 md:left-4 pointer-events-none z-0">
+        <FloatingIngredient
+          ingredient="tomato"
+          size={110}
+          parallaxSpeed={-60}
+          rotationSpeed={-25}
+          opacity={0.8}
+        />
+      </div>
+
+      {/* 2. Pepperoni petal hovering bottom right */}
+      <div className="absolute -bottom-8 -right-4 md:right-8 pointer-events-none z-0">
+        <FloatingIngredient
+          ingredient="pepperoni"
+          size={100}
+          parallaxSpeed={60}
+          rotationSpeed={30}
+          opacity={0.75}
+          hideOnMobile
+        />
+      </div>
+
+      <ScaleReveal initialScale={0.96} duration={0.9} distance={30} className="relative z-10">
         <div className="glass-panel p-8 sm:p-12 rounded-3xl border border-[#2a241f] shadow-2xl relative overflow-hidden bg-[#0c0a09]/95">
           
           <div className="text-center max-w-xl mx-auto mb-10">

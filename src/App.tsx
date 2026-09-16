@@ -3,7 +3,7 @@ import { StoreProvider } from './context/StoreContext';
 import { PidzeriaLoader } from './components/loader/PidzeriaLoader';
 import { Navbar } from './components/layout/Navbar';
 import { CinematicExperience } from './components/cinematic/CinematicExperience';
-import { MenuInvitationSection } from './components/storefront/MenuInvitationSection';
+import { HomepageMenuDiscovery } from './components/storefront/HomepageMenuDiscovery';
 import { StorySection } from './components/storefront/StorySection';
 import { TestimonialsSection } from './components/storefront/TestimonialsSection';
 import { ReservationSection } from './components/storefront/ReservationSection';
@@ -13,6 +13,7 @@ import { CartDrawer } from './components/storefront/CartDrawer';
 import { OrderTrackerModal } from './components/storefront/OrderTrackerModal';
 import { DashboardLayout } from './components/dashboard/DashboardLayout';
 import { ScrollProgress } from './components/motion/ScrollProgress';
+import { MenuCategory } from './types';
 
 type AppRoute = 'home' | 'menu' | 'dashboard';
 
@@ -90,24 +91,28 @@ function StorefrontApp() {
       {/* VIEW ROUTING: Home Page vs Dedicated /menu Page */}
       {currentRoute === 'home' ? (
         <main className="relative">
-          {/* 1. Cinematic Story: Unified Hero + 5 Narrative Stages scrubbed with pizza.mp4 */}
+          {/* 1. Cinematic Story: Camera-moving scrubbed video narrative with 6 stages */}
           <CinematicExperience
             onNavigateToMenu={() => navigateTo('menu', '/menu')}
             onNavigateToReservation={() => scrollToSection('reservation')}
           />
 
-          {/* 2. Editorial Transition Section inviting user to the /menu destination */}
-          <MenuInvitationSection
-            onGoToMenu={() => navigateTo('menu', '/menu')}
+          {/* 2. Homepage Menu Discovery: All categories + representative items + floating ingredients */}
+          <HomepageMenuDiscovery
+            onGoToMenu={(category?: MenuCategory) => {
+              const targetPath = category ? `/menu?category=${category}` : '/menu';
+              navigateTo('menu', targetPath);
+            }}
+            onOpenCart={() => setCartOpen(true)}
           />
 
-          {/* 3. Heritage Story & Artisanal Philosophy */}
+          {/* 3. Heritage Story & Artisanal Philosophy with floating cremini & basil */}
           <StorySection />
 
-          {/* 4. Verified Customer Testimonials */}
+          {/* 4. Verified Customer Testimonials with floating Kalamata olive */}
           <TestimonialsSection />
 
-          {/* 5. Table Reservation Form */}
+          {/* 5. Table Reservation Form with floating tomato slice & pepperoni */}
           <ReservationSection />
 
           {/* Storefront Footer */}

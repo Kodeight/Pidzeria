@@ -3,11 +3,15 @@ import React, { useEffect, useRef, useState } from 'react';
 interface PizzaVideoCompositorProps {
   scrollProgress: number; // 0 to 1
   onStageChange?: (stageIndex: number) => void;
+  className?: string;
+  style?: React.CSSProperties;
 }
 
 export const PizzaVideoCompositor: React.FC<PizzaVideoCompositorProps> = ({
   scrollProgress,
-  onStageChange
+  onStageChange,
+  className = '',
+  style = {},
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const targetTimeRef = useRef(0);
@@ -53,7 +57,7 @@ export const PizzaVideoCompositor: React.FC<PizzaVideoCompositorProps> = ({
     targetTimeRef.current = clampedProgress * duration;
 
     if (onStageChange) {
-      const stage = Math.min(4, Math.floor(clampedProgress * 5));
+      const stage = Math.min(5, Math.floor(clampedProgress * 6));
       onStageChange(stage);
     }
   }, [scrollProgress, duration, onStageChange]);
@@ -69,9 +73,9 @@ export const PizzaVideoCompositor: React.FC<PizzaVideoCompositorProps> = ({
         const current = currentTimeRef.current;
         const diff = target - current;
 
-        // Smooth interpolation
-        if (Math.abs(diff) > 0.004) {
-          const step = diff * 0.22;
+        // Smooth responsive interpolation
+        if (Math.abs(diff) > 0.003) {
+          const step = diff * 0.25;
           const nextTime = current + step;
           currentTimeRef.current = nextTime;
 
@@ -97,32 +101,29 @@ export const PizzaVideoCompositor: React.FC<PizzaVideoCompositorProps> = ({
   }, [isVideoLoaded, duration]);
 
   return (
-    <div className="relative w-full h-full flex items-center justify-center select-none bg-black overflow-hidden">
-      {/* Background matches pure black #000000 of the video */}
-      <div className="absolute inset-0 bg-black pointer-events-none" />
-
-      {/* Subtle organic warm backlight behind the pizza using authentic warm cream/amber */}
-      <div 
-        className="absolute w-[360px] sm:w-[500px] md:w-[650px] aspect-square rounded-full pointer-events-none opacity-20 blur-[130px] -z-0"
-        style={{
-          background: 'radial-gradient(circle, #dfd0ba 0%, #8c7e6c 35%, transparent 70%)'
-        }}
-      />
-
-      {/* Video Container with radial edge feathering for 100% seamless boundary blend into black */}
-      <div className="relative w-full max-w-[850px] aspect-[16/10] flex items-center justify-center z-10">
+    <div 
+      className={`relative flex items-center justify-center select-none bg-transparent ${className}`}
+      style={style}
+    >
+      {/* NO artificial halos, NO glowing backlights, NO box shadows.
+          Pure black blending directly into the #000000 website canvas */}
+      <div className="relative w-full h-full flex items-center justify-center">
         <video
           ref={videoRef}
           src={videoSource}
           muted
           playsInline
           preload="auto"
-          className="w-full h-full object-contain pointer-events-none select-none transition-opacity duration-500"
+          className="w-full h-full object-contain pointer-events-none select-none"
           style={{
-            // Radial vignette mask softens the 1280x720 video edges directly into #000000
-            maskImage: 'radial-gradient(ellipse 72% 70% at 50% 50%, black 50%, rgba(0,0,0,0.7) 78%, transparent 100%)',
-            WebkitMaskImage: 'radial-gradient(ellipse 72% 70% at 50% 50%, black 50%, rgba(0,0,0,0.7) 78%, transparent 100%)',
-            opacity: isVideoLoaded ? 1 : 0.4
+            // Screen blend mode ensures the black pixels of the video disappear 100% into #000000
+            // while preserving the rich, natural colors and highlights of the pizza
+            mixBlendMode: 'screen',
+            // Soft feathered boundary ensures zero rectangular edge artifacts
+            maskImage: 'radial-gradient(circle at 50% 50%, black 72%, rgba(0,0,0,0.85) 86%, transparent 100%)',
+            WebkitMaskImage: 'radial-gradient(circle at 50% 50%, black 72%, rgba(0,0,0,0.85) 86%, transparent 100%)',
+            opacity: isVideoLoaded ? 1 : 0.4,
+            filter: 'contrast(1.04) brightness(1.02)',
           }}
           onError={(e) => {
             const vid = e.currentTarget;
@@ -132,9 +133,9 @@ export const PizzaVideoCompositor: React.FC<PizzaVideoCompositorProps> = ({
           }}
         />
 
-        {/* Subtle loading placeholder */}
+        {/* Minimal loading state */}
         {!isVideoLoaded && (
-          <div className="absolute inset-0 flex items-center justify-center text-xs font-mono text-[#cbb89d] uppercase tracking-widest">
+          <div className="absolute inset-0 flex items-center justify-center text-xs font-mono text-[#cbb89d] uppercase tracking-widest pointer-events-none">
             Chargement de la cinématique PIDZERIA...
           </div>
         )}

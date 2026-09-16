@@ -2,11 +2,23 @@ import React from 'react';
 import { TESTIMONIALS } from '../../data/mockData';
 import { Star, MessageSquareQuote, MapPin, Utensils } from 'lucide-react';
 import { FadeUp, StaggerReveal } from '../motion/MotionSystem';
+import { FloatingIngredient } from '../cinematic/FloatingIngredient';
 
 export const TestimonialsSection: React.FC = () => {
   return (
-    <section id="avis" className="py-24 px-6 md:px-12 max-w-7xl mx-auto w-full">
-      <FadeUp distance={30} className="text-center max-w-2xl mx-auto mb-16">
+    <section id="avis" className="py-24 px-6 md:px-12 max-w-7xl mx-auto w-full relative overflow-hidden">
+      {/* FLOATING INGREDIENT: Kalamata Olive hovering top right of testimonials */}
+      <div className="absolute -top-6 right-4 md:right-12 pointer-events-none z-0">
+        <FloatingIngredient
+          ingredient="olive"
+          size={85}
+          parallaxSpeed={-50}
+          rotationSpeed={35}
+          opacity={0.7}
+        />
+      </div>
+
+      <FadeUp distance={30} className="text-center max-w-2xl mx-auto mb-16 relative z-10">
         <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#161311] border border-[#2d2823] text-[#dfd0ba] text-xs font-mono uppercase tracking-widest mb-4">
           <MessageSquareQuote className="w-3.5 h-3.5 text-[#cbb89d]" />
           <span>Avis Vérifiés</span>
@@ -19,7 +31,7 @@ export const TestimonialsSection: React.FC = () => {
         </p>
       </FadeUp>
 
-      <StaggerReveal staggerDelay={0.15} duration={0.8} distance={35} className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <StaggerReveal staggerDelay={0.15} duration={0.8} distance={35} className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
         {TESTIMONIALS.map(item => (
           <div 
             key={item.id}

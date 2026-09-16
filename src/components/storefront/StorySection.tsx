@@ -2,6 +2,7 @@ import React from 'react';
 import { Logo } from '../brand/Logo';
 import { ChefHat, HeartHandshake, Compass } from 'lucide-react';
 import { FadeLeft, FadeRight, Parallax } from '../motion/MotionSystem';
+import { FloatingIngredient } from '../cinematic/FloatingIngredient';
 
 export const StorySection: React.FC = () => {
   return (
@@ -13,7 +14,31 @@ export const StorySection: React.FC = () => {
         </Parallax>
       </div>
 
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center relative z-10">
+      {/* FLOATING INGREDIENTS */}
+      {/* 1. Fresh Cremini Mushroom slice hovering near right frame */}
+      <div className="absolute top-16 right-6 md:right-16 pointer-events-none z-10">
+        <FloatingIngredient
+          ingredient="mushroom"
+          size={115}
+          parallaxSpeed={-65}
+          rotationSpeed={20}
+          opacity={0.8}
+        />
+      </div>
+
+      {/* 2. Italian Basil leaf drifting along the lower story boundary */}
+      <div className="absolute bottom-12 left-6 md:left-20 pointer-events-none z-10">
+        <FloatingIngredient
+          ingredient="basil"
+          size={95}
+          parallaxSpeed={70}
+          rotationSpeed={-30}
+          opacity={0.75}
+          hideOnMobile
+        />
+      </div>
+
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center relative z-20">
         
         {/* Left Column: Story Content with FADE-LEFT */}
         <FadeLeft distance={-50} duration={1.0} className="lg:col-span-6 space-y-6">
