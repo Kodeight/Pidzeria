@@ -5,9 +5,10 @@ import { MapPin, Phone, Clock, Instagram, Facebook, Globe, Heart } from 'lucide-
 interface FooterProps {
   onNavigateToSection: (sectionId: string) => void;
   onNavigateToMenu?: () => void;
+  onNavigateToDashboard?: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onNavigateToSection, onNavigateToMenu }) => {
+export const Footer: React.FC<FooterProps> = ({ onNavigateToSection, onNavigateToMenu, onNavigateToDashboard }) => {
   return (
     <footer id="contact" className="bg-[#050505] text-[#8c7e6c] border-t border-[#1c1916] pt-16 pb-12 px-6 md:px-12">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
@@ -63,6 +64,16 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateToSection, onNavigateT
                 Réserver une table
               </button>
             </li>
+            {onNavigateToDashboard && (
+              <li className="pt-1.5 border-t border-[#1c1916]">
+                <button 
+                  onClick={onNavigateToDashboard}
+                  className="hover:text-[#dfd0ba] text-[#6e6355] hover:underline transition-colors cursor-pointer text-[11px] font-mono flex items-center gap-1.5"
+                >
+                  <span>→ Espace Restaurant (Dashboard)</span>
+                </button>
+              </li>
+            )}
           </ul>
         </div>
 

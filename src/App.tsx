@@ -226,6 +226,13 @@ function MainApp() {
             <Footer
               onNavigateToSection={scrollToSection}
               onNavigateToMenu={() => navigateTo('menu', '/menu')}
+              onNavigateToDashboard={() => {
+                if (isAuthenticated) {
+                  navigateTo('dashboard', '/dashboard');
+                } else {
+                  navigateTo('dashboard-login', '/dashboard/login');
+                }
+              }}
             />
           </main>
         ) : (
@@ -277,6 +284,13 @@ function MainApp() {
             <Footer
               onNavigateToSection={scrollToSection}
               onNavigateToMenu={() => navigateTo('menu', '/menu')}
+              onNavigateToDashboard={() => {
+                if (isAuthenticated) {
+                  navigateTo('dashboard', '/dashboard');
+                } else {
+                  navigateTo('dashboard-login', '/dashboard/login');
+                }
+              }}
             />
           </main>
         )
@@ -292,6 +306,13 @@ function MainApp() {
           <Footer
             onNavigateToSection={scrollToSection}
             onNavigateToMenu={() => navigateTo('menu', '/menu')}
+            onNavigateToDashboard={() => {
+              if (isAuthenticated) {
+                navigateTo('dashboard', '/dashboard');
+              } else {
+                navigateTo('dashboard-login', '/dashboard/login');
+              }
+            }}
           />
         </main>
       )}
