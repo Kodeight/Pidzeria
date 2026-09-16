@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { ArrowUpRight, Calendar, Flame, Sparkles, Disc3, RotateCw } from 'lucide-react';
+import React, { useRef, useEffect, useCallback } from 'react';
+import { ArrowUpRight, Calendar, Flame, Sparkles } from 'lucide-react';
 import mobilePizzaImg from '../../assets/images/artisan_mobile_pizza_1789519581472.jpg';
 
 interface MobileEditorialHeroProps {
@@ -11,174 +11,192 @@ export const MobileEditorialHero: React.FC<MobileEditorialHeroProps> = ({
   onNavigateToMenu,
   onNavigateToReservation,
 }) => {
-  const diskRef = useRef<HTMLDivElement>(null);
-  const [rotation, setRotation] = useState<number>(0);
-  const [isInteracting, setIsInteracting] = useState<boolean>(false);
-  const [hasInteracted, setHasInteracted] = useState<boolean>(false);
-  const [rpmDisplay, setRpmDisplay] = useState<number>(33);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const pizzaRef = useRef<HTMLDivElement>(null);
 
-  // Drag physics tracking refs
+  // High-performance physics refs (bypasses React state to ensure 60-120fps fluid rotation)
   const isDraggingRef = useRef<boolean>(false);
+  const centerRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const lastAngleRef = useRef<number>(0);
   const lastTimeRef = useRef<number>(0);
-  const velocityRef = useRef<number>(0);
-  const animFrameRef = useRef<number | null>(null);
   const currentRotationRef = useRef<number>(0);
+  const velocityRef = useRef<number>(0.08); // gentle ambient spin
+  const animFrameRef = useRef<number | null>(null);
 
-  // Sync ref with state
-  useEffect(() => {
-    currentRotationRef.current = rotation;
-  }, [rotation]);
-
-  // Calculate angle between disk center and pointer (x, y)
-  const getAngle = useCallback((clientX: number, clientY: number): number => {
-    if (!diskRef.current) return 0;
-    const rect = diskRef.current.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    const dx = clientX - centerX;
-    const dy = clientY - centerY;
+  // Compute pointer angle relative to center of pizza
+  const getPointerAngle = useCallback((clientX: number, clientY: number): number => {
+    const dx = clientX - centerRef.current.x;
+    const dy = clientY - centerRef.current.y;
     return Math.atan2(dy, dx) * (180 / Math.PI);
   }, []);
 
-  // Inertial momentum animation loop
-  const startMomentumLoop = useCallback(() => {
-    if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
+  // Recalculate center coordinates of pizza container
+  const updateCenter = useCallback(() => {
+    if (pizzaRef.current) {
+      const rect = pizzaRef.current.getBoundingClientRect();
+      centerRef.current = {
+        x: rect.left + rect.width / 2,
+        y: rect.top + rect.height / 2,
+      };
+    }
+  }, []);
+
+  // Ultra-smooth RAF physics & momentum loop
+  useEffect(() => {
+    updateCenter();
+    window.addEventListener('resize', updateCenter);
 
     let lastTimestamp = performance.now();
 
-    const step = (now: number) => {
+    const loop = (now: number) => {
       const dt = Math.min(now - lastTimestamp, 32);
       lastTimestamp = now;
+      const stepFactor = dt / 16.67;
 
       if (!isDraggingRef.current) {
-        // Friction decay
-        velocityRef.current *= Math.pow(0.95, dt / 16);
+        // Friction decay on inertial release
+        velocityRef.current *= Math.pow(0.96, stepFactor);
 
-        // Calculate approximate RPM for display
-        const currentRpm = Math.round(Math.abs(velocityRef.current * 10));
-        setRpmDisplay(Math.max(16, Math.min(78, currentRpm > 2 ? currentRpm : 33)));
-
-        // If speed is very low, maintain a gentle idle ambient turntable rotation
+        // Ambient gentle drift when resting
         if (Math.abs(velocityRef.current) < 0.05) {
-          velocityRef.current = 0.06; // ~1.5 RPM ambient vinyl spin
+          velocityRef.current = 0.06;
         }
 
-        const nextRot = (currentRotationRef.current + velocityRef.current * (dt / 16) * 2) % 360;
-        currentRotationRef.current = nextRot;
-        setRotation(nextRot);
+        currentRotationRef.current = (currentRotationRef.current + velocityRef.current * stepFactor) % 360;
+        
+        if (pizzaRef.current) {
+          pizzaRef.current.style.transform = `rotate(${currentRotationRef.current.toFixed(2)}deg)`;
+        }
       }
 
-      animFrameRef.current = requestAnimationFrame(step);
+      animFrameRef.current = requestAnimationFrame(loop);
     };
 
-    animFrameRef.current = requestAnimationFrame(step);
-  }, []);
+    animFrameRef.current = requestAnimationFrame(loop);
 
-  // Mount ambient turntable spin
-  useEffect(() => {
-    velocityRef.current = 0.08;
-    startMomentumLoop();
     return () => {
+      window.removeEventListener('resize', updateCenter);
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
     };
-  }, [startMomentumLoop]);
+  }, [updateCenter]);
 
-  // Pointer/Touch Handlers
-  const handleStart = (clientX: number, clientY: number) => {
+  // Touch & Mouse Event Handlers
+  const handlePointerStart = (clientX: number, clientY: number) => {
+    updateCenter();
     isDraggingRef.current = true;
-    setIsInteracting(true);
-    setHasInteracted(true);
-    const angle = getAngle(clientX, clientY);
+    const angle = getPointerAngle(clientX, clientY);
     lastAngleRef.current = angle;
     lastTimeRef.current = performance.now();
     velocityRef.current = 0;
   };
 
-  const handleMove = (clientX: number, clientY: number) => {
+  const handlePointerMove = (clientX: number, clientY: number) => {
     if (!isDraggingRef.current) return;
     const now = performance.now();
     const dt = Math.max(now - lastTimeRef.current, 1);
-    const angle = getAngle(clientX, clientY);
+    const angle = getPointerAngle(clientX, clientY);
 
     let deltaAngle = angle - lastAngleRef.current;
-    // Normalize jump over the -180/180 boundary
     if (deltaAngle > 180) deltaAngle -= 360;
     if (deltaAngle < -180) deltaAngle += 360;
 
-    const newRotation = (currentRotationRef.current + deltaAngle) % 360;
-    currentRotationRef.current = newRotation;
-    setRotation(newRotation);
+    currentRotationRef.current = (currentRotationRef.current + deltaAngle) % 360;
 
-    // Compute angular velocity with smoothing
-    const instVelocity = deltaAngle / (dt / 16);
-    velocityRef.current = velocityRef.current * 0.4 + instVelocity * 0.6;
+    // Apply rotation directly to DOM element for zero-latency, lag-free dragging
+    if (pizzaRef.current) {
+      pizzaRef.current.style.transform = `rotate(${currentRotationRef.current.toFixed(2)}deg)`;
+    }
+
+    // Exponential velocity smoothing
+    const instVel = deltaAngle / (dt / 16.67);
+    velocityRef.current = velocityRef.current * 0.3 + instVel * 0.7;
 
     lastAngleRef.current = angle;
     lastTimeRef.current = now;
   };
 
-  const handleEnd = () => {
+  const handlePointerEnd = () => {
     if (!isDraggingRef.current) return;
     isDraggingRef.current = false;
-    setIsInteracting(false);
-  };
-
-  // Touch event handlers
-  const onTouchStart = (e: React.TouchEvent) => {
-    if (e.touches.length > 0) {
-      handleStart(e.touches[0].clientX, e.touches[0].clientY);
-    }
-  };
-
-  const onTouchMove = (e: React.TouchEvent) => {
-    if (e.touches.length > 0) {
-      handleMove(e.touches[0].clientX, e.touches[0].clientY);
-    }
-  };
-
-  // Mouse event handlers for desktop preview testing
-  const onMouseDown = (e: React.MouseEvent) => {
-    handleStart(e.clientX, e.clientY);
-  };
-
-  const onMouseMove = (e: React.MouseEvent) => {
-    if (isDraggingRef.current) {
-      handleMove(e.clientX, e.clientY);
-    }
   };
 
   return (
     <section 
-      onMouseMove={onMouseMove}
-      onMouseUp={handleEnd}
-      onMouseLeave={handleEnd}
-      className="relative w-full min-h-[90vh] bg-[#000000] pt-28 pb-14 px-5 sm:px-8 flex flex-col justify-between overflow-hidden select-none"
+      ref={containerRef}
+      onMouseMove={(e) => {
+        if (isDraggingRef.current) handlePointerMove(e.clientX, e.clientY);
+      }}
+      onMouseUp={handlePointerEnd}
+      onMouseLeave={handlePointerEnd}
+      className="relative w-full min-h-[92vh] bg-[#000000] pt-24 pb-14 px-5 sm:px-8 flex flex-col items-center justify-between overflow-hidden select-none"
     >
       {/* Background ambient lighting */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[320px] h-[320px] bg-[#dfd0ba]/5 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[340px] h-[340px] bg-[#dfd0ba]/5 rounded-full blur-[100px] pointer-events-none" />
 
-      {/* 1. EDITORIAL TEXT CONTENT */}
-      <div className="relative z-20 max-w-lg mx-auto w-full flex flex-col items-start text-left">
+      {/* 1. TOP SECTION: ROTATABLE ARTISANAL PIZZA (Touch & Drag in a Circle) */}
+      <div className="relative z-10 w-full max-w-[310px] sm:max-w-[360px] aspect-square flex items-center justify-center my-2">
+        <div
+          onTouchStart={(e) => {
+            if (e.touches.length > 0) {
+              handlePointerStart(e.touches[0].clientX, e.touches[0].clientY);
+            }
+          }}
+          onTouchMove={(e) => {
+            if (e.touches.length > 0) {
+              handlePointerMove(e.touches[0].clientX, e.touches[0].clientY);
+            }
+          }}
+          onTouchEnd={handlePointerEnd}
+          onTouchCancel={handlePointerEnd}
+          onMouseDown={(e) => handlePointerStart(e.clientX, e.clientY)}
+          className="relative w-full h-full flex items-center justify-center cursor-grab active:cursor-grabbing touch-none select-none"
+          style={{ touchAction: 'none' }}
+        >
+          {/* Subtle soft dark aura around pizza */}
+          <div className="absolute inset-2 rounded-full bg-gradient-to-b from-[#141210]/40 to-transparent blur-xl pointer-events-none -z-10" />
+
+          {/* Pure Artisanal Pizza Element */}
+          <div
+            ref={pizzaRef}
+            className="relative w-full h-full rounded-full flex items-center justify-center will-change-transform drop-shadow-[0_20px_45px_rgba(0,0,0,0.95)] transition-[filter] duration-300 active:scale-[0.99]"
+            style={{
+              transform: 'rotate(0deg)',
+              transformOrigin: 'center center',
+            }}
+          >
+            <img
+              src={mobilePizzaImg}
+              alt="PIDZERIA - Pizza artisanale au feu de bois"
+              loading="eager"
+              decoding="async"
+              draggable={false}
+              className="w-full h-full object-contain rounded-full pointer-events-none select-none"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* 2. BOTTOM SECTION: HERO EDITORIAL CONTENT & ACTIONS */}
+      <div className="relative z-20 max-w-lg mx-auto w-full flex flex-col items-start text-left mt-4">
         
         {/* Brand / Category label */}
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#12100e] border border-[#2a241f] text-[#dfd0ba] text-[11px] font-mono tracking-widest uppercase mb-4">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#12100e] border border-[#2a241f] text-[#dfd0ba] text-[11px] font-mono tracking-widest uppercase mb-3.5">
           <span className="w-1.5 h-1.5 rounded-full bg-[#dfd0ba] animate-pulse" />
           <span>Pizzeria Artisanale • Alger</span>
         </div>
 
         {/* Big Editorial Headline */}
-        <h1 className="text-3xl sm:text-4xl font-serif font-extrabold text-[#f7f2e7] leading-[1.12] tracking-tight mb-3">
+        <h1 className="text-3xl sm:text-4xl font-serif font-extrabold text-[#f7f2e7] leading-[1.12] tracking-tight mb-2.5">
           L’Italie rencontre l’Algérie.
         </h1>
 
         {/* Short supporting description */}
-        <p className="text-sm sm:text-base text-[#cbb89d] font-light leading-relaxed mb-6 max-w-md">
+        <p className="text-sm sm:text-base text-[#cbb89d] font-light leading-relaxed mb-5 max-w-md">
           L’art noble de la pizza napolitaine au levain naturel, sublimé par la générosité et les épices authentiques de notre terroir algérois.
         </p>
 
-        {/* Clear, High-Contrast Action CTAs */}
-        <div className="flex flex-col sm:flex-row items-center gap-3 w-full mb-6">
+        {/* Action CTAs */}
+        <div className="flex flex-col sm:flex-row items-center gap-3 w-full mb-5">
           <button
             onClick={onNavigateToMenu}
             className="w-full sm:w-auto px-7 py-3.5 rounded-full bg-[#dfd0ba] hover:bg-[#f3eadc] active:scale-[0.98] text-[#0a0a0a] font-bold text-xs tracking-wider uppercase transition-all shadow-xl shadow-black/80 flex items-center justify-center gap-2 cursor-pointer"
@@ -197,7 +215,7 @@ export const MobileEditorialHero: React.FC<MobileEditorialHeroProps> = ({
         </div>
 
         {/* Artisanal Feature Badges */}
-        <div className="flex items-center gap-2.5 text-[11px] font-mono text-[#8c7e6c] pt-2 pb-1 overflow-x-auto no-scrollbar w-full">
+        <div className="flex items-center gap-2.5 text-[11px] font-mono text-[#8c7e6c] pt-1 pb-1 overflow-x-auto no-scrollbar w-full">
           <span className="inline-flex items-center gap-1 shrink-0 px-2.5 py-1 rounded-md bg-[#100e0d] border border-[#221d18]">
             <Flame className="w-3 h-3 text-[#dfd0ba]" />
             <span>Feu de bois 450°C</span>
@@ -213,70 +231,8 @@ export const MobileEditorialHero: React.FC<MobileEditorialHeroProps> = ({
 
       </div>
 
-      {/* 2. ROTATABLE VINTAGE VINYL PIZZA PLATTER (Touch & Scratch on Mobile) */}
-      <div className="relative z-10 w-full max-w-[340px] sm:max-w-md mx-auto aspect-square flex flex-col items-center justify-center mt-6">
-        
-        {/* Interactive Vinyl disk container */}
-        <div
-          ref={diskRef}
-          onTouchStart={onTouchStart}
-          onTouchMove={onTouchMove}
-          onTouchEnd={handleEnd}
-          onTouchCancel={handleEnd}
-          onMouseDown={onMouseDown}
-          className="relative w-full h-full flex items-center justify-center cursor-grab active:cursor-grabbing touch-none select-none group"
-          style={{ touchAction: 'none' }}
-        >
-          {/* Turntable Platter Outer Grooves */}
-          <div className="absolute inset-0 rounded-full border border-[#26211b] bg-[#080706] shadow-[0_0_60px_rgba(0,0,0,0.9)] -z-10 pointer-events-none opacity-80" />
-          <div className="absolute inset-3 rounded-full border border-[#1b1713] pointer-events-none opacity-60" />
-          <div className="absolute inset-6 rounded-full border border-[#14110e] pointer-events-none opacity-40" />
-
-          {/* Rotating Pizza Vinyl Disc */}
-          <div
-            className="relative w-[92%] h-[92%] rounded-full overflow-hidden flex items-center justify-center transition-transform duration-75 will-change-transform shadow-[0_15px_40px_rgba(0,0,0,0.95)]"
-            style={{
-              transform: `rotate(${rotation}deg)`,
-            }}
-          >
-            <img
-              src={mobilePizzaImg}
-              alt="PIDZERIA - Pizza Vinyle rotative"
-              loading="eager"
-              decoding="async"
-              draggable={false}
-              className="w-full h-full object-contain rounded-full pointer-events-none select-none"
-            />
-
-            {/* Subtle Vinyl Grooves Overlay Reflection */}
-            <div className="absolute inset-0 rounded-full pointer-events-none bg-gradient-to-tr from-transparent via-white/[0.04] to-transparent opacity-60" />
-
-            {/* Center Spindle Core (Vintage Vinyl Label) */}
-            <div className="absolute w-12 h-12 rounded-full bg-[#0d0b09] border border-[#3a3229] flex items-center justify-center shadow-lg shadow-black pointer-events-none">
-              <div className="w-3.5 h-3.5 rounded-full bg-[#dfd0ba] border border-[#110f0d] flex items-center justify-center">
-                <div className="w-1 h-1 rounded-full bg-black" />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Vinyl Interactive Scratch/Spin Indicator Pill */}
-        <div className="mt-4 flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#12100e]/95 border border-[#2e2720] text-[11px] font-mono text-[#cbb89d] shadow-lg backdrop-blur-md">
-          <Disc3 className={`w-3.5 h-3.5 text-[#dfd0ba] ${isInteracting ? 'animate-spin' : ''}`} />
-          <span className="text-[#dfd0ba] font-semibold">
-            {isInteracting ? 'Scratch en direct...' : 'Disque Vinyle 💿'}
-          </span>
-          <span className="text-[#6e6254]">•</span>
-          <span className="text-[#8c7e6c]">
-            {hasInteracted ? `${rpmDisplay} RPM` : 'Touchez & faites tourner'}
-          </span>
-          <RotateCw className="w-3 h-3 text-[#8c7e6c] animate-spin" style={{ animationDuration: '6s' }} />
-        </div>
-
-      </div>
-
       {/* Bottom subtle divider line */}
-      <div className="w-full max-w-xs mx-auto h-[1px] bg-gradient-to-r from-transparent via-[#26211c] to-transparent mt-8" />
+      <div className="w-full max-w-xs mx-auto h-[1px] bg-gradient-to-r from-transparent via-[#26211c] to-transparent mt-6" />
 
     </section>
   );
