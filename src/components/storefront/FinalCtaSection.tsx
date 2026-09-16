@@ -15,10 +15,10 @@ export const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({
     <section className="relative py-24 sm:py-32 px-6 md:px-12 bg-[#050505] overflow-hidden border-t border-[#1a1714]">
       {/* Floating ingredients for subtle atmospheric depth */}
       <div className="absolute top-8 left-10 md:left-28 z-10">
-        <FloatingIngredient ingredient="tomato" size={105} parallaxSpeed={30} rotationSpeed={15} blur={1} opacity={0.7} />
+        <FloatingIngredient ingredient="tomato" size={105} parallaxSpeed={30} rotationSpeed={15} blur={1} opacity={0.7} hideOnMobile />
       </div>
       <div className="absolute bottom-8 right-8 md:right-32 z-10">
-        <FloatingIngredient ingredient="pepperoni" size={115} parallaxSpeed={-40} rotationSpeed={-20} blur={0.5} opacity={0.8} />
+        <FloatingIngredient ingredient="pepperoni" size={115} parallaxSpeed={-40} rotationSpeed={-20} blur={0.5} opacity={0.8} hideOnMobile />
       </div>
 
       <div className="relative z-20 max-w-5xl mx-auto text-center">

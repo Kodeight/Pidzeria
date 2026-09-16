@@ -15,6 +15,7 @@ export const TestimonialsSection: React.FC = () => {
           parallaxSpeed={-50}
           rotationSpeed={35}
           opacity={0.7}
+          hideOnMobile
         />
       </div>
 

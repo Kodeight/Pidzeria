@@ -41,6 +41,7 @@ export const ReservationSection: React.FC = () => {
           parallaxSpeed={-60}
           rotationSpeed={-25}
           opacity={0.8}
+          hideOnMobile
         />
       </div>
 

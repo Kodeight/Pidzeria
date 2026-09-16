@@ -23,6 +23,7 @@ export const StorySection: React.FC = () => {
           parallaxSpeed={-65}
           rotationSpeed={20}
           opacity={0.8}
+          hideOnMobile
         />
       </div>
 

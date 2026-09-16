@@ -9,10 +9,10 @@ export const FindUsSection: React.FC = () => {
       <div id="contact" className="absolute -top-24 left-0" />
       {/* Subtle floating ingredient depth */}
       <div className="absolute top-10 right-8 md:right-24 z-10">
-        <FloatingIngredient ingredient="basil" size={120} parallaxSpeed={40} rotationSpeed={20} blur={0.5} opacity={0.8} />
+        <FloatingIngredient ingredient="basil" size={120} parallaxSpeed={40} rotationSpeed={20} blur={0.5} opacity={0.8} hideOnMobile />
       </div>
       <div className="absolute bottom-12 left-6 md:left-20 z-10">
-        <FloatingIngredient ingredient="olive" size={90} parallaxSpeed={-35} rotationSpeed={-15} blur={1} opacity={0.75} />
+        <FloatingIngredient ingredient="olive" size={90} parallaxSpeed={-35} rotationSpeed={-15} blur={1} opacity={0.75} hideOnMobile />
       </div>
 
       <div className="relative z-20 max-w-7xl mx-auto">
