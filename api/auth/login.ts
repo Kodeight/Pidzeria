@@ -1,4 +1,20 @@
-import { getAdminCredentials, createToken, AUTH_COOKIE_NAME } from '../../src/lib/authCore';
+import crypto from 'crypto';
+
+const AUTH_COOKIE_NAME = 'pidzeria_admin_session';
+
+function getAdminCredentials() {
+  const username = process.env.ADMIN_USERNAME?.trim() || null;
+  const password = process.env.ADMIN_PASSWORD || null;
+  const sessionSecret = process.env.SESSION_SECRET?.trim() || 'pidzeria_auth_secret_key_prod_2026';
+  return { username, password, sessionSecret };
+}
+
+function createToken(username: string, secret: string): string {
+  const timestamp = Date.now();
+  const payload = `${username.trim()}:${timestamp}`;
+  const signature = crypto.createHmac('sha256', secret).update(payload).digest('hex');
+  return Buffer.from(`${payload}:${signature}`).toString('base64');
+}
 
 export default async function handler(req: any, res: any) {
   // CORS Preflight
@@ -34,7 +50,7 @@ export default async function handler(req: any, res: any) {
     if (!adminUser || !adminPass) {
       console.error('[PIDZERIA Auth] Missing ADMIN_USERNAME or ADMIN_PASSWORD in environment variables');
       return res.status(500).json({
-        error: 'Erreur de configuration du serveur : identifiants non configurés dans les variables d\'environnement.',
+        error: 'Erreur de configuration du serveur : identifiants non configurés dans les variables d\'environnement Vercel.',
       });
     }
 
