@@ -63,16 +63,24 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         return { success: true };
       } else {
         setIsAuthenticated(false);
+        let errorMsg = 'Identifiant ou mot de passe incorrect.';
+        if (typeof data.error === 'string') {
+          errorMsg = data.error;
+        } else if (data.error && typeof data.error === 'object') {
+          errorMsg = data.error.message || data.error.code || 'Identifiant ou mot de passe incorrect.';
+        } else if (typeof data.message === 'string') {
+          errorMsg = data.message;
+        }
         return {
           success: false,
-          error: data.error || 'Identifiant ou mot de passe incorrect.',
+          error: errorMsg,
         };
       }
     } catch {
       setIsAuthenticated(false);
       return {
         success: false,
-        error: 'Erreur de connexion au serveur. Veuillez réessayer.',
+        error: 'Erreur de connexion au serveur. Veuillez vérifier votre réseau.',
       };
     }
   };

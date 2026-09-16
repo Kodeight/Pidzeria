@@ -36,7 +36,12 @@ export const DashboardLoginPage: React.FC<DashboardLoginPageProps> = ({
       if (result.success) {
         onLoginSuccess();
       } else {
-        setErrorMessage(result.error || 'Identifiant ou mot de passe incorrect.');
+        const errorText = typeof result.error === 'string'
+          ? result.error
+          : typeof (result.error as any)?.message === 'string'
+          ? (result.error as any).message
+          : 'Identifiant ou mot de passe incorrect.';
+        setErrorMessage(errorText);
       }
     } catch {
       setErrorMessage('Une erreur est survenue lors de la connexion.');
