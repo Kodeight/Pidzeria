@@ -18,6 +18,7 @@ interface StoryStageData {
   isClimax?: boolean;
 }
 
+// 7 Distinct Narrative Stages
 const CINEMATIC_STAGES: StoryStageData[] = [
   {
     id: 'hero',
@@ -30,7 +31,7 @@ const CINEMATIC_STAGES: StoryStageData[] = [
       { label: 'Levain', value: 'Naturel 48H' },
       { label: 'Cuisson', value: 'Feu de bois 450°C' },
     ],
-    textAlignment: 'left',
+    textAlignment: 'left', // Video RIGHT
     isHero: true,
   },
   {
@@ -44,7 +45,7 @@ const CINEMATIC_STAGES: StoryStageData[] = [
       { label: 'Hydratation', value: '72% haute teneur' },
       { label: 'Digestion', value: 'Légèreté absolue' },
     ],
-    textAlignment: 'left',
+    textAlignment: 'left', // Video RIGHT
   },
   {
     id: 'sauce',
@@ -57,7 +58,7 @@ const CINEMATIC_STAGES: StoryStageData[] = [
       { label: 'Aromates', value: 'Basilic frais froissé' },
       { label: 'Équilibre', value: 'Acidité douce & solaire' },
     ],
-    textAlignment: 'right', // Camera flips composition to opposite side!
+    textAlignment: 'left', // Video RIGHT / Center-Right dominant
   },
   {
     id: 'ingredients',
@@ -70,7 +71,7 @@ const CINEMATIC_STAGES: StoryStageData[] = [
       { label: 'Viandes', value: 'Recette maison d’Alger' },
       { label: 'Légumes', value: 'Poivrons confits au feu' },
     ],
-    textAlignment: 'left',
+    textAlignment: 'right', // Video transitions to LEFT, Text to RIGHT
   },
   {
     id: 'cuisson',
@@ -83,7 +84,7 @@ const CINEMATIC_STAGES: StoryStageData[] = [
       { label: 'Chrono', value: '90 Secondes' },
       { label: 'Texture', value: 'Croustillante & fondante' },
     ],
-    textAlignment: 'left',
+    textAlignment: 'right', // Video LEFT, Text RIGHT
   },
   {
     id: 'decoupe',
@@ -96,7 +97,7 @@ const CINEMATIC_STAGES: StoryStageData[] = [
       { label: 'Alvéolage', value: 'Corniche soufflée' },
       { label: 'Vapeur', value: 'Arômes décuplés' },
     ],
-    textAlignment: 'left',
+    textAlignment: 'left', // Video transitions back to RIGHT, Text to LEFT
   },
   {
     id: 'explosion',
@@ -109,17 +110,11 @@ const CINEMATIC_STAGES: StoryStageData[] = [
       { label: 'Saveurs', value: 'Harmonie absolue' },
       { label: 'Expérience', value: 'Sur place ou à emporter' },
     ],
-    textAlignment: 'left', // NEVER CENTER! Split composition: Text LEFT, Exploded Pizza RIGHT!
+    textAlignment: 'left', // Large Exploded Pizza on RIGHT, Text on LEFT
     isClimax: true,
   },
 ];
 
-interface CinematicExperienceProps {
-  onNavigateToMenu: () => void;
-  onNavigateToReservation: () => void;
-}
-
-// Dedicated Camera Keyframes for 7 distinct stages
 interface StageCameraConfig {
   x: number; // in vw
   y: number; // in vh
@@ -127,28 +122,22 @@ interface StageCameraConfig {
   rotate: number; // in deg
 }
 
-// DESKTOP: Split composition throughout. Text and Pizza NEVER overlap!
-// Stage 7 (Explosion): Text on Left, Exploded Pizza on Right with scale: 1.05 so ALL slices stay in view!
+// DESKTOP & LARGE TABLET: Two-zone choreography. Text and Video NEVER collide.
+// Initial frame: Video starts at x: 21vw (RIGHT) immediately with zero jump.
 const DESKTOP_KEYFRAMES: StageCameraConfig[] = [
-  { x: 20, y: 1, scale: 0.96, rotate: 0 },     // Stage 1: Hero (Pizza right)
-  { x: 18, y: -2, scale: 1.06, rotate: 1.2 },  // Stage 2: Dough (Pizza right-upper)
-  { x: -21, y: 2, scale: 1.14, rotate: -2 },   // Stage 3: Sauce (Pizza LEFT, Text RIGHT)
-  { x: 19, y: 3, scale: 1.18, rotate: 0.8 },   // Stage 4: Ingredients (Pizza right)
-  { x: 17, y: -2, scale: 1.25, rotate: -1.2 }, // Stage 5: Baking (Pizza right dominant)
-  { x: 19, y: 1, scale: 1.14, rotate: 0.5 },   // Stage 6: Slicing (Pizza right)
-  { x: 20, y: 3, scale: 1.05, rotate: 0 },     // Stage 7: EXPLOSION CLIMAX! (Pizza RIGHT, Text LEFT. Zero overlap, all slices fully visible!)
+  { x: 21, y: 0, scale: 0.95, rotate: 0 },      // Stage 1: Hero (Video RIGHT, Text LEFT)
+  { x: 19, y: -1.5, scale: 1.05, rotate: 1.2 }, // Stage 2: Dough (Video RIGHT, subtle upward growth)
+  { x: 17, y: 1, scale: 1.15, rotate: -1.5 },   // Stage 3: Sauce (Video RIGHT/Center-Right visually dominant)
+  { x: -20, y: 1.5, scale: 1.18, rotate: 1.8 }, // Stage 4: Toppings (Video glides to LEFT, Text to RIGHT)
+  { x: -20, y: -1.2, scale: 1.24, rotate: -1.2 },// Stage 5: Baking (Video LEFT, Text RIGHT)
+  { x: 19, y: 0.5, scale: 1.14, rotate: 0.8 },  // Stage 6: Slicing (Video glides to RIGHT, Text to LEFT)
+  { x: 21, y: 1.5, scale: 1.06, rotate: 0 },    // Stage 7: Explosion (Exploded pizza on RIGHT, Text on LEFT)
 ];
 
-// MOBILE: Vertical Choreography. Text sits in upper safe zone (top 38%), Pizza travels in lower safe zone (bottom 62%).
-const MOBILE_KEYFRAMES: StageCameraConfig[] = [
-  { x: 0, y: 22, scale: 0.88, rotate: 0 },     // Stage 1: Hero (lower screen)
-  { x: 2, y: 17, scale: 0.98, rotate: 1 },     // Stage 2: Dough (moves up slightly)
-  { x: -3, y: 18, scale: 1.04, rotate: -1.5 }, // Stage 3: Sauce (shifts left)
-  { x: 0, y: 17, scale: 1.10, rotate: 0.5 },   // Stage 4: Ingredients (centered lower)
-  { x: 0, y: 15, scale: 1.16, rotate: -0.8 },  // Stage 5: Baking (large, lower)
-  { x: 0, y: 17, scale: 1.06, rotate: 0.5 },   // Stage 6: Slicing
-  { x: 0, y: 18, scale: 0.92, rotate: 0 },     // Stage 7: EXPLOSION (All slices stay within mobile viewport bounds, text above safe-zone!)
-];
+interface CinematicExperienceProps {
+  onNavigateToMenu: () => void;
+  onNavigateToReservation: () => void;
+}
 
 export const CinematicExperience: React.FC<CinematicExperienceProps> = ({
   onNavigateToMenu,
@@ -159,21 +148,10 @@ export const CinematicExperience: React.FC<CinematicExperienceProps> = ({
   const pizzaLayerRef = useRef<HTMLDivElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [currentStageIdx, setCurrentStageIdx] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
-
-  // Detect mobile vs desktop
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 1024);
-    };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
 
   // Compute interpolated camera transform based on scroll progress
-  const getInterpolatedCamera = (progress: number, mobile: boolean): StageCameraConfig => {
-    const keyframes = mobile ? MOBILE_KEYFRAMES : DESKTOP_KEYFRAMES;
+  const getInterpolatedCamera = (progress: number): StageCameraConfig => {
+    const keyframes = DESKTOP_KEYFRAMES;
     const numIntervals = keyframes.length - 1;
     const scaledP = Math.max(0, Math.min(1, progress)) * numIntervals;
     const index = Math.floor(scaledP);
@@ -202,6 +180,18 @@ export const CinematicExperience: React.FC<CinematicExperienceProps> = ({
     const pinnedPanel = pinnedPanelRef.current;
     if (!container || !pinnedPanel) return;
 
+    // Set initial camera transform immediately on mount to prevent any jump
+    const initialCam = DESKTOP_KEYFRAMES[0];
+    if (pizzaLayerRef.current) {
+      gsap.set(pizzaLayerRef.current, {
+        x: `${initialCam.x}vw`,
+        y: `${initialCam.y}vh`,
+        scale: initialCam.scale,
+        rotation: initialCam.rotate,
+        force3D: true,
+      });
+    }
+
     const ctx = gsap.context(() => {
       ScrollTrigger.create({
         trigger: container,
@@ -224,7 +214,7 @@ export const CinematicExperience: React.FC<CinematicExperienceProps> = ({
 
           // Update video layer transform dynamically with GSAP
           if (pizzaLayerRef.current) {
-            const cam = getInterpolatedCamera(p, window.innerWidth < 1024);
+            const cam = getInterpolatedCamera(p);
             gsap.set(pizzaLayerRef.current, {
               x: `${cam.x}vw`,
               y: `${cam.y}vh`,
@@ -243,6 +233,7 @@ export const CinematicExperience: React.FC<CinematicExperienceProps> = ({
   }, []);
 
   const stage = CINEMATIC_STAGES[currentStageIdx];
+  const initialCam = DESKTOP_KEYFRAMES[0];
 
   return (
     <div ref={containerRef} className="relative w-full bg-[#000000]">
@@ -261,7 +252,7 @@ export const CinematicExperience: React.FC<CinematicExperienceProps> = ({
           style={stage.isHero ? { animationDelay: '150ms' } : undefined}
         >
           {/* Stage counter badge */}
-          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#100e0d]/90 border border-[#26211c] backdrop-blur-md">
+          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#100e0d]/90 border border-[#26211c] backdrop-blur-md shadow-lg shadow-black/40">
             <span className="flex h-1.5 w-1.5 relative">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#dfd0ba] opacity-75"></span>
               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#dfd0ba]"></span>
@@ -287,21 +278,17 @@ export const CinematicExperience: React.FC<CinematicExperienceProps> = ({
         </div>
 
         {/* THE SPATIAL MOVING PIZZA VIDEO LAYER (FULL-VIEWPORT STAGE)
-            Tied to GSAP ScrollTrigger timeline: changes position (x, y), scale, and depth dynamically */}
+            Starts on the RIGHT from the very first paint frame with zero jumping.
+            Smoothly glides across waypoints during scroll navigation. */}
         <div
           ref={pizzaLayerRef}
-          className={`absolute inset-0 flex items-center justify-center pointer-events-none z-20 will-change-transform bg-transparent ${
-            stage.isHero ? 'animate-blur-enter' : ''
-          }`}
+          className="absolute inset-0 flex items-center justify-center pointer-events-none z-20 will-change-transform bg-transparent"
           style={{
-            // Initial camera position for Stage 1 (Hero)
-            transform: isMobile 
-              ? 'translate(0vw, 22vh) scale(0.88)' 
-              : 'translate(20vw, 1vh) scale(0.96)',
-            animationDelay: stage.isHero ? '100ms' : undefined,
+            // Hardcoded initial transform for Stage 1 (Hero) on Right with zero jump
+            transform: `translate3d(${initialCam.x}vw, ${initialCam.y}vh, 0px) scale(${initialCam.scale}) rotate(${initialCam.rotate}deg)`,
           }}
         >
-          <div className="w-[340px] sm:w-[480px] md:w-[620px] lg:w-[760px] aspect-[16/10] flex items-center justify-center">
+          <div className="w-[440px] md:w-[580px] lg:w-[720px] xl:w-[780px] aspect-[16/10] flex items-center justify-center">
             <PizzaVideoCompositor
               scrollProgress={scrollProgress}
               className="w-full h-full"
@@ -310,18 +297,16 @@ export const CinematicExperience: React.FC<CinematicExperienceProps> = ({
         </div>
 
         {/* EDITORIAL CONTENT LAYER: Dedicated Safe Zones (TEXT & PIZZA NEVER OVERLAP)
-            Desktop: Split Left/Right composition
-            Mobile: Upper 38% text safe zone */}
+            Left Zone: Used when Pizza is on the Right
+            Right Zone: Used when Pizza is on the Left */}
         <div className="relative z-30 my-auto px-6 md:px-12 max-w-7xl mx-auto w-full pointer-events-auto">
           
           {/* Dynamic spatial placement container */}
           <div 
             className={`flex flex-col transition-all duration-700 ease-out ${
-              stage.textAlignment === 'right' && !isMobile
-                ? 'items-end text-left ml-auto max-w-lg lg:max-w-xl pr-4 lg:pr-8'
-                : isMobile
-                ? 'items-start text-left max-w-md pt-2'
-                : 'items-start text-left mr-auto max-w-lg lg:max-w-xl'
+              stage.textAlignment === 'right'
+                ? 'items-start text-left ml-auto max-w-lg lg:max-w-xl pl-4 lg:pl-8'
+                : 'items-start text-left mr-auto max-w-lg lg:max-w-xl pr-4 lg:pr-8'
             }`}
           >
             {/* Eyebrow badge (only shown on non-hero stages) */}

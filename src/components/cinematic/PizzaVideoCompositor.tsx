@@ -20,7 +20,7 @@ export const PizzaVideoCompositor: React.FC<PizzaVideoCompositorProps> = ({
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [duration, setDuration] = useState(10);
 
-  // Use the official pizza.mp4 asset
+  // Official high-definition pizza asset
   const videoSource = '/pizza.mp4';
 
   useEffect(() => {
@@ -100,14 +100,27 @@ export const PizzaVideoCompositor: React.FC<PizzaVideoCompositorProps> = ({
     };
   }, [isVideoLoaded, duration]);
 
+  // Soft cinematic feathering mask: Centered area stays 100% sharp & visible.
+  // Outer borders gradually blend into pure #000000 background with NO visible rectangular frame.
+  const featheredMaskStyle: React.CSSProperties = {
+    WebkitMaskImage:
+      'radial-gradient(ellipse 85% 82% at 50% 50%, rgba(0,0,0,1) 64%, rgba(0,0,0,0.85) 78%, rgba(0,0,0,0.25) 92%, rgba(0,0,0,0) 100%), linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 5%, rgba(0,0,0,1) 95%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 5%, rgba(0,0,0,1) 95%, rgba(0,0,0,0) 100%)',
+    maskImage:
+      'radial-gradient(ellipse 85% 82% at 50% 50%, rgba(0,0,0,1) 64%, rgba(0,0,0,0.85) 78%, rgba(0,0,0,0.25) 92%, rgba(0,0,0,0) 100%), linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 5%, rgba(0,0,0,1) 95%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 5%, rgba(0,0,0,1) 95%, rgba(0,0,0,0) 100%)',
+    WebkitMaskComposite: 'source-in',
+    maskComposite: 'intersect',
+  };
+
   return (
     <div 
       className={`relative flex items-center justify-center select-none bg-black ${className}`}
       style={style}
     >
-      {/* Absolute black background match. ZERO gray halos, ZERO container boxes, ZERO artificial glow.
-          The video is a pure cinematic visual layer seamlessly blending into the #000000 website canvas */}
-      <div className="relative w-full h-full flex items-center justify-center bg-black">
+      {/* Pure black cinematic background integration. Zero container box outlines. */}
+      <div 
+        className="relative w-full h-full flex items-center justify-center bg-black overflow-hidden"
+        style={featheredMaskStyle}
+      >
         <video
           ref={videoRef}
           src={videoSource}
@@ -120,7 +133,7 @@ export const PizzaVideoCompositor: React.FC<PizzaVideoCompositorProps> = ({
             // Screen blending on #000000 merges true black with 100% mathematical perfection.
             mixBlendMode: 'screen',
             opacity: isVideoLoaded ? 1 : 0,
-            transition: 'opacity 0.5s ease-out',
+            transition: 'opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
           }}
           onError={(e) => {
             const vid = e.currentTarget;
