@@ -1,7 +1,7 @@
 import React from 'react';
 import { Logo } from '../brand/Logo';
 import { MapPin, Phone, Clock, Instagram, Facebook, Globe } from 'lucide-react';
-import { FadeUp } from '../motion/MotionSystem';
+import { FadeUp, Parallax } from '../motion/MotionSystem';
 
 interface FooterProps {
   onNavigateToSection: (sectionId: string) => void;
@@ -11,11 +11,18 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({ onNavigateToSection, onNavigateToMenu, onNavigateToDashboard }) => {
   return (
-    <footer id="contact" className="bg-[#050505] text-[#8c7e6c] border-t border-[#1c1916] pt-16 pb-12 px-6 md:px-12">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+    <footer id="contact" className="bg-[#050505] text-[#8c7e6c] border-t border-[#1c1916] pt-16 pb-12 px-6 md:px-12 relative overflow-hidden">
+      {/* Gentle background depth glow */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <Parallax speed={-0.1} className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[700px] h-[300px]">
+          <div className="w-full h-full bg-[#dfd0ba]/3 rounded-full blur-[140px]" />
+        </Parallax>
+      </div>
+
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16 relative z-10">
         
-        {/* Brand Column */}
-        <FadeUp distance={15} delay={0.0} duration={0.65} className="space-y-4">
+        {/* 01 — Brand & Logo Column (Official pidzeria.png asset) */}
+        <FadeUp distance={18} delay={0.0} duration={0.65} className="space-y-4">
           <Logo size="lg" />
           <p className="text-xs text-[#a69684] leading-relaxed font-sans">
             L’excellence de la pizza artisanale à Alger. Cuisson au feu de bois, fermentation naturelle lente et produits nobles d'exception.
@@ -28,8 +35,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateToSection, onNavigateT
           </div>
         </FadeUp>
 
-        {/* Quick Links */}
-        <FadeUp distance={15} delay={0.1} duration={0.65}>
+        {/* 02 — Navigation Links Column */}
+        <FadeUp distance={18} delay={0.1} duration={0.65}>
           <h4 className="text-xs font-mono uppercase tracking-widest text-[#dfd0ba] font-bold mb-4">
             Navigation
           </h4>
@@ -78,8 +85,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateToSection, onNavigateT
           </ul>
         </FadeUp>
 
-        {/* Location & Hours */}
-        <FadeUp distance={15} delay={0.2} duration={0.65}>
+        {/* 03 — Location & Opening Hours Column */}
+        <FadeUp distance={18} delay={0.2} duration={0.65}>
           <h4 className="text-xs font-mono uppercase tracking-widest text-[#dfd0ba] font-bold mb-4">
             Restaurant & Horaires
           </h4>
@@ -102,8 +109,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateToSection, onNavigateT
           </ul>
         </FadeUp>
 
-        {/* Social & Contact */}
-        <FadeUp distance={15} delay={0.3} duration={0.65}>
+        {/* 04 — Social Links Column */}
+        <FadeUp distance={18} delay={0.3} duration={0.65}>
           <h4 className="text-xs font-mono uppercase tracking-widest text-[#dfd0ba] font-bold mb-4">
             Suivez-nous
           </h4>
@@ -125,14 +132,16 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateToSection, onNavigateT
 
       </div>
 
-      {/* Bottom Bar */}
-      <div className="max-w-7xl mx-auto pt-8 border-t border-[#161412] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#5a5247]">
-        <p>© {new Date().getFullYear()} PIDZERIA — Tous droits réservés.</p>
-        <p className="flex items-center gap-1.5">
-          <span>Pizzeria artisanale à Alger</span>
-          <span className="text-[#c93a2b]">♥</span>
-        </p>
-      </div>
+      {/* 05 — Bottom Copyright Bar (Final Visual Punctuation) */}
+      <FadeUp distance={15} delay={0.4} duration={0.65} className="relative z-10">
+        <div className="max-w-7xl mx-auto pt-8 border-t border-[#161412] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#5a5247]">
+          <p>© {new Date().getFullYear()} PIDZERIA — Tous droits réservés.</p>
+          <p className="flex items-center gap-1.5">
+            <span>Pizzeria artisanale à Alger</span>
+            <span className="text-[#c93a2b]">♥</span>
+          </p>
+        </div>
+      </FadeUp>
     </footer>
   );
 };
