@@ -1,7 +1,7 @@
 import React from 'react';
 import { Logo } from '../brand/Logo';
 import { ChefHat, HeartHandshake, Compass } from 'lucide-react';
-import { FadeLeft, FadeRight, Parallax } from '../motion/MotionSystem';
+import { FadeUp, FadeRight, Parallax } from '../motion/MotionSystem';
 import { FloatingIngredient } from '../cinematic/FloatingIngredient';
 
 export const StorySection: React.FC = () => {
@@ -39,46 +39,63 @@ export const StorySection: React.FC = () => {
 
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center relative z-20">
         
-        {/* Left Column: Story Content with FADE-LEFT */}
-        <FadeLeft distance={-50} duration={1.0} className="lg:col-span-6 space-y-6">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#161311] border border-[#2d2823] text-[#dfd0ba] text-xs font-mono uppercase tracking-widest">
-            <Compass className="w-3.5 h-3.5 text-[#cbb89d]" />
-            <span>Notre Histoire</span>
-          </div>
+        {/* Left Column: Sequential Staggered Story Content */}
+        <div className="lg:col-span-6 space-y-6">
+          
+          {/* 01 — Eyebrow */}
+          <FadeUp delay={0.0} distance={20} duration={0.7}>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#161311] border border-[#2d2823] text-[#dfd0ba] text-xs font-mono uppercase tracking-widest">
+              <Compass className="w-3.5 h-3.5 text-[#cbb89d]" />
+              <span>Notre Histoire</span>
+            </div>
+          </FadeUp>
 
-          <h2 className="text-3xl sm:text-5xl font-serif font-extrabold text-[#f7f2e7] leading-tight">
-            L'Alliance de deux Terroirs d'Exception
-          </h2>
+          {/* 02 — Main Heading */}
+          <FadeUp delay={0.1} distance={20} duration={0.7}>
+            <h2 className="text-3xl sm:text-5xl font-serif font-extrabold text-[#f7f2e7] leading-tight">
+              L'Alliance de deux Terroirs d'Exception
+            </h2>
+          </FadeUp>
 
-          <p className="text-[#cbb89d] text-sm sm:text-base leading-relaxed">
-            Fondée au cœur d’Alger, <strong className="text-[#f7f2e7] font-bold">PIDZERIA</strong> est née d’une passion inébranlable : unir le savoir-faire séculaire de la véritable pizza napolitaine au levain et la générosité vibrante des saveurs algériennes.
-          </p>
+          {/* 03 — Paragraph 1 */}
+          <FadeUp delay={0.18} distance={20} duration={0.7}>
+            <p className="text-[#cbb89d] text-sm sm:text-base leading-relaxed">
+              Fondée au cœur d’Alger, <strong className="text-[#f7f2e7] font-bold">PIDZERIA</strong> est née d’une passion inébranlable : unir le savoir-faire séculaire de la véritable pizza napolitaine au levain et la générosité vibrante des saveurs algériennes.
+            </p>
+          </FadeUp>
 
-          <p className="text-[#cbb89d] text-sm sm:text-base leading-relaxed">
-            Nous sélectionnons rigoureusement nos farines de blé dur de haute qualité, nos tomates San Marzano mûries au soleil et la mozzarella Fior di Latte la plus fondante. Chaque garniture est préparée artisanalement avec des produits frais du terroir.
-          </p>
+          {/* 04 — Paragraph 2 */}
+          <FadeUp delay={0.25} distance={20} duration={0.7}>
+            <p className="text-[#cbb89d] text-sm sm:text-base leading-relaxed">
+              Nous sélectionnons rigoureusement nos farines de blé dur de haute qualité, nos tomates San Marzano mûries au soleil et la mozzarella Fior di Latte la plus fondante. Chaque garniture est préparée artisanalement avec des produits frais du terroir.
+            </p>
+          </FadeUp>
 
-          <div className="grid grid-cols-2 gap-4 pt-4">
-            <div className="p-4 rounded-2xl bg-[#0f0d0c] border border-[#26221d] flex items-start gap-3 hover:border-[#dfd0ba]/40 transition-colors">
-              <ChefHat className="w-5 h-5 text-[#dfd0ba] shrink-0 mt-1" />
-              <div>
-                <h4 className="text-xs font-bold text-[#f7f2e7] uppercase">Pétrissage Artisanal</h4>
-                <p className="text-[11px] text-[#8c7e6c] mt-0.5">Maturation lente 48h</p>
+          {/* 05 — Feature Badges */}
+          <FadeUp delay={0.32} distance={20} duration={0.7}>
+            <div className="grid grid-cols-2 gap-4 pt-2">
+              <div className="p-4 rounded-2xl bg-[#0f0d0c] border border-[#26221d] flex items-start gap-3 hover:border-[#dfd0ba]/40 transition-colors">
+                <ChefHat className="w-5 h-5 text-[#dfd0ba] shrink-0 mt-1" />
+                <div>
+                  <h4 className="text-xs font-bold text-[#f7f2e7] uppercase">Pétrissage Artisanal</h4>
+                  <p className="text-[11px] text-[#8c7e6c] mt-0.5">Maturation lente 48h</p>
+                </div>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-[#0f0d0c] border border-[#26221d] flex items-start gap-3 hover:border-[#dfd0ba]/40 transition-colors">
+                <HeartHandshake className="w-5 h-5 text-[#dfd0ba] shrink-0 mt-1" />
+                <div>
+                  <h4 className="text-xs font-bold text-[#f7f2e7] uppercase">Recettes Nobles</h4>
+                  <p className="text-[11px] text-[#8c7e6c] mt-0.5">Produits frais du marché</p>
+                </div>
               </div>
             </div>
+          </FadeUp>
 
-            <div className="p-4 rounded-2xl bg-[#0f0d0c] border border-[#26221d] flex items-start gap-3 hover:border-[#dfd0ba]/40 transition-colors">
-              <HeartHandshake className="w-5 h-5 text-[#dfd0ba] shrink-0 mt-1" />
-              <div>
-                <h4 className="text-xs font-bold text-[#f7f2e7] uppercase">Recettes Nobles</h4>
-                <p className="text-[11px] text-[#8c7e6c] mt-0.5">Produits frais du marché</p>
-              </div>
-            </div>
-          </div>
-        </FadeLeft>
+        </div>
 
-        {/* Right Column: Visual Showcase with FADE-RIGHT & Subtle Parallax */}
-        <FadeRight distance={50} duration={1.0} className="lg:col-span-6 relative">
+        {/* Right Column: Visual Showcase with FADE-RIGHT */}
+        <FadeRight distance={40} delay={0.2} duration={0.8} className="lg:col-span-6 relative">
           <div className="relative mx-auto max-w-md aspect-square rounded-3xl overflow-hidden border border-[#2e2823] shadow-2xl group">
             <img
               src="https://images.unsplash.com/photo-1579751626657-72bc17010498?q=80&w=800&auto=format&fit=crop"

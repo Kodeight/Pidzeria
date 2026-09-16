@@ -123,15 +123,14 @@ interface StageCameraConfig {
 }
 
 // DESKTOP & LARGE TABLET: Two-zone choreography. Text and Video NEVER collide.
-// Initial frame: Video starts at x: 21vw (RIGHT) immediately with zero jump.
 const DESKTOP_KEYFRAMES: StageCameraConfig[] = [
   { x: 21, y: 0, scale: 0.95, rotate: 0 },      // Stage 1: Hero (Video RIGHT, Text LEFT)
-  { x: 19, y: -1.5, scale: 1.05, rotate: 1.2 }, // Stage 2: Dough (Video RIGHT, subtle upward growth)
-  { x: 17, y: 1, scale: 1.15, rotate: -1.5 },   // Stage 3: Sauce (Video RIGHT/Center-Right visually dominant)
-  { x: -20, y: 1.5, scale: 1.18, rotate: 1.8 }, // Stage 4: Toppings (Video glides to LEFT, Text to RIGHT)
+  { x: 19, y: -1.5, scale: 1.05, rotate: 1.2 }, // Stage 2: Dough (Video RIGHT)
+  { x: 17, y: 1, scale: 1.15, rotate: -1.5 },   // Stage 3: Sauce (Video RIGHT)
+  { x: -20, y: 1.5, scale: 1.18, rotate: 1.8 }, // Stage 4: Toppings (Video LEFT, Text RIGHT)
   { x: -20, y: -1.2, scale: 1.24, rotate: -1.2 },// Stage 5: Baking (Video LEFT, Text RIGHT)
-  { x: 19, y: 0.5, scale: 1.14, rotate: 0.8 },  // Stage 6: Slicing (Video glides to RIGHT, Text to LEFT)
-  { x: 21, y: 1.5, scale: 1.06, rotate: 0 },    // Stage 7: Explosion (Exploded pizza on RIGHT, Text on LEFT)
+  { x: 19, y: 0.5, scale: 1.14, rotate: 0.8 },  // Stage 6: Slicing (Video RIGHT, Text LEFT)
+  { x: 21, y: 1.5, scale: 1.06, rotate: 0 },    // Stage 7: Explosion (Video RIGHT, Text LEFT)
 ];
 
 interface CinematicExperienceProps {
@@ -246,13 +245,14 @@ export const CinematicExperience: React.FC<CinematicExperienceProps> = ({
 
         {/* TOP NARRATIVE BAR: Step Counter & Subtle Progress */}
         <div 
-          className={`relative z-40 pt-20 sm:pt-24 px-6 md:px-12 max-w-7xl mx-auto w-full flex items-center justify-between pointer-events-auto ${
-            stage.isHero ? 'animate-blur-enter' : ''
-          }`}
-          style={stage.isHero ? { animationDelay: '150ms' } : undefined}
+          className="relative z-40 pt-20 sm:pt-24 px-6 md:px-12 max-w-7xl mx-auto w-full flex items-center justify-between pointer-events-auto"
         >
-          {/* Stage counter badge */}
-          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#100e0d]/90 border border-[#26211c] backdrop-blur-md shadow-lg shadow-black/40">
+          {/* Stage counter badge with sequential entrance */}
+          <div 
+            key={`badge-${stage.id}`}
+            className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#100e0d]/90 border border-[#26211c] backdrop-blur-md shadow-lg shadow-black/40 animate-blur-enter"
+            style={{ animationDelay: '0ms' }}
+          >
             <span className="flex h-1.5 w-1.5 relative">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#dfd0ba] opacity-75"></span>
               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#dfd0ba]"></span>
@@ -277,14 +277,11 @@ export const CinematicExperience: React.FC<CinematicExperienceProps> = ({
           </div>
         </div>
 
-        {/* THE SPATIAL MOVING PIZZA VIDEO LAYER (FULL-VIEWPORT STAGE)
-            Starts on the RIGHT from the very first paint frame with zero jumping.
-            Smoothly glides across waypoints during scroll navigation. */}
+        {/* THE SPATIAL MOVING PIZZA VIDEO LAYER (FULL-VIEWPORT STAGE) */}
         <div
           ref={pizzaLayerRef}
           className="absolute inset-0 flex items-center justify-center pointer-events-none z-20 will-change-transform bg-transparent"
           style={{
-            // Hardcoded initial transform for Stage 1 (Hero) on Right with zero jump
             transform: `translate3d(${initialCam.x}vw, ${initialCam.y}vh, 0px) scale(${initialCam.scale}) rotate(${initialCam.rotate}deg)`,
           }}
         >
@@ -296,9 +293,7 @@ export const CinematicExperience: React.FC<CinematicExperienceProps> = ({
           </div>
         </div>
 
-        {/* EDITORIAL CONTENT LAYER: Dedicated Safe Zones (TEXT & PIZZA NEVER OVERLAP)
-            Left Zone: Used when Pizza is on the Right
-            Right Zone: Used when Pizza is on the Left */}
+        {/* EDITORIAL CONTENT LAYER: Dedicated Safe Zones (TEXT & PIZZA NEVER OVERLAP) */}
         <div className="relative z-30 my-auto px-6 md:px-12 max-w-7xl mx-auto w-full pointer-events-auto">
           
           {/* Dynamic spatial placement container */}
@@ -309,43 +304,41 @@ export const CinematicExperience: React.FC<CinematicExperienceProps> = ({
                 : 'items-start text-left mr-auto max-w-lg lg:max-w-xl pr-4 lg:pr-8'
             }`}
           >
-            {/* Eyebrow badge (only shown on non-hero stages) */}
+            {/* 01 — Eyebrow badge (sequential reveal) */}
             {stage.eyebrow ? (
-              <div className="inline-flex items-center gap-2 text-xs font-mono tracking-widest text-[#dfd0ba]/90 uppercase mb-3">
+              <div 
+                key={`eyebrow-${stage.id}`}
+                className="inline-flex items-center gap-2 text-xs font-mono tracking-widest text-[#dfd0ba]/90 uppercase mb-3 animate-blur-enter"
+                style={{ animationDelay: '0ms' }}
+              >
                 <span className="w-6 h-[1px] bg-[#dfd0ba]/40" />
                 <span>{stage.eyebrow}</span>
               </div>
             ) : null}
 
-            {/* Large Editorial Headline */}
+            {/* 02 — Large Editorial Headline (sequential reveal with blur-up) */}
             <h1 
               key={`headline-${stage.id}`}
-              className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-extrabold text-[#f7f2e7] leading-[1.08] tracking-tight mb-4 transition-all duration-500 ease-out ${
-                stage.isHero ? 'animate-blur-enter' : ''
-              }`}
-              style={stage.isHero ? { animationDelay: '280ms' } : undefined}
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-extrabold text-[#f7f2e7] leading-[1.08] tracking-tight mb-4 animate-blur-enter"
+              style={{ animationDelay: '120ms' }}
             >
               {stage.headline}
             </h1>
 
-            {/* Supporting paragraph floating directly on the dark canvas */}
+            {/* 03 — Supporting paragraph (sequential reveal) */}
             <p 
               key={`desc-${stage.id}`}
-              className={`text-sm sm:text-base md:text-lg text-[#cbb89d] font-light leading-relaxed max-w-xl mb-6 transition-all duration-500 ease-out ${
-                stage.isHero ? 'animate-blur-enter' : ''
-              }`}
-              style={stage.isHero ? { animationDelay: '440ms' } : undefined}
+              className="text-sm sm:text-base md:text-lg text-[#cbb89d] font-light leading-relaxed max-w-xl mb-6 animate-blur-enter"
+              style={{ animationDelay: '240ms' }}
             >
               {stage.description}
             </p>
 
-            {/* Editorial Specs Bar */}
+            {/* 04 — Editorial Specs Bar (sequential reveal) */}
             <div 
               key={`specs-${stage.id}`}
-              className={`grid grid-cols-3 gap-3 pt-4 border-t border-[#26211c] mb-8 w-full max-w-lg transition-all duration-500 ${
-                stage.isHero ? 'animate-blur-enter' : ''
-              }`}
-              style={stage.isHero ? { animationDelay: '600ms' } : undefined}
+              className="grid grid-cols-3 gap-3 pt-4 border-t border-[#26211c] mb-8 w-full max-w-lg animate-blur-enter"
+              style={{ animationDelay: '360ms' }}
             >
               {stage.specs.map((s, idx) => (
                 <div key={idx} className="space-y-0.5">
@@ -359,11 +352,12 @@ export const CinematicExperience: React.FC<CinematicExperienceProps> = ({
               ))}
             </div>
 
-            {/* Stage-specific Actions */}
+            {/* 05 & 06 — Stage-specific Actions (sequential reveal) */}
             {stage.isHero ? (
               <div 
+                key={`cta-hero-${stage.id}`}
                 className="flex flex-col sm:flex-row items-center gap-3.5 w-full sm:w-auto animate-blur-enter"
-                style={{ animationDelay: '760ms' }}
+                style={{ animationDelay: '480ms' }}
               >
                 <button
                   onClick={onNavigateToMenu}
@@ -382,8 +376,11 @@ export const CinematicExperience: React.FC<CinematicExperienceProps> = ({
                 </button>
               </div>
             ) : stage.isClimax ? (
-              // Climax CTA: Clean, focused, high contrast, offset to one side
-              <div className="flex items-center gap-4">
+              <div 
+                key={`cta-climax-${stage.id}`}
+                className="flex items-center gap-4 animate-blur-enter"
+                style={{ animationDelay: '480ms' }}
+              >
                 <button
                   onClick={onNavigateToMenu}
                   className="w-full sm:w-auto px-8 py-4 rounded-full bg-[#dfd0ba] hover:bg-[#f3eadc] text-[#0a0a0a] font-bold text-xs sm:text-sm tracking-wider uppercase transition-all duration-300 shadow-2xl shadow-black/90 flex items-center justify-center gap-2.5 cursor-pointer hover:scale-[1.02]"
@@ -400,10 +397,8 @@ export const CinematicExperience: React.FC<CinematicExperienceProps> = ({
 
         {/* BOTTOM BAR: Scroll prompt & instruction indicator */}
         <div 
-          className={`relative z-40 pb-6 sm:pb-8 px-6 text-center pointer-events-none ${
-            stage.isHero ? 'animate-blur-enter' : ''
-          }`}
-          style={stage.isHero ? { animationDelay: '920ms' } : undefined}
+          className="relative z-40 pb-6 sm:pb-8 px-6 text-center pointer-events-none animate-blur-enter"
+          style={{ animationDelay: '600ms' }}
         >
           <div className="inline-flex flex-col items-center gap-1.5 text-[#8c7e6c]">
             <span className="text-[10px] sm:text-[11px] uppercase tracking-widest font-mono">

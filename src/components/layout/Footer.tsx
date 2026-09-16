@@ -1,6 +1,7 @@
 import React from 'react';
 import { Logo } from '../brand/Logo';
-import { MapPin, Phone, Clock, Instagram, Facebook, Globe, Heart } from 'lucide-react';
+import { MapPin, Phone, Clock, Instagram, Facebook, Globe } from 'lucide-react';
+import { FadeUp } from '../motion/MotionSystem';
 
 interface FooterProps {
   onNavigateToSection: (sectionId: string) => void;
@@ -14,7 +15,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateToSection, onNavigateT
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
         
         {/* Brand Column */}
-        <div className="space-y-4">
+        <FadeUp distance={15} delay={0.0} duration={0.65} className="space-y-4">
           <Logo size="lg" />
           <p className="text-xs text-[#a69684] leading-relaxed font-sans">
             L’excellence de la pizza artisanale à Alger. Cuisson au feu de bois, fermentation naturelle lente et produits nobles d'exception.
@@ -25,10 +26,10 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateToSection, onNavigateT
               Alger Centre • Algérie
             </span>
           </div>
-        </div>
+        </FadeUp>
 
         {/* Quick Links */}
-        <div>
+        <FadeUp distance={15} delay={0.1} duration={0.65}>
           <h4 className="text-xs font-mono uppercase tracking-widest text-[#dfd0ba] font-bold mb-4">
             Navigation
           </h4>
@@ -75,10 +76,10 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateToSection, onNavigateT
               </li>
             )}
           </ul>
-        </div>
+        </FadeUp>
 
         {/* Location & Hours */}
-        <div>
+        <FadeUp distance={15} delay={0.2} duration={0.65}>
           <h4 className="text-xs font-mono uppercase tracking-widest text-[#dfd0ba] font-bold mb-4">
             Restaurant & Horaires
           </h4>
@@ -99,10 +100,10 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateToSection, onNavigateT
               <span className="font-mono text-[#dfd0ba]">+213 (0)21 65 43 21</span>
             </li>
           </ul>
-        </div>
+        </FadeUp>
 
         {/* Social & Contact */}
-        <div>
+        <FadeUp distance={15} delay={0.3} duration={0.65}>
           <h4 className="text-xs font-mono uppercase tracking-widest text-[#dfd0ba] font-bold mb-4">
             Suivez-nous
           </h4>
@@ -120,7 +121,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateToSection, onNavigateT
               <Globe className="w-4 h-4" />
             </a>
           </div>
-        </div>
+        </FadeUp>
 
       </div>
 

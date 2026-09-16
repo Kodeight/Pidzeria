@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Clock, Phone, Navigation, Sparkles } from 'lucide-react';
+import { MapPin, Clock, Phone, Sparkles } from 'lucide-react';
 import { FloatingIngredient } from '../cinematic/FloatingIngredient';
 import { FadeUp, FadeLeft, FadeRight } from '../motion/MotionSystem';
 
@@ -8,6 +8,7 @@ export const FindUsSection: React.FC = () => {
     <section id="nous-trouver" data-section="contact" className="scroll-mt-24 relative py-24 sm:py-32 px-5 sm:px-8 md:px-12 bg-[#000000] overflow-hidden border-t border-[#181512]">
       {/* Scroll anchor for #contact */}
       <div id="contact" className="absolute -top-24 left-0" />
+      
       {/* Subtle floating ingredient depth */}
       <div className="absolute top-10 right-8 md:right-24 z-10">
         <FloatingIngredient ingredient="basil" size={120} parallaxSpeed={40} rotationSpeed={20} blur={0.5} opacity={0.8} hideOnMobile />
@@ -17,25 +18,33 @@ export const FindUsSection: React.FC = () => {
       </div>
 
       <div className="relative z-20 max-w-7xl mx-auto">
-        {/* Header */}
-        <FadeUp distance={30} duration={0.8} className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#141210] border border-[#2a241e] text-[#dfd0ba] text-xs font-mono uppercase tracking-widest">
-            <MapPin className="w-3.5 h-3.5 text-[#dfd0ba]" />
-            <span>Nous trouver</span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-extrabold text-[#f7f2e7] tracking-tight">
-            Au cœur d'Alger Centre.
-          </h2>
-          <p className="text-sm sm:text-base text-[#a69684] leading-relaxed font-light">
-            Une adresse chaleureuse et raffinée pour déguster notre pizza napolitaine au feu de bois dans la pure tradition artisanale.
-          </p>
-        </FadeUp>
+        {/* Header Sequential Stagger */}
+        <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
+          <FadeUp distance={18} delay={0.0} duration={0.65}>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#141210] border border-[#2a241e] text-[#dfd0ba] text-xs font-mono uppercase tracking-widest">
+              <MapPin className="w-3.5 h-3.5 text-[#dfd0ba]" />
+              <span>Nous trouver</span>
+            </div>
+          </FadeUp>
+
+          <FadeUp distance={18} delay={0.1} duration={0.65}>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-extrabold text-[#f7f2e7] tracking-tight">
+              Au cœur d'Alger Centre.
+            </h2>
+          </FadeUp>
+
+          <FadeUp distance={18} delay={0.18} duration={0.65}>
+            <p className="text-sm sm:text-base text-[#a69684] leading-relaxed font-light">
+              Une adresse chaleureuse et raffinée pour déguster notre pizza napolitaine au feu de bois dans la pure tradition artisanale.
+            </p>
+          </FadeUp>
+        </div>
 
         {/* Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           
           {/* Information Cards */}
-          <FadeLeft distance={-35} duration={0.9} className="lg:col-span-5 flex flex-col justify-between gap-4">
+          <FadeLeft distance={-35} delay={0.1} duration={0.8} className="lg:col-span-5 flex flex-col justify-between gap-4">
             
             {/* Address */}
             <div className="p-6 sm:p-7 rounded-2xl bg-[#0c0a09] border border-[#241f1a] hover:border-[#3d352c] transition-all">
@@ -93,7 +102,7 @@ export const FindUsSection: React.FC = () => {
           </FadeLeft>
 
           {/* Stylized Visual Map Representation */}
-          <FadeRight distance={35} duration={0.9} className="lg:col-span-7 rounded-2xl bg-[#0c0a09] border border-[#241f1a] p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden min-h-[380px]">
+          <FadeRight distance={35} delay={0.2} duration={0.8} className="lg:col-span-7 rounded-2xl bg-[#0c0a09] border border-[#241f1a] p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden min-h-[380px]">
             {/* Map background grid aesthetics */}
             <div 
               className="absolute inset-0 opacity-15 pointer-events-none"
@@ -138,13 +147,11 @@ export const FindUsSection: React.FC = () => {
                 href="https://maps.google.com/?q=Didouche+Mourad+Alger"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto px-5 py-2.5 rounded-full bg-[#dfd0ba] hover:bg-[#f3eadc] text-[#0a0a0a] font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg"
+                className="px-5 py-2.5 rounded-full bg-[#181512] hover:bg-[#dfd0ba] hover:text-[#0a0a0a] text-[#dfd0ba] border border-[#3d3730] font-mono text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2"
               >
-                <Navigation className="w-3.5 h-3.5 text-black" />
-                <span>Ouvrir dans Google Maps</span>
+                <span>Ouvrir sur Google Maps</span>
               </a>
             </div>
-
           </FadeRight>
 
         </div>
