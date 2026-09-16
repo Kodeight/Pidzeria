@@ -1,6 +1,5 @@
 // Centralized ingredient visual asset mapping
-// Generated with AI Studio photorealistic macro photography on pure black canvas
-// Available in /public/assets/ingredients/
+// Real transparent backgroundless PNG assets in /public/assets/ingredients/
 
 export type IngredientKey = 'basil' | 'tomato' | 'mushroom' | 'olive' | 'pepperoni';
 
@@ -15,31 +14,31 @@ export const INGREDIENT_ASSETS: Record<IngredientKey, IngredientAsset> = {
   basil: {
     key: 'basil',
     name: 'Feuille de Basilic Frais',
-    src: '/assets/ingredients/basil.jpg',
+    src: '/assets/ingredients/basil.png',
     alt: 'Feuille de basilic frais italien',
   },
   tomato: {
     key: 'tomato',
     name: 'Tranche de Tomate San Marzano',
-    src: '/assets/ingredients/tomato.jpg',
+    src: '/assets/ingredients/tomato.png',
     alt: 'Tranche de tomate San Marzano juteuse',
   },
   mushroom: {
     key: 'mushroom',
     name: 'Champignon Cremini Frais',
-    src: '/assets/ingredients/mushroom.jpg',
-    alt: 'Tranche de champignon cremini frais',
+    src: '/assets/ingredients/mushroom.png',
+    alt: 'Tranche de champignon cremini frais sans fond',
   },
   olive: {
     key: 'olive',
     name: 'Olive Noire Kalamata',
-    src: '/assets/ingredients/olive.jpg',
-    alt: 'Olive noire Kalamata à l\'huile d\'olive',
+    src: '/assets/ingredients/olive.png',
+    alt: 'Olive noire Kalamata à l\'huile d\'olive sans fond',
   },
   pepperoni: {
     key: 'pepperoni',
     name: 'Pétale de Pepperoni Bœuf Croustillant',
-    src: '/assets/ingredients/pepperoni.jpg',
-    alt: 'Rondelle de pepperoni de bœuf artisanal',
+    src: '/assets/ingredients/pepperoni.png',
+    alt: 'Rondelle de pepperoni de bœuf artisanal sans fond',
   },
 };

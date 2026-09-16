@@ -57,7 +57,7 @@ export const PizzaVideoCompositor: React.FC<PizzaVideoCompositorProps> = ({
     targetTimeRef.current = clampedProgress * duration;
 
     if (onStageChange) {
-      const stage = Math.min(5, Math.floor(clampedProgress * 6));
+      const stage = Math.min(6, Math.floor(clampedProgress * 7));
       onStageChange(stage);
     }
   }, [scrollProgress, duration, onStageChange]);
@@ -75,7 +75,7 @@ export const PizzaVideoCompositor: React.FC<PizzaVideoCompositorProps> = ({
 
         // Smooth responsive interpolation
         if (Math.abs(diff) > 0.003) {
-          const step = diff * 0.25;
+          const step = diff * 0.28;
           const nextTime = current + step;
           currentTimeRef.current = nextTime;
 
@@ -102,28 +102,25 @@ export const PizzaVideoCompositor: React.FC<PizzaVideoCompositorProps> = ({
 
   return (
     <div 
-      className={`relative flex items-center justify-center select-none bg-transparent ${className}`}
+      className={`relative flex items-center justify-center select-none bg-black ${className}`}
       style={style}
     >
-      {/* NO artificial halos, NO glowing backlights, NO box shadows.
-          Pure black blending directly into the #000000 website canvas */}
-      <div className="relative w-full h-full flex items-center justify-center">
+      {/* Absolute black background match. ZERO gray halos, ZERO container boxes, ZERO artificial glow.
+          The video is a pure cinematic visual layer seamlessly blending into the #000000 website canvas */}
+      <div className="relative w-full h-full flex items-center justify-center bg-black">
         <video
           ref={videoRef}
           src={videoSource}
           muted
           playsInline
           preload="auto"
-          className="w-full h-full object-contain pointer-events-none select-none"
+          className="w-full h-full object-contain pointer-events-none select-none bg-black"
           style={{
-            // Screen blend mode ensures the black pixels of the video disappear 100% into #000000
-            // while preserving the rich, natural colors and highlights of the pizza
+            // Keep native colors, cheese highlights, flour specks and natural video lighting intact.
+            // Screen blending on #000000 merges true black with 100% mathematical perfection.
             mixBlendMode: 'screen',
-            // Soft feathered boundary ensures zero rectangular edge artifacts
-            maskImage: 'radial-gradient(circle at 50% 50%, black 72%, rgba(0,0,0,0.85) 86%, transparent 100%)',
-            WebkitMaskImage: 'radial-gradient(circle at 50% 50%, black 72%, rgba(0,0,0,0.85) 86%, transparent 100%)',
-            opacity: isVideoLoaded ? 1 : 0.4,
-            filter: 'contrast(1.04) brightness(1.02)',
+            opacity: isVideoLoaded ? 1 : 0,
+            transition: 'opacity 0.5s ease-out',
           }}
           onError={(e) => {
             const vid = e.currentTarget;
@@ -133,10 +130,10 @@ export const PizzaVideoCompositor: React.FC<PizzaVideoCompositorProps> = ({
           }}
         />
 
-        {/* Minimal loading state */}
+        {/* Minimal silent placeholder during initial load */}
         {!isVideoLoaded && (
-          <div className="absolute inset-0 flex items-center justify-center text-xs font-mono text-[#cbb89d] uppercase tracking-widest pointer-events-none">
-            Chargement de la cinématique PIDZERIA...
+          <div className="absolute inset-0 flex items-center justify-center text-xs font-mono text-[#8c7e6c] uppercase tracking-widest pointer-events-none">
+            PIDZERIA CINEMATIC
           </div>
         )}
       </div>

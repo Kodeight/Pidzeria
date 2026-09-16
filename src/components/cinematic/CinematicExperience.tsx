@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { PizzaVideoCompositor } from './PizzaVideoCompositor';
-import { ArrowDown, ArrowUpRight, Calendar, Sparkles } from 'lucide-react';
+import { ArrowDown, ArrowUpRight, Calendar } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -13,8 +13,9 @@ interface StoryStageData {
   headline: string;
   description: string;
   specs: { label: string; value: string }[];
-  textAlignment: 'left' | 'right' | 'center';
+  textAlignment: 'left' | 'right';
   isHero?: boolean;
+  isClimax?: boolean;
 }
 
 const CINEMATIC_STAGES: StoryStageData[] = [
@@ -37,7 +38,7 @@ const CINEMATIC_STAGES: StoryStageData[] = [
     stepNumber: '02',
     eyebrow: 'ÉTAPE 01 • FERMENTATION LENTE',
     headline: 'Tout commence par une bonne pâte.',
-    description: '48 heures de maturation lente au levain vivant. Une pâte aérienne, voluptueuse et hautement alvéolée, assurant une digestibilité totale et un parfum de blé grillé inimitable.',
+    description: '48 heures de maturation lente au levain vivant. Une pâte aérienne, voluptueuse et hautement alvéolée, assurant une digestibilité totale.',
     specs: [
       { label: 'Maturation', value: '48 Heures à froid' },
       { label: 'Hydratation', value: '72% haute teneur' },
@@ -50,7 +51,7 @@ const CINEMATIC_STAGES: StoryStageData[] = [
     stepNumber: '03',
     eyebrow: 'ÉTAPE 02 • TERROIR VOLCANIQUE',
     headline: 'Une sauce préparée avec caractère.',
-    description: 'Tomates San Marzano D.O.P. mûries sur les flancs du Vésuve, concassées à la main avec du basilic frais cueilli à l\'aube et un filet d\'huile d\'olive extra-vierge.',
+    description: 'Tomates San Marzano D.O.P. mûries sur les flancs du Vésuve, concassées à la main avec du basilic frais cueilli et un filet d’huile d’olive extra-vierge.',
     specs: [
       { label: 'Origine', value: 'San Marzano D.O.P.' },
       { label: 'Aromates', value: 'Basilic frais froissé' },
@@ -63,7 +64,7 @@ const CINEMATIC_STAGES: StoryStageData[] = [
     stepNumber: '04',
     eyebrow: 'ÉTAPE 03 • LES INGRÉDIENTS NOBLES',
     headline: 'Des produits choisis avec soin.',
-    description: 'Mozzarella Fior di Latte fraîche effilochée chaque matin, bœuf artisanal mariné et merguez assaisonnées selon la recette familiale d\'Alger, relevées d\'olives noires.',
+    description: 'Mozzarella Fior di Latte fraîche effilochée chaque matin, bœuf artisanal mariné et merguez assaisonnées selon la recette familiale d’Alger.',
     specs: [
       { label: 'Fromage', value: 'Fior di Latte fraîche' },
       { label: 'Viandes', value: 'Recette maison d’Alger' },
@@ -76,7 +77,7 @@ const CINEMATIC_STAGES: StoryStageData[] = [
     stepNumber: '05',
     eyebrow: 'ÉTAPE 04 • LE FEU & LA CUISSON',
     headline: 'Saisie à 450°C. Léopardage doré.',
-    description: '90 secondes chrono sur pierre réfractaire. La croûte gonfle, se tache d\'un léopardage doré et croustillant sous l’effet de la flamme vive.',
+    description: '90 secondes chrono sur pierre réfractaire. La croûte gonfle, se tache d’un léopardage doré et croustillant sous l’effet de la flamme vive.',
     specs: [
       { label: 'Four à bois', value: '450°C constant' },
       { label: 'Chrono', value: '90 Secondes' },
@@ -85,17 +86,31 @@ const CINEMATIC_STAGES: StoryStageData[] = [
     textAlignment: 'left',
   },
   {
-    id: 'explosion',
+    id: 'decoupe',
     stepNumber: '06',
-    eyebrow: 'ÉTAPE 05 • LA COUPE & L’EXPLOSION',
-    headline: 'L’explosion des saveurs.',
-    description: 'La découpe nette libère la vapeur embaumée et sublime chaque part. La dégustation commence.',
+    eyebrow: 'ÉTAPE 05 • LA DÉCOUPE NETTE',
+    headline: 'La découpe de précision.',
+    description: 'La lame sépare les parts alvéolées, libérant la vapeur embaumée et préparant l’instant sublime de la dégustation.',
     specs: [
-      { label: 'Parts', value: 'Découpe artisanale' },
-      { label: 'Saveurs', value: 'Équilibre parfait' },
-      { label: 'Dégustation', value: 'À table ou à emporter' },
+      { label: 'Découpe', value: 'Précise & franche' },
+      { label: 'Alvéolage', value: 'Corniche soufflée' },
+      { label: 'Vapeur', value: 'Arômes décuplés' },
     ],
-    textAlignment: 'center',
+    textAlignment: 'left',
+  },
+  {
+    id: 'explosion',
+    stepNumber: '07',
+    eyebrow: 'CLIMAX • L’EXPLOSION DES SAVEURS',
+    headline: 'L’explosion des saveurs.',
+    description: 'Les parts se détachent en plein vol. L’alliance parfaite entre la tradition napolitaine et la générosité algérienne.',
+    specs: [
+      { label: 'Parts', value: 'Généreuses & légères' },
+      { label: 'Saveurs', value: 'Harmonie absolue' },
+      { label: 'Expérience', value: 'Sur place ou à emporter' },
+    ],
+    textAlignment: 'left', // NEVER CENTER! Split composition: Text LEFT, Exploded Pizza RIGHT!
+    isClimax: true,
   },
 ];
 
@@ -104,7 +119,7 @@ interface CinematicExperienceProps {
   onNavigateToReservation: () => void;
 }
 
-// Keyframe compositions across 6 distinct stages for desktop and mobile
+// Dedicated Camera Keyframes for 7 distinct stages
 interface StageCameraConfig {
   x: number; // in vw
   y: number; // in vh
@@ -112,22 +127,27 @@ interface StageCameraConfig {
   rotate: number; // in deg
 }
 
+// DESKTOP: Split composition throughout. Text and Pizza NEVER overlap!
+// Stage 7 (Explosion): Text on Left, Exploded Pizza on Right with scale: 1.05 so ALL slices stay in view!
 const DESKTOP_KEYFRAMES: StageCameraConfig[] = [
-  { x: 18, y: 0, scale: 0.95, rotate: 0 },    // Stage 1: Hero on right
-  { x: 10, y: -2, scale: 1.06, rotate: 1.2 }, // Stage 2: Dough moves center-right
-  { x: -16, y: 2, scale: 1.15, rotate: -2 },  // Stage 3: Sauce moves to left! (Text on right)
-  { x: 0, y: 4, scale: 1.20, rotate: 0.8 },   // Stage 4: Ingredients center
-  { x: 6, y: -1, scale: 1.30, rotate: -1.2 }, // Stage 5: Baking becomes dominant
-  { x: 0, y: 0, scale: 1.16, rotate: 0 },     // Stage 6: Explosion centered, slices fully visible
+  { x: 20, y: 1, scale: 0.96, rotate: 0 },     // Stage 1: Hero (Pizza right)
+  { x: 18, y: -2, scale: 1.06, rotate: 1.2 },  // Stage 2: Dough (Pizza right-upper)
+  { x: -21, y: 2, scale: 1.14, rotate: -2 },   // Stage 3: Sauce (Pizza LEFT, Text RIGHT)
+  { x: 19, y: 3, scale: 1.18, rotate: 0.8 },   // Stage 4: Ingredients (Pizza right)
+  { x: 17, y: -2, scale: 1.25, rotate: -1.2 }, // Stage 5: Baking (Pizza right dominant)
+  { x: 19, y: 1, scale: 1.14, rotate: 0.5 },   // Stage 6: Slicing (Pizza right)
+  { x: 20, y: 3, scale: 1.05, rotate: 0 },     // Stage 7: EXPLOSION CLIMAX! (Pizza RIGHT, Text LEFT. Zero overlap, all slices fully visible!)
 ];
 
+// MOBILE: Vertical Choreography. Text sits in upper safe zone (top 38%), Pizza travels in lower safe zone (bottom 62%).
 const MOBILE_KEYFRAMES: StageCameraConfig[] = [
-  { x: 2, y: 16, scale: 0.95, rotate: 0 },    // Stage 1: Hero lower portion
-  { x: 0, y: 6, scale: 1.05, rotate: 1 },     // Stage 2: Dough moves upward
-  { x: -5, y: 3, scale: 1.12, rotate: -1.5 }, // Stage 3: Sauce shifts left
-  { x: 0, y: 5, scale: 1.18, rotate: 0.5 },   // Stage 4: Ingredients centered
-  { x: 0, y: 0, scale: 1.25, rotate: -0.8 },  // Stage 5: Baking very large
-  { x: 0, y: 0, scale: 1.02, rotate: 0 },     // Stage 6: Explosion centered, slices stay within bounds
+  { x: 0, y: 22, scale: 0.88, rotate: 0 },     // Stage 1: Hero (lower screen)
+  { x: 2, y: 17, scale: 0.98, rotate: 1 },     // Stage 2: Dough (moves up slightly)
+  { x: -3, y: 18, scale: 1.04, rotate: -1.5 }, // Stage 3: Sauce (shifts left)
+  { x: 0, y: 17, scale: 1.10, rotate: 0.5 },   // Stage 4: Ingredients (centered lower)
+  { x: 0, y: 15, scale: 1.16, rotate: -0.8 },  // Stage 5: Baking (large, lower)
+  { x: 0, y: 17, scale: 1.06, rotate: 0.5 },   // Stage 6: Slicing
+  { x: 0, y: 18, scale: 0.92, rotate: 0 },     // Stage 7: EXPLOSION (All slices stay within mobile viewport bounds, text above safe-zone!)
 ];
 
 export const CinematicExperience: React.FC<CinematicExperienceProps> = ({
@@ -165,7 +185,7 @@ export const CinematicExperience: React.FC<CinematicExperienceProps> = ({
     const k1 = keyframes[index];
     const k2 = keyframes[index + 1];
 
-    // Smooth sinusoidal easing between keyframe waypoints
+    // Smooth sinusoidal easing between camera waypoints
     const ease = (1 - Math.cos(fraction * Math.PI)) / 2;
 
     return {
@@ -180,11 +200,11 @@ export const CinematicExperience: React.FC<CinematicExperienceProps> = ({
     const container = containerRef.current;
     if (!container) return;
 
-    // Pin viewport for rich continuous 6-stage progression
+    // Pin viewport for rich continuous 7-stage sequence
     const st = ScrollTrigger.create({
       trigger: container,
       start: 'top top',
-      end: '+=500%',
+      end: '+=550%',
       pin: true,
       scrub: 0.5,
       anticipatePin: 1,
@@ -192,7 +212,7 @@ export const CinematicExperience: React.FC<CinematicExperienceProps> = ({
         const p = self.progress;
         setScrollProgress(p);
 
-        // Map progress across the 6 narrative stages
+        // Map progress across the 7 narrative stages
         const stage = Math.min(
           CINEMATIC_STAGES.length - 1,
           Math.floor(p * CINEMATIC_STAGES.length)
@@ -223,41 +243,21 @@ export const CinematicExperience: React.FC<CinematicExperienceProps> = ({
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-screen overflow-hidden flex flex-col justify-between select-none"
-      style={{
-        // Strict requirement: pure black #000000 matching video background
-        backgroundColor: '#000000',
-      }}
+      className="relative w-full h-screen overflow-hidden flex flex-col justify-between select-none bg-[#000000]"
     >
-      {/* Seamless header gradient blend */}
-      <div className="absolute top-0 inset-x-0 h-32 bg-gradient-to-b from-black via-black/80 to-transparent pointer-events-none z-40" />
+      {/* Seamless header blend */}
+      <div className="absolute top-0 inset-x-0 h-28 bg-gradient-to-b from-black via-black/80 to-transparent pointer-events-none z-40" />
 
-      {/* DEPTH LAYER 1: Subtle drifting flour/ash specks in deep background (Parallax) */}
-      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden opacity-25">
-        <div 
-          className="absolute top-1/4 left-1/5 w-1.5 h-1.5 rounded-full bg-[#dfd0ba]/40 blur-[0.5px]"
-          style={{ transform: `translateY(${scrollProgress * -80}px)` }}
-        />
-        <div 
-          className="absolute top-2/3 right-1/4 w-2 h-2 rounded-full bg-[#cbb89d]/30 blur-[0.5px]"
-          style={{ transform: `translateY(${scrollProgress * -140}px)` }}
-        />
-        <div 
-          className="absolute bottom-1/3 left-1/3 w-1 h-1 rounded-full bg-[#dfd0ba]/50"
-          style={{ transform: `translateY(${scrollProgress * -60}px)` }}
-        />
-      </div>
-
-      {/* TOP BAR: Subtle Narrative Progress Indicator & Live Status */}
+      {/* TOP NARRATIVE BAR: Step Counter & Subtle Progress */}
       <div className="relative z-40 pt-20 sm:pt-24 px-6 md:px-12 max-w-7xl mx-auto w-full flex items-center justify-between pointer-events-auto">
-        {/* Stage counter pill */}
+        {/* Stage counter badge */}
         <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#100e0d]/90 border border-[#26211c] backdrop-blur-md">
           <span className="flex h-1.5 w-1.5 relative">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#dfd0ba] opacity-75"></span>
             <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#dfd0ba]"></span>
           </span>
           <span className="text-[11px] font-mono tracking-widest text-[#dfd0ba] uppercase font-semibold">
-            {stage.stepNumber} / 06 • {stage.eyebrow}
+            {stage.stepNumber} / 07 • {stage.eyebrow}
           </span>
         </div>
 
@@ -276,19 +276,19 @@ export const CinematicExperience: React.FC<CinematicExperienceProps> = ({
         </div>
       </div>
 
-      {/* DEPTH LAYER 2: THE SPATIAL MOVING PIZZA VIDEO LAYER (FULL-VIEWPORT STAGE)
-          Controlled smoothly by GSAP ScrollTrigger timeline */}
+      {/* THE SPATIAL MOVING PIZZA VIDEO LAYER (FULL-VIEWPORT STAGE)
+          Tied to GSAP ScrollTrigger timeline: changes position (x, y), scale, and depth dynamically */}
       <div
         ref={pizzaLayerRef}
-        className="absolute inset-0 flex items-center justify-center pointer-events-none z-20 will-change-transform"
+        className="absolute inset-0 flex items-center justify-center pointer-events-none z-20 will-change-transform bg-transparent"
         style={{
           // Initial camera position for Stage 1 (Hero)
           transform: isMobile 
-            ? 'translate(2vw, 16vh) scale(0.95)' 
-            : 'translate(18vw, 0vh) scale(0.95)',
+            ? 'translate(0vw, 22vh) scale(0.88)' 
+            : 'translate(20vw, 1vh) scale(0.96)',
         }}
       >
-        <div className="w-[340px] sm:w-[480px] md:w-[620px] lg:w-[780px] aspect-[16/10] flex items-center justify-center">
+        <div className="w-[340px] sm:w-[480px] md:w-[620px] lg:w-[760px] aspect-[16/10] flex items-center justify-center">
           <PizzaVideoCompositor
             scrollProgress={scrollProgress}
             className="w-full h-full"
@@ -296,20 +296,9 @@ export const CinematicExperience: React.FC<CinematicExperienceProps> = ({
         </div>
       </div>
 
-      {/* DEPTH LAYER 3: FOREGROUND ACCENTS (Subtle drifting fresh basil leaf passing with depth) */}
-      <div 
-        className="absolute top-1/3 left-10 md:left-24 pointer-events-none z-30 opacity-40 transition-transform duration-700 ease-out hidden sm:block"
-        style={{
-          transform: `translate(${scrollProgress * 40}px, ${scrollProgress * -90}px) rotate(${scrollProgress * 45}deg)`,
-        }}
-      >
-        <div className="w-10 h-10 rounded-full border border-[#3d3730]/40 flex items-center justify-center text-[10px] font-mono text-[#8c7e6c] backdrop-blur-sm">
-          🍃
-        </div>
-      </div>
-
-      {/* DEPTH LAYER 4: CHOREOGRAPHED EDITORIAL CONTENT
-          Positions adjust dynamically: Left, Right, or Center depending on the cinematic stage */}
+      {/* EDITORIAL CONTENT LAYER: Dedicated Safe Zones (TEXT & PIZZA NEVER OVERLAP)
+          Desktop: Split Left/Right composition
+          Mobile: Upper 38% text safe zone */}
       <div className="relative z-30 my-auto px-6 md:px-12 max-w-7xl mx-auto w-full pointer-events-auto">
         
         {/* Dynamic spatial placement container */}
@@ -317,10 +306,8 @@ export const CinematicExperience: React.FC<CinematicExperienceProps> = ({
           className={`flex flex-col transition-all duration-700 ease-out ${
             stage.textAlignment === 'right' && !isMobile
               ? 'items-end text-left ml-auto max-w-lg lg:max-w-xl pr-4 lg:pr-8'
-              : stage.textAlignment === 'center'
-              ? 'items-center text-center mx-auto max-w-2xl'
               : isMobile
-              ? 'items-start text-left max-w-md'
+              ? 'items-start text-left max-w-md pt-2'
               : 'items-start text-left mr-auto max-w-lg lg:max-w-xl'
           }`}
         >
@@ -346,7 +333,7 @@ export const CinematicExperience: React.FC<CinematicExperienceProps> = ({
             {stage.description}
           </p>
 
-          {/* Editorial Specs Bar */}
+          {/* Editorial Specs Bar (kept subtle & minimal for the climax) */}
           <div 
             key={`specs-${stage.id}`}
             className="grid grid-cols-3 gap-3 pt-4 border-t border-[#26211c] mb-8 w-full max-w-lg transition-all duration-500"
@@ -382,11 +369,12 @@ export const CinematicExperience: React.FC<CinematicExperienceProps> = ({
                 <span>Réserver une table</span>
               </button>
             </div>
-          ) : currentStageIdx >= 4 ? (
+          ) : stage.isClimax ? (
+            // Climax CTA: Clean, focused, high contrast, offset to one side
             <div className="flex items-center gap-4">
               <button
                 onClick={onNavigateToMenu}
-                className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-[#dfd0ba] hover:bg-[#f3eadc] text-[#0a0a0a] font-bold text-xs sm:text-sm tracking-wider uppercase transition-all duration-300 shadow-2xl shadow-black/90 flex items-center justify-center gap-2.5 cursor-pointer hover:scale-[1.02]"
+                className="w-full sm:w-auto px-8 py-4 rounded-full bg-[#dfd0ba] hover:bg-[#f3eadc] text-[#0a0a0a] font-bold text-xs sm:text-sm tracking-wider uppercase transition-all duration-300 shadow-2xl shadow-black/90 flex items-center justify-center gap-2.5 cursor-pointer hover:scale-[1.02]"
               >
                 <span>Découvrir la carte complète</span>
                 <ArrowUpRight className="w-4 h-4 text-black" />
@@ -403,15 +391,15 @@ export const CinematicExperience: React.FC<CinematicExperienceProps> = ({
         <div className="inline-flex flex-col items-center gap-1.5 text-[#8c7e6c]">
           <span className="text-[10px] sm:text-[11px] uppercase tracking-widest font-mono">
             {scrollProgress >= 0.92
-              ? 'Faites défiler pour explorer nos créations'
+              ? 'Faites défiler pour explorer la carte'
               : 'Faites défiler pour vivre la cuisson'}
           </span>
           <ArrowDown className="w-3.5 h-3.5 animate-bounce text-[#dfd0ba]" />
         </div>
       </div>
 
-      {/* Seamless bottom blend into next sections */}
-      <div className="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-t from-black via-black/80 to-transparent pointer-events-none z-40" />
+      {/* Seamless bottom blend into next section */}
+      <div className="absolute bottom-0 inset-x-0 h-28 bg-gradient-to-t from-black via-black/80 to-transparent pointer-events-none z-40" />
     </div>
   );
 };

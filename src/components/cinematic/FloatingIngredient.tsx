@@ -86,15 +86,10 @@ export const FloatingIngredient: React.FC<FloatingIngredientProps> = ({
     >
       <img
         src={asset.src}
-        alt=""
+        alt={asset.alt}
         loading="lazy"
         referrerPolicy="no-referrer"
-        className="w-full h-full object-contain pointer-events-none"
-        style={{
-          mixBlendMode: 'screen',
-          maskImage: 'radial-gradient(circle at 50% 50%, black 72%, rgba(0,0,0,0.85) 88%, transparent 100%)',
-          WebkitMaskImage: 'radial-gradient(circle at 50% 50%, black 72%, rgba(0,0,0,0.85) 88%, transparent 100%)',
-        }}
+        className="w-full h-full object-contain pointer-events-none select-none drop-shadow-[0_12px_24px_rgba(0,0,0,0.85)]"
       />
     </div>
   );
