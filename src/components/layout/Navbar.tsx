@@ -23,7 +23,7 @@ interface NavbarProps {
   onNavigateToHome: () => void;
   onNavigateToMenu: () => void;
   onNavigateToSection: (sectionId: string) => void;
-  currentRoute: 'home' | 'menu' | 'dashboard';
+  currentRoute: 'home' | 'menu' | 'dashboard' | 'dashboard-login';
   onNavigateToDashboard: () => void;
 }
 

@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { INITIAL_MENU_ITEMS } from '../../data/mockData';
 import { MenuItem, MenuCategory } from '../../types';
 import { useStore } from '../../context/StoreContext';
-import { ArrowRight, Plus, Check, Flame, Award, ArrowUpRight, Sparkles } from 'lucide-react';
+import { ArrowRight, Plus, Check, Flame, Award, ArrowUpRight, Sparkles, ChevronLeft, ChevronRight, ShoppingBag } from 'lucide-react';
 import { FloatingIngredient } from '../cinematic/FloatingIngredient';
-import { FadeUp, FadeLeft, FadeRight, ScaleReveal, StaggerReveal } from '../motion/MotionSystem';
+import { FadeUp, FadeLeft, FadeRight, ScaleReveal } from '../motion/MotionSystem';
 
 interface HomepageMenuDiscoveryProps {
   onGoToMenu: (category?: MenuCategory) => void;
@@ -32,6 +32,12 @@ const CATEGORY_TABS: CategoryTab[] = [
     subtitle: 'Farine Tipo 00 & Levain 48h au feu de bois',
   },
   {
+    id: 'americaines',
+    name: 'Pizzas Américaines',
+    badge: 'Gourmet',
+    subtitle: 'Pepperoni croustillant, sauce BBQ & double fromage',
+  },
+  {
     id: 'algeriennes',
     name: 'Pizzas Algériennes',
     badge: 'Terroir Dz',
@@ -42,12 +48,6 @@ const CATEGORY_TABS: CategoryTab[] = [
     name: 'Pizzas Carrées',
     badge: 'Authentique Alger',
     subtitle: 'Pâte dorée croustillante façon pizza carrée d’Alger',
-  },
-  {
-    id: 'americaines',
-    name: 'Pizzas Américaines',
-    badge: 'Gourmet',
-    subtitle: 'Pepperoni croustillant, sauce BBQ & double fromage',
   },
   {
     id: 'accompagnements',
@@ -66,12 +66,24 @@ const CATEGORY_TABS: CategoryTab[] = [
   },
 ];
 
+// Curated flagship items for the "Nos Incontournables" Carousel
+const CAROUSEL_SIGNATURES: MenuItem[] = [
+  INITIAL_MENU_ITEMS.find((i) => i.id === 'it-1') || INITIAL_MENU_ITEMS[0],
+  INITIAL_MENU_ITEMS.find((i) => i.id === 'dz-1') || INITIAL_MENU_ITEMS[1],
+  INITIAL_MENU_ITEMS.find((i) => i.id === 'sq-1') || INITIAL_MENU_ITEMS[2],
+  INITIAL_MENU_ITEMS.find((i) => i.id === 'it-2') || INITIAL_MENU_ITEMS[3],
+  INITIAL_MENU_ITEMS.find((i) => i.id === 'am-1') || INITIAL_MENU_ITEMS[4],
+  INITIAL_MENU_ITEMS.find((i) => i.id === 'it-3') || INITIAL_MENU_ITEMS[5],
+];
+
 export const HomepageMenuDiscovery: React.FC<HomepageMenuDiscoveryProps> = ({
   onGoToMenu,
   onOpenCart,
 }) => {
   const [activeTab, setActiveTab] = useState<MenuCategory | 'featured'>('featured');
   const [addedItemIds, setAddedItemIds] = useState<Record<string, boolean>>({});
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const categoriesScrollRef = useRef<HTMLDivElement>(null);
   const { addToCart } = useStore();
 
   const handleQuickAdd = (e: React.MouseEvent, item: MenuItem) => {
@@ -83,10 +95,16 @@ export const HomepageMenuDiscovery: React.FC<HomepageMenuDiscoveryProps> = ({
     }, 1200);
   };
 
+  const scrollCarousel = (direction: 'left' | 'right') => {
+    if (carouselRef.current) {
+      const scrollAmount = direction === 'left' ? -320 : 320;
+      carouselRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
+
   // Filter 3 to 4 representative products based on active tab
   const getDisplayedItems = (): MenuItem[] => {
     if (activeTab === 'featured') {
-      // Pick the best flagship from each major category
       const signatureIds = ['dz-1', 'it-1', 'sq-1', 'am-1', 'des-1', 'acc-1'];
       return INITIAL_MENU_ITEMS.filter((i) => signatureIds.includes(i.id));
     }
@@ -99,60 +117,51 @@ export const HomepageMenuDiscovery: React.FC<HomepageMenuDiscoveryProps> = ({
   return (
     <section 
       id="menu-discovery" 
-      className="relative py-28 md:py-36 bg-black text-[#f7f2e7] overflow-hidden border-t border-[#1f1b17]"
+      data-section="menu"
+      className="scroll-mt-24 relative py-20 sm:py-28 md:py-36 bg-black text-[#f7f2e7] overflow-hidden border-t border-[#1f1b17]"
     >
-      {/* BACKGROUND FLOATING INGREDIENTS (GSAP Scroll Parallax) */}
-      {/* 1. Fresh Basil Leaf floating top left */}
+      {/* Scroll anchor */}
+      <div id="menu" className="absolute -top-24 left-0 pointer-events-none" />
+
+      {/* RESTRAINED FLOATING INGREDIENTS (Transparent Background PNGs, Desktop & Ambient Only) */}
       <div className="absolute top-20 left-4 md:left-12 pointer-events-none z-10">
         <FloatingIngredient
           ingredient="basil"
-          size={120}
-          parallaxSpeed={-70}
-          rotationSpeed={30}
-          opacity={0.8}
-        />
-      </div>
-
-      {/* 2. Juicy San Marzano Tomato Slice floating mid-right */}
-      <div className="absolute top-1/3 -right-6 md:right-10 pointer-events-none z-10">
-        <FloatingIngredient
-          ingredient="tomato"
-          size={135}
-          parallaxSpeed={80}
-          rotationSpeed={-25}
-          opacity={0.85}
-        />
-      </div>
-
-      {/* 3. Black Kalamata Olive floating mid-left */}
-      <div className="absolute top-2/3 left-6 md:left-16 pointer-events-none z-10">
-        <FloatingIngredient
-          ingredient="olive"
-          size={75}
-          parallaxSpeed={-50}
-          rotationSpeed={40}
+          size={110}
+          parallaxSpeed={-60}
+          rotationSpeed={25}
           opacity={0.75}
           hideOnMobile
         />
       </div>
 
-      {/* 4. Pepperoni Slice floating bottom right */}
+      <div className="absolute top-1/3 -right-6 md:right-10 pointer-events-none z-10">
+        <FloatingIngredient
+          ingredient="tomato"
+          size={120}
+          parallaxSpeed={70}
+          rotationSpeed={-20}
+          opacity={0.8}
+          hideOnMobile
+        />
+      </div>
+
       <div className="absolute bottom-24 right-8 md:right-20 pointer-events-none z-10">
         <FloatingIngredient
           ingredient="pepperoni"
-          size={110}
-          parallaxSpeed={60}
-          rotationSpeed={-20}
-          opacity={0.85}
+          size={100}
+          parallaxSpeed={50}
+          rotationSpeed={-15}
+          opacity={0.8}
           hideOnMobile
         />
       </div>
 
       {/* SECTION CONTAINER */}
-      <div className="relative z-20 max-w-7xl mx-auto px-6 md:px-12">
+      <div className="relative z-20 max-w-7xl mx-auto px-5 sm:px-8 md:px-12">
         
         {/* EDITORIAL HEADER */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 sm:mb-16 gap-6 sm:gap-8">
           <FadeLeft distance={-40} duration={0.9} className="max-w-2xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#141210] border border-[#2a241f] mb-4">
               <span className="w-1.5 h-1.5 rounded-full bg-[#dfd0ba] animate-pulse"></span>
@@ -165,7 +174,7 @@ export const HomepageMenuDiscovery: React.FC<HomepageMenuDiscoveryProps> = ({
               Découvrez notre carte.
             </h2>
 
-            <p className="mt-4 text-base sm:text-lg text-[#cbb89d] font-light leading-relaxed">
+            <p className="mt-4 text-sm sm:text-base md:text-lg text-[#cbb89d] font-light leading-relaxed">
               Des classiques italiens aux créations algériennes, pensées pour toutes les envies. 
               Pâte au levain 48h, merguez maison d’Alger, sauces mijotées et cuisson au feu de bois.
             </p>
@@ -183,26 +192,149 @@ export const HomepageMenuDiscovery: React.FC<HomepageMenuDiscoveryProps> = ({
           </FadeRight>
         </div>
 
-        {/* HORIZONTAL CATEGORY NAVIGATION BAR */}
-        <FadeUp distance={25} duration={0.8} className="relative mb-12">
-          <div className="flex items-center gap-2 pb-3 overflow-x-auto no-scrollbar scroll-smooth">
-            {CATEGORY_TABS.map((tab, tabIdx) => {
+        {/* ========================================================
+            1. NOS INCONTOURNABLES: MOBILE & EDITORIAL PIZZA CAROUSEL
+            ======================================================== */}
+        <div className="mb-16 sm:mb-20">
+          <FadeUp distance={25} duration={0.8} className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <div className="w-2 h-2 rounded-full bg-[#dfd0ba]" />
+              <h3 className="text-lg sm:text-xl font-serif font-bold text-[#f7f2e7] tracking-tight">
+                Nos Incontournables au Feu de Bois
+              </h3>
+            </div>
+            
+            {/* Carousel navigation buttons */}
+            <div className="hidden sm:flex items-center gap-2">
+              <button
+                onClick={() => scrollCarousel('left')}
+                className="p-2.5 rounded-full bg-[#141210] hover:bg-[#201c18] border border-[#2e2823] text-[#dfd0ba] transition-colors cursor-pointer"
+                aria-label="Défiler vers la gauche"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => scrollCarousel('right')}
+                className="p-2.5 rounded-full bg-[#141210] hover:bg-[#201c18] border border-[#2e2823] text-[#dfd0ba] transition-colors cursor-pointer"
+                aria-label="Défiler vers la droite"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          </FadeUp>
+
+          {/* Horizontally scrollable snap carousel */}
+          <div
+            ref={carouselRef}
+            className="flex items-stretch gap-5 overflow-x-auto pb-6 -mx-5 px-5 sm:mx-0 sm:px-0 no-scrollbar snap-x snap-mandatory scroll-smooth"
+          >
+            {CAROUSEL_SIGNATURES.map((item, idx) => {
+              const isAdded = !!addedItemIds[item.id];
+              return (
+                <div
+                  key={item.id}
+                  onClick={() => onGoToMenu(item.category)}
+                  className="flex-shrink-0 w-[270px] sm:w-[310px] snap-start rounded-3xl bg-[#0c0a09] border border-[#26211c] hover:border-[#dfd0ba]/50 transition-all duration-300 overflow-hidden flex flex-col justify-between group cursor-pointer"
+                >
+                  <div className="relative h-48 sm:h-52 bg-black overflow-hidden">
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      loading="lazy"
+                      referrerPolicy="no-referrer"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 brightness-90 group-hover:brightness-100"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0c0a09] via-transparent to-black/30" />
+                    
+                    {/* Badge */}
+                    <div className="absolute top-3 left-3 z-10 flex gap-1.5">
+                      {item.isPopular && (
+                        <span className="px-2.5 py-0.5 rounded-full bg-[#dfd0ba] text-black text-[10px] font-bold uppercase tracking-wider shadow-md">
+                          Signature
+                        </span>
+                      )}
+                      {item.isSpicy && (
+                        <span className="px-2 py-0.5 rounded-full bg-[#2a130f] border border-[#632015] text-[#f7a494] text-[10px] font-bold uppercase">
+                          Épicé
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="absolute bottom-3 right-3 z-10 px-3 py-1 rounded-full bg-black/80 backdrop-blur-md border border-[#3d3730] text-[#dfd0ba] font-mono font-bold text-xs">
+                      {item.price} DA
+                    </div>
+                  </div>
+
+                  <div className="p-5 flex flex-col justify-between flex-1">
+                    <div>
+                      <h4 className="text-base sm:text-lg font-serif font-bold text-[#f7f2e7] group-hover:text-[#dfd0ba] transition-colors leading-snug">
+                        {item.name}
+                      </h4>
+                      <p className="mt-2 text-xs text-[#a69684] line-clamp-2 leading-relaxed font-light">
+                        {item.description}
+                      </p>
+                    </div>
+
+                    <div className="mt-5 pt-3 border-t border-[#1f1a16] flex items-center justify-between">
+                      <span className="text-[11px] font-mono text-[#8c7e6c] group-hover:text-[#dfd0ba] transition-colors">
+                        Explorer
+                      </span>
+
+                      <button
+                        type="button"
+                        onClick={(e) => handleQuickAdd(e, item)}
+                        className={`h-8 px-3 rounded-full text-xs font-semibold tracking-wider transition-all flex items-center gap-1.5 cursor-pointer ${
+                          isAdded
+                            ? 'bg-white text-black'
+                            : 'bg-[#181512] hover:bg-[#dfd0ba] text-[#dfd0ba] hover:text-black border border-[#2e2720]'
+                        }`}
+                      >
+                        {isAdded ? (
+                          <>
+                            <Check className="w-3 h-3" />
+                            <span>Ajouté</span>
+                          </>
+                        ) : (
+                          <>
+                            <Plus className="w-3 h-3" />
+                            <span>Ajouter</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* ========================================================
+            2. HORIZONTAL CATEGORY SELECTOR (FIXED CROPPING & NATURAL SCROLL)
+            ======================================================== */}
+        <FadeUp distance={25} duration={0.8} className="relative mb-10 sm:mb-12">
+          {/* Scroll container with safe insets and right affordance */}
+          <div 
+            ref={categoriesScrollRef}
+            className="flex items-center gap-2.5 overflow-x-auto pb-3 -mx-5 px-5 sm:mx-0 sm:px-0 no-scrollbar scroll-smooth snap-x snap-proximity"
+            style={{ WebkitOverflowScrolling: 'touch' }}
+          >
+            {CATEGORY_TABS.map((tab) => {
               const isActive = activeTab === tab.id;
               return (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  style={{ animationDelay: `${tabIdx * 60}ms` }}
-                  className={`flex-shrink-0 px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider transition-all duration-300 cursor-pointer flex items-center gap-2 border ${
+                  className={`flex-shrink-0 snap-start px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider transition-all duration-300 cursor-pointer flex items-center gap-2 border ${
                     isActive
-                      ? 'bg-[#dfd0ba] text-[#0a0a0a] border-[#dfd0ba] shadow-lg shadow-[#dfd0ba]/10 scale-105'
-                      : 'bg-[#100e0c]/90 text-[#cbb89d] border-[#26211c] hover:border-[#dfd0ba]/50 hover:text-[#f7f2e7]'
+                      ? 'bg-[#dfd0ba] text-[#0a0a0a] border-[#dfd0ba] shadow-lg shadow-[#dfd0ba]/10 font-bold'
+                      : 'bg-[#100e0c] text-[#cbb89d] border-[#26211c] hover:border-[#dfd0ba]/50 hover:text-[#f7f2e7]'
                   }`}
                 >
-                  <span>{tab.name}</span>
+                  <span className="whitespace-nowrap">{tab.name}</span>
                   {tab.badge && (
                     <span
-                      className={`text-[9px] font-mono uppercase px-1.5 py-0.5 rounded-full ${
+                      className={`text-[9px] font-mono uppercase px-1.5 py-0.5 rounded-full whitespace-nowrap ${
                         isActive
                           ? 'bg-black/20 text-[#0a0a0a]'
                           : 'bg-[#1e1a16] text-[#dfd0ba]'
@@ -223,19 +355,19 @@ export const HomepageMenuDiscovery: React.FC<HomepageMenuDiscoveryProps> = ({
           </div>
         </FadeUp>
 
-        {/* REPRESENTATIVE PRODUCTS GRID (Directionally Animated Fade-Up, Fade-Left, Fade-Right) */}
+        {/* ========================================================
+            3. REPRESENTATIVE PRODUCTS GRID (ANIMATED STAGGER)
+            ======================================================== */}
         <div key={activeTab} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {displayedItems.map((item, idx) => {
             const isAdded = !!addedItemIds[item.id];
             const isHeroCard = idx === 0 && activeTab === 'featured';
-            
-            // Alternating directional reveals
             const animVariant = idx % 3 === 0 ? 'fade-up' : idx % 3 === 1 ? 'fade-left' : 'fade-right';
 
             const cardContent = (
               <div
                 onClick={() => onGoToMenu(item.category)}
-                className={`group relative rounded-2xl bg-[#0d0c0a] border border-[#211c17] hover:border-[#dfd0ba]/50 transition-all duration-500 overflow-hidden flex flex-col justify-between cursor-pointer h-full ${
+                className={`group relative rounded-3xl bg-[#0d0c0a] border border-[#211c17] hover:border-[#dfd0ba]/50 transition-all duration-500 overflow-hidden flex flex-col justify-between cursor-pointer h-full ${
                   isHeroCard ? 'md:col-span-2 lg:col-span-2' : 'col-span-1'
                 }`}
               >
@@ -289,7 +421,7 @@ export const HomepageMenuDiscovery: React.FC<HomepageMenuDiscoveryProps> = ({
                 </div>
 
                 {/* Product Content Block */}
-                <div className="p-6 flex flex-col justify-between flex-1">
+                <div className="p-6 sm:p-7 flex flex-col justify-between flex-1">
                   <div>
                     <h3 className="text-xl sm:text-2xl font-serif font-bold text-[#f7f2e7] group-hover:text-[#dfd0ba] transition-colors duration-300">
                       {item.name}
@@ -304,13 +436,13 @@ export const HomepageMenuDiscovery: React.FC<HomepageMenuDiscoveryProps> = ({
                       {item.ingredients.slice(0, 3).map((ing, i) => (
                         <span
                           key={i}
-                          className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#161310] text-[#8c7e6c] border border-[#211d19]"
+                          className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#161310] text-[#8c7e6c] border border-[#211d19]"
                         >
                           {ing}
                         </span>
                       ))}
                       {item.ingredients.length > 3 && (
-                        <span className="text-[10px] font-mono px-1.5 py-0.5 rounded text-[#8c7e6c]">
+                        <span className="text-[10px] font-mono px-2 py-0.5 rounded-full text-[#8c7e6c] bg-[#161310] border border-[#211d19]">
                           +{item.ingredients.length - 3}
                         </span>
                       )}
@@ -320,16 +452,16 @@ export const HomepageMenuDiscovery: React.FC<HomepageMenuDiscoveryProps> = ({
                   {/* Action Bar */}
                   <div className="mt-6 pt-4 border-t border-[#1e1a16] flex items-center justify-between">
                     <span className="text-xs text-[#8c7e6c] group-hover:text-[#dfd0ba] transition-colors flex items-center gap-1.5 font-medium">
-                      <span>Détails & personnalisation</span>
+                      <span>Personnaliser</span>
                       <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                     </span>
 
                     <button
                       type="button"
                       onClick={(e) => handleQuickAdd(e, item)}
-                      className={`h-9 px-3.5 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-300 flex items-center gap-1.5 cursor-pointer ${
+                      className={`h-9 px-4 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-300 flex items-center gap-1.5 cursor-pointer ${
                         isAdded
-                          ? 'bg-white text-black'
+                          ? 'bg-white text-black font-bold'
                           : 'bg-[#181512] hover:bg-[#dfd0ba] text-[#dfd0ba] hover:text-black border border-[#2f2821] hover:border-[#dfd0ba]'
                       }`}
                     >
@@ -353,7 +485,7 @@ export const HomepageMenuDiscovery: React.FC<HomepageMenuDiscoveryProps> = ({
             if (isHeroCard) {
               return (
                 <div key={item.id} className="md:col-span-2 lg:col-span-2">
-                  <FadeUp delay={idx * 0.1} distance={30} duration={0.8}>
+                  <FadeUp delay={idx * 0.08} distance={30} duration={0.8}>
                     {cardContent}
                   </FadeUp>
                 </div>
@@ -362,7 +494,7 @@ export const HomepageMenuDiscovery: React.FC<HomepageMenuDiscoveryProps> = ({
 
             if (animVariant === 'fade-left') {
               return (
-                <FadeLeft key={item.id} delay={idx * 0.08} distance={-35} duration={0.8} className="h-full">
+                <FadeLeft key={item.id} delay={idx * 0.06} distance={-30} duration={0.8} className="h-full">
                   {cardContent}
                 </FadeLeft>
               );
@@ -370,14 +502,14 @@ export const HomepageMenuDiscovery: React.FC<HomepageMenuDiscoveryProps> = ({
 
             if (animVariant === 'fade-right') {
               return (
-                <FadeRight key={item.id} delay={idx * 0.08} distance={35} duration={0.8} className="h-full">
+                <FadeRight key={item.id} delay={idx * 0.06} distance={30} duration={0.8} className="h-full">
                   {cardContent}
                 </FadeRight>
               );
             }
 
             return (
-              <FadeUp key={item.id} delay={idx * 0.08} distance={35} duration={0.8} className="h-full">
+              <FadeUp key={item.id} delay={idx * 0.06} distance={30} duration={0.8} className="h-full">
                 {cardContent}
               </FadeUp>
             );
@@ -385,7 +517,7 @@ export const HomepageMenuDiscovery: React.FC<HomepageMenuDiscoveryProps> = ({
         </div>
 
         {/* BOTTOM CALL TO ACTION BANNER */}
-        <FadeUp distance={40} duration={0.9} className="mt-16">
+        <FadeUp distance={35} duration={0.8} className="mt-16 sm:mt-20">
           <div className="p-8 md:p-12 rounded-3xl bg-gradient-to-r from-[#12100d] via-[#16130f] to-[#12100d] border border-[#2d251d] text-center flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl">
             <div className="text-left max-w-xl">
               <span className="text-[11px] font-mono uppercase tracking-widest text-[#dfd0ba] font-semibold block mb-1">

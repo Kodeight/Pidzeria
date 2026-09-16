@@ -153,25 +153,30 @@ export const MenuPage: React.FC<MenuPageProps> = ({ onBackToHome, onOpenCart }) 
         </FadeUp>
 
         {/* Category Filter Pills in Warm Cream / Dark Charcoal */}
-        <FadeRight distance={40} duration={0.8} className="flex items-center gap-2.5 overflow-x-auto pb-4 mb-10 no-scrollbar scroll-smooth">
-          {CATEGORIES.map(cat => {
-            const isSelected = selectedCategory === cat.id;
-            return (
-              <button
-                key={cat.id}
-                onClick={() => handleCategoryChange(cat.id)}
-                className={`px-5 py-2.5 rounded-full text-xs font-bold tracking-wide whitespace-nowrap transition-all duration-300 cursor-pointer flex items-center gap-2 shrink-0 ${
-                  isSelected
-                    ? 'bg-[#dfd0ba] text-[#0a0a0a] shadow-lg shadow-black/80 scale-105'
-                    : 'bg-[#12100e] hover:bg-[#1a1714] text-[#cbb89d] hover:text-[#f7f2e7] border border-[#2a2520]'
-                }`}
-              >
-                {cat.flag && <span>{cat.flag}</span>}
-                <span>{cat.label}</span>
-              </button>
-            );
-          })}
-        </FadeRight>
+        <FadeUp distance={20} duration={0.7} className="mb-10">
+          <div 
+            className="flex items-center gap-2.5 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 no-scrollbar scroll-smooth snap-x snap-proximity"
+            style={{ WebkitOverflowScrolling: 'touch' }}
+          >
+            {CATEGORIES.map(cat => {
+              const isSelected = selectedCategory === cat.id;
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => handleCategoryChange(cat.id)}
+                  className={`snap-start px-5 py-2.5 rounded-full text-xs font-bold tracking-wide whitespace-nowrap transition-all duration-300 cursor-pointer flex items-center gap-2 shrink-0 border ${
+                    isSelected
+                      ? 'bg-[#dfd0ba] text-[#0a0a0a] border-[#dfd0ba] shadow-lg shadow-black/80 font-extrabold'
+                      : 'bg-[#12100e] hover:bg-[#1a1714] text-[#cbb89d] hover:text-[#f7f2e7] border-[#2a2520]'
+                  }`}
+                >
+                  {cat.flag && <span>{cat.flag}</span>}
+                  <span>{cat.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </FadeUp>
 
         {/* Products Grid with smooth transition & directional animation */}
         <div className={`transition-all duration-300 ease-out ${isTransitioning ? 'opacity-0 scale-[0.98]' : 'opacity-100 scale-100'}`}>

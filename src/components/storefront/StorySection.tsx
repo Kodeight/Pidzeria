@@ -6,7 +6,7 @@ import { FloatingIngredient } from '../cinematic/FloatingIngredient';
 
 export const StorySection: React.FC = () => {
   return (
-    <section id="histoire" className="py-28 px-6 md:px-12 bg-black relative overflow-hidden border-y border-[#1c1916]">
+    <section id="histoire" className="scroll-mt-24 py-24 sm:py-32 px-5 sm:px-8 md:px-12 bg-black relative overflow-hidden border-y border-[#1c1916]">
       {/* Background subtle parallax ambient warm glow */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <Parallax speed={-0.2} className="absolute -top-32 right-10 w-[550px] h-[550px]">
@@ -15,7 +15,6 @@ export const StorySection: React.FC = () => {
       </div>
 
       {/* FLOATING INGREDIENTS */}
-      {/* 1. Fresh Cremini Mushroom slice hovering near right frame */}
       <div className="absolute top-16 right-6 md:right-16 pointer-events-none z-10">
         <FloatingIngredient
           ingredient="mushroom"
@@ -27,7 +26,6 @@ export const StorySection: React.FC = () => {
         />
       </div>
 
-      {/* 2. Italian Basil leaf drifting along the lower story boundary */}
       <div className="absolute bottom-12 left-6 md:left-20 pointer-events-none z-10">
         <FloatingIngredient
           ingredient="basil"
@@ -45,7 +43,7 @@ export const StorySection: React.FC = () => {
         <FadeLeft distance={-50} duration={1.0} className="lg:col-span-6 space-y-6">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#161311] border border-[#2d2823] text-[#dfd0ba] text-xs font-mono uppercase tracking-widest">
             <Compass className="w-3.5 h-3.5 text-[#cbb89d]" />
-            <span>Notre Philosophie</span>
+            <span>Notre Histoire</span>
           </div>
 
           <h2 className="text-3xl sm:text-5xl font-serif font-extrabold text-[#f7f2e7] leading-tight">

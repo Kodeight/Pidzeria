@@ -31,7 +31,7 @@ export const ReservationSection: React.FC = () => {
   };
 
   return (
-    <section id="reservation" className="py-28 px-6 md:px-12 max-w-5xl mx-auto w-full relative overflow-hidden">
+    <section id="reservation" data-section="reservation" className="scroll-mt-24 py-24 sm:py-32 px-5 sm:px-8 md:px-12 max-w-5xl mx-auto w-full relative overflow-hidden">
       {/* FLOATING INGREDIENTS AROUND RESERVATION */}
       {/* 1. Tomato slice hovering top left of reservation card */}
       <div className="absolute top-8 -left-6 md:left-4 pointer-events-none z-0">

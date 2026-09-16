@@ -1,10 +1,11 @@
 import React from 'react';
 import { MapPin, Clock, Phone, Navigation, Sparkles } from 'lucide-react';
 import { FloatingIngredient } from '../cinematic/FloatingIngredient';
+import { FadeUp, FadeLeft, FadeRight } from '../motion/MotionSystem';
 
 export const FindUsSection: React.FC = () => {
   return (
-    <section id="nous-trouver" data-section="contact" className="relative py-28 px-6 md:px-12 bg-[#000000] overflow-hidden border-t border-[#181512]">
+    <section id="nous-trouver" data-section="contact" className="scroll-mt-24 relative py-24 sm:py-32 px-5 sm:px-8 md:px-12 bg-[#000000] overflow-hidden border-t border-[#181512]">
       {/* Scroll anchor for #contact */}
       <div id="contact" className="absolute -top-24 left-0" />
       {/* Subtle floating ingredient depth */}
@@ -17,7 +18,7 @@ export const FindUsSection: React.FC = () => {
 
       <div className="relative z-20 max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
+        <FadeUp distance={30} duration={0.8} className="text-center max-w-2xl mx-auto mb-16 space-y-3">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#141210] border border-[#2a241e] text-[#dfd0ba] text-xs font-mono uppercase tracking-widest">
             <MapPin className="w-3.5 h-3.5 text-[#dfd0ba]" />
             <span>Nous trouver</span>
@@ -28,13 +29,13 @@ export const FindUsSection: React.FC = () => {
           <p className="text-sm sm:text-base text-[#a69684] leading-relaxed font-light">
             Une adresse chaleureuse et raffinée pour déguster notre pizza napolitaine au feu de bois dans la pure tradition artisanale.
           </p>
-        </div>
+        </FadeUp>
 
         {/* Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           
           {/* Information Cards */}
-          <div className="lg:col-span-5 flex flex-col justify-between gap-4">
+          <FadeLeft distance={-35} duration={0.9} className="lg:col-span-5 flex flex-col justify-between gap-4">
             
             {/* Address */}
             <div className="p-6 sm:p-7 rounded-2xl bg-[#0c0a09] border border-[#241f1a] hover:border-[#3d352c] transition-all">
@@ -89,10 +90,10 @@ export const FindUsSection: React.FC = () => {
               </div>
             </div>
 
-          </div>
+          </FadeLeft>
 
           {/* Stylized Visual Map Representation */}
-          <div className="lg:col-span-7 rounded-2xl bg-[#0c0a09] border border-[#241f1a] p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden min-h-[380px]">
+          <FadeRight distance={35} duration={0.9} className="lg:col-span-7 rounded-2xl bg-[#0c0a09] border border-[#241f1a] p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden min-h-[380px]">
             {/* Map background grid aesthetics */}
             <div 
               className="absolute inset-0 opacity-15 pointer-events-none"
@@ -144,7 +145,7 @@ export const FindUsSection: React.FC = () => {
               </a>
             </div>
 
-          </div>
+          </FadeRight>
 
         </div>
       </div>
