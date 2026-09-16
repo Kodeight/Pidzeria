@@ -7,6 +7,8 @@ import { HomepageMenuDiscovery } from './components/storefront/HomepageMenuDisco
 import { StorySection } from './components/storefront/StorySection';
 import { TestimonialsSection } from './components/storefront/TestimonialsSection';
 import { ReservationSection } from './components/storefront/ReservationSection';
+import { FindUsSection } from './components/storefront/FindUsSection';
+import { FinalCtaSection } from './components/storefront/FinalCtaSection';
 import { Footer } from './components/layout/Footer';
 import { MenuPage } from './components/menu/MenuPage';
 import { CartDrawer } from './components/storefront/CartDrawer';
@@ -114,6 +116,15 @@ function StorefrontApp() {
 
           {/* 5. Table Reservation Form with floating tomato slice & pepperoni */}
           <ReservationSection />
+
+          {/* 6. Find Us / Restaurant Location in Algiers */}
+          <FindUsSection />
+
+          {/* 7. Final Call to Action */}
+          <FinalCtaSection
+            onNavigateToMenu={() => navigateTo('menu', '/menu')}
+            onNavigateToReservation={() => scrollToSection('reservation')}
+          />
 
           {/* Storefront Footer */}
           <Footer
