@@ -402,5 +402,56 @@ export const INITIAL_ORDERS: Order[] = [
     status: 'acceptee',
     createdAt: new Date(Date.now() - 25 * 60 * 1000).toISOString(),
     estimatedMinutes: 20
+  },
+  {
+    id: 'ord-1039',
+    orderNumber: '#1039',
+    tableNumber: 6,
+    type: 'a_table',
+    customerName: 'Karim B.',
+    customerPhone: '0555 99 88 77',
+    items: [
+      {
+        id: 'item-6',
+        menuItem: INITIAL_MENU_ITEMS[10], // Merguez
+        quantity: 2,
+        selectedExtras: [],
+        itemTotal: 3200
+      },
+      {
+        id: 'item-7',
+        menuItem: INITIAL_MENU_ITEMS[15], // Carrée
+        quantity: 2,
+        selectedExtras: [],
+        itemTotal: 1700
+      }
+    ],
+    subtotal: 4900,
+    deliveryFee: 0,
+    total: 4900,
+    status: 'servie',
+    createdAt: new Date(Date.now() - 50 * 60 * 1000).toISOString()
+  },
+  {
+    id: 'ord-1038',
+    orderNumber: '#1038',
+    type: 'livraison',
+    customerName: 'Nadia H.',
+    customerPhone: '0662 11 22 33',
+    deliveryAddress: 'Val d\'Hydra, Alger',
+    items: [
+      {
+        id: 'item-8',
+        menuItem: INITIAL_MENU_ITEMS[1], // Diavola
+        quantity: 2,
+        selectedExtras: [],
+        itemTotal: 3300
+      }
+    ],
+    subtotal: 3300,
+    deliveryFee: 300,
+    total: 3600,
+    status: 'servie',
+    createdAt: new Date(Date.now() - 90 * 60 * 1000).toISOString()
   }
 ];

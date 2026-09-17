@@ -42,9 +42,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   const { orders, soundEnabled, setSoundEnabled } = useStore();
   const { logout } = useAuth();
 
-  const activeOrdersCount = orders.filter(
-    (o) => o.status !== 'servie' && o.status !== 'annulee'
-  ).length;
+  const newOrdersCount = orders.filter((o) => o.status === 'recue').length;
 
   const handleLogoutClick = async () => {
     await logout();
@@ -78,7 +76,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       id: 'orders' as DashboardTab,
       label: 'Commandes POS',
       icon: ShoppingBag,
-      badge: activeOrdersCount > 0 ? activeOrdersCount : undefined,
+      badge: newOrdersCount > 0 ? newOrdersCount : undefined,
     },
     {
       id: 'kitchen' as DashboardTab,
