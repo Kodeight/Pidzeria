@@ -29,34 +29,36 @@
   }
 }
 
-/* Custom PIDZERIA Desktop Scrollbar (Thin, minimal, luxury cream/beige thumb on dark track) */
-@media (pointer: fine) {
-  ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
-  ::-webkit-scrollbar-track {
-    background: #080808;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: #4a433a;
-    border-radius: 9999px;
-    border: 1px solid #1c1916;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: #dfd0ba;
-  }
+/* Custom PIDZERIA Desktop & Element Scrollbar (Thin, minimal, luxury cream/beige thumb on dark track) */
+::-webkit-scrollbar,
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track,
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #080808;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb,
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #4a433a;
+  border-radius: 9999px;
+  border: 1px solid #1c1916;
+}
+::-webkit-scrollbar-thumb:hover,
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #dfd0ba;
 }
 
-/* Respect native touch scrolling on mobile */
-@media (pointer: coarse) {
-  ::-webkit-scrollbar {
-    display: none;
-  }
-  * {
-    -ms-overflow-style: auto;
-    scrollbar-width: auto;
-  }
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #4a433a #080808;
+}
+
+html, body {
+  scrollbar-width: thin;
+  scrollbar-color: #4a433a #080808;
 }
 
 /* Blurry Fade-In Entrance Animation for Hero Items */

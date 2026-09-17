@@ -101,12 +101,12 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   ];
 
   return (
-    <div className="min-h-screen bg-black text-[#f7f2e7] flex flex-col md:flex-row font-sans selection:bg-[#dfd0ba] selection:text-black">
+    <div className="h-screen w-full bg-black text-[#f7f2e7] flex flex-col md:flex-row font-sans selection:bg-[#dfd0ba] selection:text-black overflow-hidden">
       
       {/* ========================================================
           MOBILE TOP APP BAR
           ======================================================== */}
-      <header className="md:hidden sticky top-0 z-40 bg-[#0a0807]/95 backdrop-blur-xl border-b border-[#26221d] px-4 py-3 flex items-center justify-between">
+      <header className="md:hidden sticky top-0 z-40 bg-[#0a0807]/95 backdrop-blur-xl border-b border-[#26221d] px-4 py-3 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-3">
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -226,9 +226,9 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       )}
 
       {/* ========================================================
-          DESKTOP SIDEBAR NAVIGATION
+          DESKTOP SIDEBAR NAVIGATION (Fixed, non-scrollable)
           ======================================================== */}
-      <aside className="hidden md:flex w-64 lg:w-72 bg-[#0a0807] border-r border-[#26221d] shrink-0 p-6 flex-col justify-between">
+      <aside className="hidden md:flex w-64 lg:w-72 h-screen sticky top-0 bg-[#0a0807] border-r border-[#26221d] shrink-0 p-6 flex-col justify-between overflow-hidden select-none z-30">
         <div>
           {/* Brand header */}
           <div className="flex items-center justify-between mb-8">
@@ -318,9 +318,9 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       </aside>
 
       {/* ========================================================
-          MAIN TAB CONTENT AREA
+          MAIN TAB CONTENT AREA (Smooth scrolling with custom scrollbar)
           ======================================================== */}
-      <main className="flex-1 p-4 sm:p-6 md:p-8 lg:p-10 overflow-y-auto bg-black min-h-0">
+      <main className="flex-1 h-full overflow-y-auto p-4 sm:p-6 md:p-8 lg:p-10 bg-black min-h-0 custom-scrollbar">
         {activeTab === 'overview' && (
           <DashboardOverview onNavigateTab={(t) => handleTabSelect(t as DashboardTab)} />
         )}

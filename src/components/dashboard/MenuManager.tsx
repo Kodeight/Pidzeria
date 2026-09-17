@@ -146,12 +146,12 @@ export const MenuManager: React.FC = () => {
           </p>
         </div>
 
-        <div className="flex items-center gap-2.5 flex-wrap">
+        <div className="flex items-center gap-3 shrink-0 lg:ml-auto justify-end">
           {/* Category Management Button */}
           <button
             type="button"
             onClick={() => setIsManagingCategories(true)}
-            className="px-4 py-2.5 rounded-full bg-[#161311] hover:bg-[#1f1a16] text-[#dfd0ba] border border-[#2a241f] hover:border-[#dfd0ba]/50 font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer shadow-md active:scale-95 shrink-0"
+            className="px-4 py-2.5 rounded-full bg-[#161311] hover:bg-[#1f1a16] text-[#dfd0ba] border border-[#2a241f] hover:border-[#dfd0ba]/50 font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer shadow-md active:scale-95 shrink-0 whitespace-nowrap"
             title="Gérer, ajouter ou modifier les catégories"
           >
             <Tag className="w-4 h-4 text-[#dfd0ba]" />
@@ -165,7 +165,7 @@ export const MenuManager: React.FC = () => {
           <button
             type="button"
             onClick={handleOpenAdd}
-            className="px-5 py-2.5 rounded-full bg-[#dfd0ba] hover:bg-[#f3eadc] text-[#0a0a0a] font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer shadow-lg active:scale-95 shrink-0"
+            className="px-5 py-2.5 rounded-full bg-[#dfd0ba] hover:bg-[#f3eadc] text-[#0a0a0a] font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer shadow-lg active:scale-95 shrink-0 whitespace-nowrap"
           >
             <Plus className="w-4 h-4 stroke-[3] text-[#0a0a0a]" />
             <span>Ajouter une création</span>
@@ -232,9 +232,9 @@ export const MenuManager: React.FC = () => {
           </div>
         </div>
 
-        {/* Category Chips Scrollbar */}
-        <div className="pt-1 border-t border-[#221e1a]/60">
-          <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-thin">
+        {/* Category Chips Scrollbar (matching main scrollbar style) */}
+        <div className="pt-2 border-t border-[#221e1a]/60">
+          <div className="flex items-center gap-2 overflow-x-auto pb-2.5 pt-0.5 custom-scrollbar">
             <div className="flex items-center gap-1.5 text-xs font-mono text-[#8c7e6c] shrink-0 mr-1 hidden sm:flex">
               <Filter className="w-3.5 h-3.5 text-[#dfd0ba]" />
               <span>Filtre:</span>
@@ -340,7 +340,7 @@ export const MenuManager: React.FC = () => {
 
       {/* DESKTOP TABLE VIEW: Fixed column widths, locked alignment, consistent row height */}
       {filteredMenuItems.length > 0 && (
-        <div className="hidden md:block p-6 rounded-3xl bg-[#0e0c0a] border border-[#221e1a] shadow-xl overflow-x-auto">
+        <div className="hidden md:block p-6 rounded-3xl bg-[#0e0c0a] border border-[#221e1a] shadow-xl overflow-x-auto custom-scrollbar">
           <table className="w-full text-left table-fixed border-collapse min-w-[720px]">
             <colgroup>
               {/* 1. Image + Product info: flexible but constrained */}
