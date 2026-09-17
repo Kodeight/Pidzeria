@@ -1,12 +1,21 @@
-import { MenuItem, TableInfo, Testimonial, Order } from '../types';
+import { MenuItem, TableInfo, Testimonial, Order, CategoryDefinition } from '../types';
 import testimonialWomanImg from '../assets/images/testimonial_customer_woman_1789520108462.jpg';
+
+export const INITIAL_CATEGORIES: CategoryDefinition[] = [
+  { id: 'algeriennes', name: 'Pizzas Algériennes', icon: '🇩🇿' },
+  { id: 'italiennes', name: 'Pizzas Italiennes', icon: '🇮🇹' },
+  { id: 'americaines', name: 'Pizzas Américaines', icon: '🇺🇸' },
+  { id: 'accompagnements', name: 'Accompagnements', icon: '🍟' },
+  { id: 'boissons', name: 'Boissons', icon: '🥤' },
+  { id: 'desserts', name: 'Desserts', icon: '🍰' },
+];
 
 export const INITIAL_MENU_ITEMS: MenuItem[] = [
   // PIZZAS ITALIENNES
   {
     id: 'it-1',
     name: 'Margherita San Marzano',
-    description: 'Sauce tomate italienne San Marzano, mozzarella fior di latte, basilic frais de jardin et huile d\'olive extra vierge.',
+    description: 'Sauce tomate San Marzano, mozzarella fior di latte, basilic frais et huile d\'olive extra vierge.',
     category: 'italiennes',
     price: 1200,
     image: 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?q=80&w=800&auto=format&fit=crop',
@@ -25,7 +34,7 @@ export const INITIAL_MENU_ITEMS: MenuItem[] = [
   {
     id: 'it-2',
     name: 'Diavola Calabrese',
-    description: 'Sauce tomate, mozzarella melted, spianata piccante italienne, piments secs grillés et olives noires confites.',
+    description: 'Sauce tomate, mozzarella, spianata piccante, piments secs grillés et olives noires.',
     category: 'italiennes',
     price: 1650,
     image: 'https://images.unsplash.com/photo-1628840042765-356cda07504e?q=80&w=800&auto=format&fit=crop',
@@ -37,7 +46,7 @@ export const INITIAL_MENU_ITEMS: MenuItem[] = [
   {
     id: 'it-3',
     name: 'Quattro Formaggi Cremosa',
-    description: 'Base crème fraîche, Mozzarella, Gorgonzola D.O.P., Fontina artisanale, Parmesan reggiano affiné 24 mois.',
+    description: 'Base crème fraîche, mozzarella, Gorgonzola D.O.P., Fontina et Parmesan reggiano 24 mois.',
     category: 'italiennes',
     price: 1850,
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=800&auto=format&fit=crop',
@@ -48,7 +57,7 @@ export const INITIAL_MENU_ITEMS: MenuItem[] = [
   {
     id: 'it-4',
     name: 'Capricciosa Gourmet',
-    description: 'Sauce tomate, mozzarella, jambon d\'aloyau de bœuf fumé, champignons de paris frais, cœurs d\'artichauts et olives.',
+    description: 'Sauce tomate, mozzarella, bœuf fumé, champignons de Paris, artichauts et olives.',
     category: 'italiennes',
     price: 1750,
     image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=800&auto=format&fit=crop',
@@ -58,7 +67,7 @@ export const INITIAL_MENU_ITEMS: MenuItem[] = [
   {
     id: 'it-5',
     name: 'Marinara Tradizionale',
-    description: 'Recette historique napolitaine : double sauce tomate San Marzano, ail frais émincé, origan sauvage et huile d\'olive.',
+    description: 'Double tomate San Marzano, ail frais, origan et huile d\'olive.',
     category: 'italiennes',
     price: 1000,
     image: 'https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?q=80&w=800&auto=format&fit=crop',
@@ -71,7 +80,7 @@ export const INITIAL_MENU_ITEMS: MenuItem[] = [
   {
     id: 'am-1',
     name: 'Pepperoni Overload',
-    description: 'Pâte américaine moelleuse, double dose de pepperoni pur bœuf croustillant, mozzarella filante et sauce tomate épicée.',
+    description: 'Double pepperoni pur bœuf, mozzarella filante et sauce tomate épicée.',
     category: 'americaines',
     price: 1700,
     image: 'https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?q=80&w=800&auto=format&fit=crop',
@@ -82,7 +91,7 @@ export const INITIAL_MENU_ITEMS: MenuItem[] = [
   {
     id: 'am-2',
     name: 'BBQ Chicken Ranch',
-    description: 'Sauce barbecue fumée au bois de hickory, poulet mariné grillé, oignons rouges caramélisés, bacon de dinde et coulis ranch.',
+    description: 'Sauce BBQ fumée, poulet grillé, oignons rouges, bacon de dinde et sauce ranch.',
     category: 'americaines',
     price: 1800,
     image: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?q=80&w=800&auto=format&fit=crop',
@@ -92,7 +101,7 @@ export const INITIAL_MENU_ITEMS: MenuItem[] = [
   {
     id: 'am-3',
     name: 'Meat Lovers Supreme',
-    description: 'Pour les vrais carno-amateurs : viande hachée assaisonnée, pepperoni, saucisse italienne de dinde, bœuf fumé et oignons.',
+    description: 'Viande hachée, pepperoni, saucisse de dinde, bœuf fumé et oignons.',
     category: 'americaines',
     price: 1950,
     image: 'https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?q=80&w=800&auto=format&fit=crop',
@@ -105,7 +114,7 @@ export const INITIAL_MENU_ITEMS: MenuItem[] = [
   {
     id: 'dz-1',
     name: 'La Merguez Artisanale',
-    description: 'Pâte dorée croustillante, sauce tomate parfumée au ras el hanout doux, merguez artisanales d\'Alger grillées, poivrons verts et sauce pimentée harsa.',
+    description: 'Merguez artisanales fraîches, poivrons grillés, harissa douce, mozzarella et olives.',
     category: 'algeriennes',
     price: 1600,
     image: 'https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?q=80&w=800&auto=format&fit=crop',
@@ -117,7 +126,7 @@ export const INITIAL_MENU_ITEMS: MenuItem[] = [
   {
     id: 'dz-2',
     name: 'Poulet Épices d\'Alger',
-    description: 'Morceaux de blanc de poulet mariné aux épices maghrébines, sauce à la crème d\'ail tadjine, poivrons tricolores et coriandre fraîche.',
+    description: 'Poulet mariné aux épices d\'Alger, crème d\'ail maison, poivrons et coriandre fraîche.',
     category: 'algeriennes',
     price: 1700,
     image: 'https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?q=80&w=800&auto=format&fit=crop',
@@ -128,7 +137,7 @@ export const INITIAL_MENU_ITEMS: MenuItem[] = [
   {
     id: 'dz-3',
     name: 'Viande Hachée Tadjine',
-    description: 'Viande hachée fraîche persillée assaisonnée au cumin et coriandre, oignons caramélisés à l\'huile d\'olive, mozzarella et œuf mollet.',
+    description: 'Viande hachée persillée au cumin, oignons caramélisés, œuf mollet et mozzarella.',
     category: 'algeriennes',
     price: 1800,
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=800&auto=format&fit=crop',
@@ -138,7 +147,7 @@ export const INITIAL_MENU_ITEMS: MenuItem[] = [
   {
     id: 'dz-4',
     name: 'Spéciale PIDZERIA Algéroise',
-    description: 'La création signature ! Duo de merguez artisanales & poulet grillé, sauce fromagère crémeuse, piments dorés, olives et touche d\'origan d\'Atlas.',
+    description: 'Merguez artisanales, poulet grillé, sauce fromagère, piments et olives.',
     category: 'algeriennes',
     price: 1950,
     image: 'https://images.unsplash.com/photo-1544982503-9f984c14501a?q=80&w=800&auto=format&fit=crop',
@@ -151,7 +160,7 @@ export const INITIAL_MENU_ITEMS: MenuItem[] = [
   {
     id: 'sq-1',
     name: 'Carrée Traditionnelle Sauce Rouge',
-    description: 'L\'authentique pizza carrée d\'Alger : pâte épaisse, croustillante en bas et moelleuse au cœur, sauce tomate épicée mijotée 4h, huile d\'olive, persil et olive noire.',
+    description: 'Sauce tomate à l\'ail mijotée, olives noires d\'Azzefoun, persil frais et huile d\'olive.',
     category: 'algeriennes',
     price: 850,
     image: 'https://images.unsplash.com/photo-1571066811602-716837d681de?q=80&w=800&auto=format&fit=crop',
@@ -163,7 +172,7 @@ export const INITIAL_MENU_ITEMS: MenuItem[] = [
   {
     id: 'sq-2',
     name: 'Carrée Poulet Fromage Supreme',
-    description: 'Pizza carrée généreuse recouverte d\'une sauce crémeusefromagère, poulet mariné effiloché et fromage fondu doré au four.',
+    description: 'Sauce fromagère crémeuse, poulet mariné effiloché et fromage doré au four.',
     category: 'algeriennes',
     price: 1200,
     image: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?q=80&w=800&auto=format&fit=crop',
@@ -174,7 +183,7 @@ export const INITIAL_MENU_ITEMS: MenuItem[] = [
   {
     id: 'sq-3',
     name: 'Carrée Royale Merguez & Viande',
-    description: 'Format rectangle familial carré : portion généreuse garnie de merguez tranchées, viande hachée, poivrons sautés et double fromage.',
+    description: 'Merguez tranchées, viande hachée, poivrons sautés et double fromage fondu.',
     category: 'algeriennes',
     price: 1450,
     image: 'https://images.unsplash.com/photo-1541745537411-b8046dc6d66c?q=80&w=800&auto=format&fit=crop',
@@ -186,7 +195,7 @@ export const INITIAL_MENU_ITEMS: MenuItem[] = [
   {
     id: 'acc-1',
     name: 'Bâtonnets de Mozzarella Panés',
-    description: '6 pièces dorées et croustillantes, cœur de mozzarella fondante filante, servies avec sauce marinara piquante.',
+    description: '6 bâtonnets panés dorés au cœur de mozzarella fondante avec sauce marinara.',
     category: 'accompagnements',
     price: 650,
     image: 'https://images.unsplash.com/photo-1531749668029-2db88e4276c7?q=80&w=800&auto=format&fit=crop',
@@ -197,7 +206,7 @@ export const INITIAL_MENU_ITEMS: MenuItem[] = [
   {
     id: 'acc-2',
     name: 'Wings de Poulet Épicés',
-    description: '8 ailes de poulet fermier marinées aux épices piquantes et dorées au four, servies avec sauce Algérienne ou Ranch.',
+    description: '8 ailes de poulet marinées aux épices piquantes, servies avec sauce maison.',
     category: 'accompagnements',
     price: 850,
     image: 'https://images.unsplash.com/photo-1567620832903-9fc6debc209f?q=80&w=800&auto=format&fit=crop',
@@ -208,7 +217,7 @@ export const INITIAL_MENU_ITEMS: MenuItem[] = [
   {
     id: 'acc-3',
     name: 'Frites Maison aux Épices Cumin-Paprika',
-    description: 'Portion généreuse de frites de pommes de terre locales coupées à la main, croustillantes à souhait.',
+    description: 'Portion de frites fraîches maison croustillantes assaisonnées au cumin et paprika.',
     category: 'accompagnements',
     price: 400,
     image: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?q=80&w=800&auto=format&fit=crop',
@@ -231,7 +240,7 @@ export const INITIAL_MENU_ITEMS: MenuItem[] = [
   {
     id: 'drk-2',
     name: 'Jus d\'Orange Pressé Frais 50cl',
-    description: 'Pressé à la minute à partir d\'oranges douces de Mitidja.',
+    description: 'Pur jus pressé minute à partir d\'oranges douces de la Mitidja.',
     category: 'boissons',
     price: 350,
     image: 'https://images.unsplash.com/photo-1613478223719-2ab802602423?q=80&w=800&auto=format&fit=crop',
@@ -241,7 +250,7 @@ export const INITIAL_MENU_ITEMS: MenuItem[] = [
   {
     id: 'drk-3',
     name: 'Schweppes Agrum’ 33cl',
-    description: 'Boisson pétillante et rafraîchissante aux saveurs d’agrumes.',
+    description: 'Boisson pétillante et rafraîchissante aux saveurs d’agrumes 33cl.',
     category: 'boissons',
     price: 150,
     image: 'https://images.unsplash.com/photo-1581006852262-e4307cf6283a?q=80&w=800&auto=format&fit=crop',
@@ -253,7 +262,7 @@ export const INITIAL_MENU_ITEMS: MenuItem[] = [
   {
     id: 'des-1',
     name: 'Tiramisu Artisanal au Café & Cacao',
-    description: 'Préparé sur place chaque matin : biscuits cuillères imbibés d\'espresso, crème mascarpone aérienne et cacao amer.',
+    description: 'Biscuits cuillères imbibés d\'espresso, mascarpone maison et cacao amer.',
     category: 'desserts',
     price: 650,
     image: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?q=80&w=800&auto=format&fit=crop',
@@ -264,7 +273,7 @@ export const INITIAL_MENU_ITEMS: MenuItem[] = [
   {
     id: 'des-2',
     name: 'Pizza Calzone au Nutella & Banane',
-    description: 'Pâte à pizza chaude saupoudrée de sucre glace, garnie généreusement de Nutella fondant et rondelles de bananes.',
+    description: 'Calzone chaude garnie de Nutella fondant et rondelles de bananes fraîches.',
     category: 'desserts',
     price: 850,
     image: 'https://images.unsplash.com/photo-1584365685547-9a5fb6f3a70c?q=80&w=800&auto=format&fit=crop',

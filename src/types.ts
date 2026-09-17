@@ -5,9 +5,17 @@ export type PizzaCategory =
   | 'carrees'
   | 'accompagnements'
   | 'boissons'
-  | 'desserts';
+  | 'desserts'
+  | (string & {});
 
 export type MenuCategory = PizzaCategory;
+
+export interface CategoryDefinition {
+  id: string;
+  name: string;
+  icon?: string;
+  badge?: string;
+}
 
 export interface MenuItem {
   id: string;

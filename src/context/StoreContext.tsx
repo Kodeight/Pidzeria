@@ -1,9 +1,10 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { MenuItem, TableInfo, Order, OrderItem, OrderStatus, OrderType, Reservation } from '../types';
-import { INITIAL_MENU_ITEMS, INITIAL_TABLES, INITIAL_ORDERS } from '../data/mockData';
+import { MenuItem, TableInfo, Order, OrderItem, OrderStatus, OrderType, Reservation, CategoryDefinition } from '../types';
+import { INITIAL_MENU_ITEMS, INITIAL_TABLES, INITIAL_ORDERS, INITIAL_CATEGORIES } from '../data/mockData';
 
 interface StoreContextType {
   menuItems: MenuItem[];
+  categories: CategoryDefinition[];
   tables: TableInfo[];
   orders: Order[];
   cartItems: OrderItem[];
@@ -32,6 +33,11 @@ interface StoreContextType {
   deleteMenuItem: (id: string) => void;
   duplicateMenuItem: (item: MenuItem) => MenuItem;
   toggleMenuItemAvailability: (id: string) => void;
+
+  // Category Manager actions
+  addCategory: (cat: { name: string; icon?: string; id?: string }) => CategoryDefinition;
+  updateCategory: (id: string, updates: Partial<CategoryDefinition>) => void;
+  deleteCategory: (id: string) => void;
   
   // Reservation
   addReservation: (res: Omit<Reservation, 'id' | 'createdAt' | 'status'>) => void;
@@ -72,10 +78,31 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             category: 'algeriennes',
           };
         }
+        const initialMatch = INITIAL_MENU_ITEMS.find(i => i.id === item.id);
+        if (initialMatch && item.description && item.description.length > 120) {
+          return {
+            ...item,
+            description: initialMatch.description,
+          };
+        }
         return item;
       });
     } catch {
       return INITIAL_MENU_ITEMS;
+    }
+  });
+
+  const [categories, setCategories] = useState<CategoryDefinition[]>(() => {
+    const saved = localStorage.getItem('pidzeria_categories');
+    if (!saved) return INITIAL_CATEGORIES;
+    try {
+      const parsed: CategoryDefinition[] = JSON.parse(saved);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed;
+      }
+      return INITIAL_CATEGORIES;
+    } catch {
+      return INITIAL_CATEGORIES;
     }
   });
 
@@ -115,6 +142,10 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   useEffect(() => {
     localStorage.setItem('pidzeria_menu', JSON.stringify(menuItems));
   }, [menuItems]);
+
+  useEffect(() => {
+    localStorage.setItem('pidzeria_categories', JSON.stringify(categories));
+  }, [categories]);
 
   useEffect(() => {
     localStorage.setItem('pidzeria_tables', JSON.stringify(tables));
@@ -324,6 +355,70 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setMenuItems(prev => prev.map(i => i.id === id ? { ...i, isAvailable: !i.isAvailable } : i));
   };
 
+  const addCategory = (catData: { name: string; icon?: string; id?: string }): CategoryDefinition => {
+    const cleanName = catData.name.trim();
+    const slug = catData.id?.trim() || cleanName.toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '') || `cat-${Date.now()}`;
+
+    let uniqueId = slug;
+    let counter = 1;
+    while (categories.some(c => c.id === uniqueId)) {
+      uniqueId = `${slug}-${counter++}`;
+    }
+
+    const newCategory: CategoryDefinition = {
+      id: uniqueId,
+      name: cleanName,
+      icon: catData.icon?.trim() || '🍕',
+    };
+
+    setCategories(prev => [...prev, newCategory]);
+    return newCategory;
+  };
+
+  const updateCategory = (id: string, updates: Partial<CategoryDefinition>) => {
+    setCategories(prev => prev.map(c => {
+      if (c.id === id) {
+        return {
+          ...c,
+          ...updates,
+          name: updates.name !== undefined ? updates.name.trim() : c.name,
+        };
+      }
+      return c;
+    }));
+
+    // If ID was modified, update referencing menu items as well
+    if (updates.id && updates.id !== id) {
+      setMenuItems(prev => prev.map(item => {
+        if (item.category === id) {
+          return { ...item, category: updates.id! };
+        }
+        return item;
+      }));
+    }
+  };
+
+  const deleteCategory = (id: string) => {
+    setCategories(prev => {
+      const remaining = prev.filter(c => c.id !== id);
+      // Reassign orphaned menu items to the first remaining category if available
+      if (remaining.length > 0) {
+        const fallbackCat = remaining[0].id;
+        setMenuItems(menuPrev => menuPrev.map(item => {
+          if (item.category === id) {
+            return { ...item, category: fallbackCat };
+          }
+          return item;
+        }));
+      }
+      return remaining;
+    });
+  };
+
   const addReservation = (res: Omit<Reservation, 'id' | 'createdAt' | 'status'>) => {
     const newRes: Reservation = {
       ...res,
@@ -337,6 +432,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   return (
     <StoreContext.Provider value={{
       menuItems,
+      categories,
       tables,
       orders,
       cartItems,
@@ -358,6 +454,9 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       deleteMenuItem,
       duplicateMenuItem,
       toggleMenuItemAvailability,
+      addCategory,
+      updateCategory,
+      deleteCategory,
       addReservation,
       setSoundEnabled,
       playNotificationSound

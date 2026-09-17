@@ -6,22 +6,17 @@ import { ProductModal } from './ProductModal';
 import { Search, Utensils, Leaf } from 'lucide-react';
 import { FadeUp } from '../motion/MotionSystem';
 
-const CATEGORIES: { id: PizzaCategory | 'toutes'; label: string; icon: string }[] = [
-  { id: 'toutes', label: 'Toutes les créations', icon: '🍕' },
-  { id: 'algeriennes', label: 'Pizzas Algériennes', icon: '🇩🇿' },
-  { id: 'italiennes', label: 'Pizzas Italiennes', icon: '🇮🇹' },
-  { id: 'americaines', label: 'Pizzas Américaines', icon: '🇺🇸' },
-  { id: 'accompagnements', label: 'Accompagnements', icon: '🍟' },
-  { id: 'boissons', label: 'Boissons', icon: '🥤' },
-  { id: 'desserts', label: 'Desserts', icon: '🍰' },
-];
-
 export const MenuSection: React.FC = () => {
-  const { menuItems, addToCart } = useStore();
+  const { menuItems, categories, addToCart } = useStore();
   const [selectedCategory, setSelectedCategory] = useState<PizzaCategory | 'toutes'>('toutes');
   const [searchQuery, setSearchQuery] = useState('');
   const [activeModalItem, setActiveModalItem] = useState<MenuItem | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
+
+  const categoryPills = [
+    { id: 'toutes', label: 'Toutes les créations', icon: '🍕' },
+    ...categories.map(c => ({ id: c.id, label: c.name, icon: c.icon || '🍕' }))
+  ];
 
   const filteredItems = menuItems.filter(item => {
     const matchesCategory = selectedCategory === 'toutes' || item.category === selectedCategory;
@@ -62,10 +57,10 @@ export const MenuSection: React.FC = () => {
 
       {/* Category Pills Bar */}
       <FadeUp delay={0.1} distance={20} className="flex items-center gap-2 overflow-x-auto pb-4 mb-8 no-scrollbar scroll-smooth">
-        {CATEGORIES.map(cat => (
+        {categoryPills.map(cat => (
           <button
             key={cat.id}
-            onClick={() => handleCategoryChange(cat.id)}
+            onClick={() => handleCategoryChange(cat.id as PizzaCategory | 'toutes')}
             className={`px-5 py-2.5 rounded-full text-xs font-bold tracking-wide whitespace-nowrap transition-all duration-300 cursor-pointer flex items-center gap-2 shrink-0 ${
               selectedCategory === cat.id
                 ? 'bg-[#547734] text-[#fbf7ee] shadow-lg shadow-[#547734]/25 scale-105'

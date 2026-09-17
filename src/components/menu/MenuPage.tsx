@@ -6,33 +6,26 @@ import { ProductModal } from '../storefront/ProductModal';
 import { Search, ArrowLeft, UtensilsCrossed, Sparkles } from 'lucide-react';
 import { FadeUp, FadeLeft, FadeRight, ScaleReveal, StaggerReveal } from '../motion/MotionSystem';
 
-const CATEGORIES: { id: PizzaCategory | 'toutes'; label: string; flag?: string }[] = [
-  { id: 'toutes', label: 'Toutes les créations' },
-  { id: 'algeriennes', label: 'Pizzas Algériennes', flag: '🇩🇿' },
-  { id: 'italiennes', label: 'Pizzas Italiennes', flag: '🇮🇹' },
-  { id: 'americaines', label: 'Pizzas Américaines', flag: '🇺🇸' },
-  { id: 'accompagnements', label: 'Accompagnements' },
-  { id: 'boissons', label: 'Boissons' },
-  { id: 'desserts', label: 'Desserts' },
-];
-
 interface MenuPageProps {
   onBackToHome: () => void;
   onOpenCart: () => void;
 }
 
 export const MenuPage: React.FC<MenuPageProps> = ({ onBackToHome, onOpenCart }) => {
-  const { menuItems, addToCart, activeTableNumber, setActiveTableNumber } = useStore();
+  const { menuItems, categories, addToCart, activeTableNumber, setActiveTableNumber } = useStore();
   
+  // Category tabs built dynamically from store categories
+  const categoryTabs = [
+    { id: 'toutes', label: 'Toutes les créations', flag: '🍕' },
+    ...categories.map(c => ({ id: c.id, label: c.name, flag: c.icon || '🍕' }))
+  ];
+
   // Initialize category from URL parameter if present
   const [selectedCategory, setSelectedCategory] = useState<PizzaCategory | 'toutes'>(() => {
     const params = new URLSearchParams(window.location.search);
     let cat = params.get('category') as PizzaCategory | null;
     if (cat === 'carrees') cat = 'algeriennes';
-    if (cat && ['italiennes', 'algeriennes', 'americaines', 'accompagnements', 'boissons', 'desserts'].includes(cat)) {
-      return cat;
-    }
-    return 'toutes';
+    return cat || 'toutes';
   });
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -51,7 +44,7 @@ export const MenuPage: React.FC<MenuPageProps> = ({ onBackToHome, onOpenCart }) 
     }
     let catParam = params.get('category') as PizzaCategory | null;
     if (catParam === 'carrees') catParam = 'algeriennes';
-    if (catParam && ['italiennes', 'algeriennes', 'americaines', 'accompagnements', 'boissons', 'desserts'].includes(catParam)) {
+    if (catParam) {
       setSelectedCategory(catParam);
     }
   }, [setActiveTableNumber]);
@@ -159,12 +152,12 @@ export const MenuPage: React.FC<MenuPageProps> = ({ onBackToHome, onOpenCart }) 
             className="flex items-center gap-2.5 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 no-scrollbar scroll-smooth snap-x snap-proximity"
             style={{ WebkitOverflowScrolling: 'touch' }}
           >
-            {CATEGORIES.map(cat => {
+            {categoryTabs.map(cat => {
               const isSelected = selectedCategory === cat.id;
               return (
                 <button
                   key={cat.id}
-                  onClick={() => handleCategoryChange(cat.id)}
+                  onClick={() => handleCategoryChange(cat.id as PizzaCategory | 'toutes')}
                   className={`snap-start px-5 py-2.5 rounded-full text-xs font-bold tracking-wide whitespace-nowrap transition-all duration-300 cursor-pointer flex items-center gap-2 shrink-0 border ${
                     isSelected
                       ? 'bg-[#dfd0ba] text-[#0a0a0a] border-[#dfd0ba] shadow-lg shadow-black/80 font-extrabold'
