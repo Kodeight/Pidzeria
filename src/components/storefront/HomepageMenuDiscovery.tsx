@@ -57,7 +57,7 @@ const CATEGORY_TABS: CategoryTab[] = [
   {
     id: 'boissons',
     name: 'Boissons',
-    subtitle: 'Sélecto glacé, Hamoud Boualem & jus pressés',
+    subtitle: 'Coca-Cola glacé, Schweppes & jus pressés',
   },
   {
     id: 'desserts',
@@ -240,7 +240,7 @@ export const HomepageMenuDiscovery: React.FC<HomepageMenuDiscoveryProps> = ({
             {CAROUSEL_SIGNATURES.map((item, idx) => {
               const isAdded = !!addedItemIds[item.id];
               return (
-                <FadeUp key={item.id} delay={0.1 + idx * 0.08} distance={25} duration={0.7} className="flex-shrink-0 snap-start">
+                <FadeUp key={item.id} delay={0.1 + idx * 0.08} distance={25} duration={0.7} className="flex-shrink-0 snap-start h-full">
                   <div
                     onClick={() => onGoToMenu(item.category)}
                     className="w-[270px] sm:w-[310px] rounded-3xl bg-[#0c0a09] border border-[#26211c] hover:border-[#dfd0ba]/50 transition-all duration-300 overflow-hidden flex flex-col justify-between group cursor-pointer h-full"
@@ -371,7 +371,7 @@ export const HomepageMenuDiscovery: React.FC<HomepageMenuDiscoveryProps> = ({
             const cardContent = (
               <div
                 onClick={() => onGoToMenu(item.category)}
-                className={`group relative rounded-3xl bg-[#0d0c0a] border border-[#211c17] hover:border-[#dfd0ba]/50 transition-all duration-500 overflow-hidden flex flex-col justify-between cursor-pointer h-full ${
+                className={`group relative rounded-3xl bg-[#0d0c0a] border border-[#211c17] hover:border-[#dfd0ba]/50 transition-all duration-500 overflow-hidden flex flex-col justify-between cursor-pointer h-full w-full ${
                   isHeroCard ? 'md:col-span-2 lg:col-span-2' : 'col-span-1'
                 }`}
               >

@@ -14,7 +14,7 @@ export const MenuCard: React.FC<MenuCardProps> = ({ item, onSelect, onQuickAdd }
   return (
     <div 
       onClick={() => onSelect(item)}
-      className="group glass-panel rounded-2xl p-4 sm:p-5 border border-[#26221d] hover:border-[#dfd0ba]/40 transition-all duration-300 flex flex-col justify-between cursor-pointer hover:shadow-2xl hover:shadow-black/70 transform hover:-translate-y-1 relative overflow-hidden bg-[#0e0c0b]/90"
+      className="group glass-panel rounded-2xl p-4 sm:p-5 border border-[#26221d] hover:border-[#dfd0ba]/40 transition-all duration-300 flex flex-col justify-between cursor-pointer hover:shadow-2xl hover:shadow-black/70 transform hover:-translate-y-1 relative overflow-hidden bg-[#0e0c0b]/90 h-full w-full"
     >
       {/* Top badges without AI sparkle */}
       <div className="absolute top-6 left-6 z-10 flex flex-wrap gap-1.5 pointer-events-none">
@@ -38,30 +38,32 @@ export const MenuCard: React.FC<MenuCardProps> = ({ item, onSelect, onQuickAdd }
         )}
       </div>
 
-      <div>
-        {/* Product Image */}
-        <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden mb-4 bg-[#141210]">
-          <img
-            src={item.image}
-            alt={item.name}
-            loading="lazy"
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-50 group-hover:opacity-30 transition-opacity" />
-        </div>
+      <div className="flex-1 flex flex-col justify-between">
+        <div>
+          {/* Product Image */}
+          <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden mb-4 bg-[#141210]">
+            <img
+              src={item.image}
+              alt={item.name}
+              loading="lazy"
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-50 group-hover:opacity-30 transition-opacity" />
+          </div>
 
-        {/* Title and Category */}
-        <div className="mb-2.5">
-          <h3 className="text-lg font-serif font-bold text-[#f7f2e7] group-hover:text-[#dfd0ba] transition-colors line-clamp-1">
-            {item.name}
-          </h3>
-          <p className="text-[#a69684] text-xs line-clamp-2 mt-1 leading-relaxed">
-            {item.description}
-          </p>
+          {/* Title and Category */}
+          <div className="mb-2.5">
+            <h3 className="text-lg font-serif font-bold text-[#f7f2e7] group-hover:text-[#dfd0ba] transition-colors line-clamp-1">
+              {item.name}
+            </h3>
+            <p className="text-[#a69684] text-xs line-clamp-2 mt-1 leading-relaxed">
+              {item.description}
+            </p>
+          </div>
         </div>
 
         {/* Ingredients Pills */}
-        <div className="flex flex-wrap gap-1 mb-4">
+        <div className="flex flex-wrap gap-1 my-3">
           {item.ingredients.slice(0, 3).map((ing, idx) => (
             <span key={idx} className="px-2 py-0.5 rounded-md bg-[#161412] border border-[#2a2520] text-[11px] text-[#cbb89d]">
               {ing}

@@ -220,12 +220,12 @@ export const INITIAL_MENU_ITEMS: MenuItem[] = [
   // BOISSONS
   {
     id: 'drk-1',
-    name: 'Sélecto Canette 33cl',
-    description: 'La boisson emblématique algérienne au goût unique de caramel d\'Afrique du Nord.',
+    name: 'Coca-Cola Canette 33cl',
+    description: 'Canette de Coca-Cola fraîche et pétillante 33cl.',
     category: 'boissons',
     price: 150,
     image: 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?q=80&w=800&auto=format&fit=crop',
-    ingredients: ['Sélecto 33cl glacé'],
+    ingredients: ['Coca-Cola 33cl glacé'],
     isAvailable: true,
   },
   {
@@ -240,12 +240,12 @@ export const INITIAL_MENU_ITEMS: MenuItem[] = [
   },
   {
     id: 'drk-3',
-    name: 'Hamoud Boualem Blanche 33cl',
-    description: 'Citronnade gazeuse légendaire algérienne rafraîchissante.',
+    name: 'Schweppes Agrum’ 33cl',
+    description: 'Boisson pétillante et rafraîchissante aux saveurs d’agrumes.',
     category: 'boissons',
     price: 150,
     image: 'https://images.unsplash.com/photo-1581006852262-e4307cf6283a?q=80&w=800&auto=format&fit=crop',
-    ingredients: ['Hamoud Blanche 33cl'],
+    ingredients: ['Schweppes 33cl glacé'],
     isAvailable: true,
   },
 

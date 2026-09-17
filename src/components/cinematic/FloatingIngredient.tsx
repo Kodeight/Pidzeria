@@ -29,11 +29,13 @@ export const FloatingIngredient: React.FC<FloatingIngredientProps> = ({
   style = {},
 }) => {
   const elRef = useRef<HTMLDivElement>(null);
+  const innerRef = useRef<HTMLDivElement>(null);
   const asset = INGREDIENT_ASSETS[ingredient];
 
   useEffect(() => {
     const el = elRef.current;
-    if (!el) return;
+    const inner = innerRef.current;
+    if (!el || !inner) return;
 
     // Check if user prefers reduced motion
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -45,6 +47,18 @@ export const FloatingIngredient: React.FC<FloatingIngredientProps> = ({
     const effectiveRotation = isMobile ? rotationSpeed * 0.5 : rotationSpeed;
 
     const ctx = gsap.context(() => {
+      // 1. Continuous Floating Levitation Animation on Inner Layer
+      gsap.to(inner, {
+        y: '-=14',
+        rotation: '+=6',
+        duration: 3.2 + (ingredient.length % 3) * 0.8,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+        force3D: true,
+      });
+
+      // 2. Scroll Parallax Translation on Outer Container Layer
       ScrollTrigger.create({
         trigger: el,
         start: 'top bottom',
@@ -67,7 +81,7 @@ export const FloatingIngredient: React.FC<FloatingIngredientProps> = ({
     return () => {
       ctx.revert();
     };
-  }, [parallaxSpeed, rotationSpeed]);
+  }, [ingredient, parallaxSpeed, rotationSpeed]);
 
   if (!asset) return null;
 
@@ -86,13 +100,15 @@ export const FloatingIngredient: React.FC<FloatingIngredientProps> = ({
         ...style,
       }}
     >
-      <img
-        src={asset.src}
-        alt={asset.alt}
-        loading="lazy"
-        referrerPolicy="no-referrer"
-        className="w-full h-full object-contain pointer-events-none select-none drop-shadow-[0_12px_24px_rgba(0,0,0,0.85)]"
-      />
+      <div ref={innerRef} className="w-full h-full will-change-transform">
+        <img
+          src={asset.src}
+          alt={asset.alt}
+          loading="lazy"
+          referrerPolicy="no-referrer"
+          className="w-full h-full object-contain pointer-events-none select-none drop-shadow-[0_12px_24px_rgba(0,0,0,0.85)]"
+        />
+      </div>
     </div>
   );
 };

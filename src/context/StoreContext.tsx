@@ -45,7 +45,31 @@ const StoreContext = createContext<StoreContextType | undefined>(undefined);
 export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [menuItems, setMenuItems] = useState<MenuItem[]>(() => {
     const saved = localStorage.getItem('pidzeria_menu');
-    return saved ? JSON.parse(saved) : INITIAL_MENU_ITEMS;
+    if (!saved) return INITIAL_MENU_ITEMS;
+    try {
+      const items: MenuItem[] = JSON.parse(saved);
+      return items.map(item => {
+        if (item.id === 'drk-1' && (item.name.includes('Sélecto') || item.name.includes('Selecto'))) {
+          return {
+            ...item,
+            name: 'Coca-Cola Canette 33cl',
+            description: 'Canette de Coca-Cola fraîche et pétillante 33cl.',
+            ingredients: ['Coca-Cola 33cl glacé'],
+          };
+        }
+        if (item.id === 'drk-3' && item.name.includes('Hamoud')) {
+          return {
+            ...item,
+            name: 'Schweppes Agrum’ 33cl',
+            description: 'Boisson pétillante et rafraîchissante aux saveurs d’agrumes.',
+            ingredients: ['Schweppes 33cl glacé'],
+          };
+        }
+        return item;
+      });
+    } catch {
+      return INITIAL_MENU_ITEMS;
+    }
   });
 
   const [tables, setTables] = useState<TableInfo[]>(() => {
