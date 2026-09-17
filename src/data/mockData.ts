@@ -147,12 +147,12 @@ export const INITIAL_MENU_ITEMS: MenuItem[] = [
     isPopular: true,
   },
 
-  // PIZZAS CARRÉES (Authentique Pizza Carrée Algérienne)
+  // PIZZAS ALGÉROISES & SPÉCIALITÉS (Authentique Recette d'Alger)
   {
     id: 'sq-1',
     name: 'Carrée Traditionnelle Sauce Rouge',
     description: 'L\'authentique pizza carrée d\'Alger : pâte épaisse, croustillante en bas et moelleuse au cœur, sauce tomate épicée mijotée 4h, huile d\'olive, persil et olive noire.',
-    category: 'carrees',
+    category: 'algeriennes',
     price: 850,
     image: 'https://images.unsplash.com/photo-1571066811602-716837d681de?q=80&w=800&auto=format&fit=crop',
     ingredients: ['Sauce tomate à l\'ail mijotée', 'Olives noires d\'Azzefoun', 'Persil frais', 'Huile d\'olive kabyle'],
@@ -164,7 +164,7 @@ export const INITIAL_MENU_ITEMS: MenuItem[] = [
     id: 'sq-2',
     name: 'Carrée Poulet Fromage Supreme',
     description: 'Pizza carrée généreuse recouverte d\'une sauce crémeusefromagère, poulet mariné effiloché et fromage fondu doré au four.',
-    category: 'carrees',
+    category: 'algeriennes',
     price: 1200,
     image: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?q=80&w=800&auto=format&fit=crop',
     ingredients: ['Poulet mariné effiloché', 'Sauce blanche fromagère', 'Fromage fondu gruyère', 'Persil'],
@@ -175,7 +175,7 @@ export const INITIAL_MENU_ITEMS: MenuItem[] = [
     id: 'sq-3',
     name: 'Carrée Royale Merguez & Viande',
     description: 'Format rectangle familial carré : portion généreuse garnie de merguez tranchées, viande hachée, poivrons sautés et double fromage.',
-    category: 'carrees',
+    category: 'algeriennes',
     price: 1450,
     image: 'https://images.unsplash.com/photo-1541745537411-b8046dc6d66c?q=80&w=800&auto=format&fit=crop',
     ingredients: ['Merguez artisanale', 'Viande hachée', 'Poivrons', 'Double fromage fondu', 'Olives noires'],

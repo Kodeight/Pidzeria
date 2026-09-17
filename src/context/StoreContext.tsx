@@ -30,6 +30,7 @@ interface StoreContextType {
   addMenuItem: (item: Omit<MenuItem, 'id'>) => void;
   updateMenuItem: (item: MenuItem) => void;
   deleteMenuItem: (id: string) => void;
+  duplicateMenuItem: (item: MenuItem) => MenuItem;
   toggleMenuItemAvailability: (id: string) => void;
   
   // Reservation
@@ -63,6 +64,12 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             name: 'Schweppes Agrum’ 33cl',
             description: 'Boisson pétillante et rafraîchissante aux saveurs d’agrumes.',
             ingredients: ['Schweppes 33cl glacé'],
+          };
+        }
+        if ((item.category as string) === 'carrees') {
+          return {
+            ...item,
+            category: 'algeriennes',
           };
         }
         return item;
@@ -292,6 +299,27 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setMenuItems(prev => prev.filter(i => i.id !== id));
   };
 
+  const duplicateMenuItem = (item: MenuItem): MenuItem => {
+    const duplicated: MenuItem = {
+      ...item,
+      id: `custom-${Date.now()}`,
+      name: `${item.name} (Copie)`,
+      isAvailable: true,
+      options: item.options ? JSON.parse(JSON.stringify(item.options)) : undefined,
+      ingredients: [...item.ingredients],
+    };
+    setMenuItems(prev => {
+      const index = prev.findIndex(i => i.id === item.id);
+      if (index !== -1) {
+        const next = [...prev];
+        next.splice(index + 1, 0, duplicated);
+        return next;
+      }
+      return [duplicated, ...prev];
+    });
+    return duplicated;
+  };
+
   const toggleMenuItemAvailability = (id: string) => {
     setMenuItems(prev => prev.map(i => i.id === id ? { ...i, isAvailable: !i.isAvailable } : i));
   };
@@ -328,6 +356,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       addMenuItem,
       updateMenuItem,
       deleteMenuItem,
+      duplicateMenuItem,
       toggleMenuItemAvailability,
       addReservation,
       setSoundEnabled,

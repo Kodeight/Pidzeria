@@ -8,9 +8,8 @@ import { FadeUp } from '../motion/MotionSystem';
 
 const CATEGORIES: { id: PizzaCategory | 'toutes'; label: string; icon: string }[] = [
   { id: 'toutes', label: 'Toutes les créations', icon: '🍕' },
-  { id: 'italiennes', label: 'Pizzas Italiennes', icon: '🇮🇹' },
   { id: 'algeriennes', label: 'Pizzas Algériennes', icon: '🇩🇿' },
-  { id: 'carrees', label: 'Pizzas Carrées', icon: '🔲' },
+  { id: 'italiennes', label: 'Pizzas Italiennes', icon: '🇮🇹' },
   { id: 'americaines', label: 'Pizzas Américaines', icon: '🇺🇸' },
   { id: 'accompagnements', label: 'Accompagnements', icon: '🍟' },
   { id: 'boissons', label: 'Boissons', icon: '🥤' },

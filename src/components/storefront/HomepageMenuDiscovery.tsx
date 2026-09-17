@@ -1,5 +1,4 @@
 import React, { useState, useRef } from 'react';
-import { INITIAL_MENU_ITEMS } from '../../data/mockData';
 import { MenuItem, MenuCategory } from '../../types';
 import { useStore } from '../../context/StoreContext';
 import { ArrowRight, Plus, Check, Flame, Award, ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -41,13 +40,7 @@ const CATEGORY_TABS: CategoryTab[] = [
     id: 'algeriennes',
     name: 'Pizzas Algériennes',
     badge: 'Terroir Dz',
-    subtitle: 'Merguez artisanale, ras el hanout & harsa douce',
-  },
-  {
-    id: 'carrees',
-    name: 'Pizzas Carrées',
-    badge: 'Authentique Alger',
-    subtitle: 'Pâte dorée croustillante façon pizza carrée d’Alger',
+    subtitle: 'Merguez artisanale, ras el hanout & recettes authentiques d’Alger',
   },
   {
     id: 'accompagnements',
@@ -66,16 +59,6 @@ const CATEGORY_TABS: CategoryTab[] = [
   },
 ];
 
-// Curated flagship items for the "Nos Incontournables" Carousel
-const CAROUSEL_SIGNATURES: MenuItem[] = [
-  INITIAL_MENU_ITEMS.find((i) => i.id === 'it-1') || INITIAL_MENU_ITEMS[0],
-  INITIAL_MENU_ITEMS.find((i) => i.id === 'dz-1') || INITIAL_MENU_ITEMS[1],
-  INITIAL_MENU_ITEMS.find((i) => i.id === 'sq-1') || INITIAL_MENU_ITEMS[2],
-  INITIAL_MENU_ITEMS.find((i) => i.id === 'it-2') || INITIAL_MENU_ITEMS[3],
-  INITIAL_MENU_ITEMS.find((i) => i.id === 'am-1') || INITIAL_MENU_ITEMS[4],
-  INITIAL_MENU_ITEMS.find((i) => i.id === 'it-3') || INITIAL_MENU_ITEMS[5],
-];
-
 export const HomepageMenuDiscovery: React.FC<HomepageMenuDiscoveryProps> = ({
   onGoToMenu,
   onOpenCart,
@@ -84,7 +67,16 @@ export const HomepageMenuDiscovery: React.FC<HomepageMenuDiscoveryProps> = ({
   const [addedItemIds, setAddedItemIds] = useState<Record<string, boolean>>({});
   const carouselRef = useRef<HTMLDivElement>(null);
   const categoriesScrollRef = useRef<HTMLDivElement>(null);
-  const { addToCart } = useStore();
+  const { menuItems, addToCart } = useStore();
+
+  const carouselSignatures = [
+    menuItems.find((i) => i.id === 'it-1') || menuItems[0],
+    menuItems.find((i) => i.id === 'dz-1') || menuItems[1],
+    menuItems.find((i) => i.id === 'sq-1') || menuItems[2],
+    menuItems.find((i) => i.id === 'it-2') || menuItems[3],
+    menuItems.find((i) => i.id === 'am-1') || menuItems[4],
+    menuItems.find((i) => i.id === 'it-3') || menuItems[5],
+  ].filter(Boolean) as MenuItem[];
 
   const handleQuickAdd = (e: React.MouseEvent, item: MenuItem) => {
     e.stopPropagation();
@@ -106,9 +98,10 @@ export const HomepageMenuDiscovery: React.FC<HomepageMenuDiscoveryProps> = ({
   const getDisplayedItems = (): MenuItem[] => {
     if (activeTab === 'featured') {
       const signatureIds = ['dz-1', 'it-1', 'sq-1', 'am-1', 'des-1', 'acc-1'];
-      return INITIAL_MENU_ITEMS.filter((i) => signatureIds.includes(i.id));
+      const featured = menuItems.filter((i) => signatureIds.includes(i.id));
+      return featured.length > 0 ? featured : menuItems.slice(0, 6);
     }
-    return INITIAL_MENU_ITEMS.filter((item) => item.category === activeTab).slice(0, 4);
+    return menuItems.filter((item) => item.category === activeTab).slice(0, 4);
   };
 
   const displayedItems = getDisplayedItems();
@@ -237,7 +230,7 @@ export const HomepageMenuDiscovery: React.FC<HomepageMenuDiscoveryProps> = ({
             ref={carouselRef}
             className="flex items-stretch gap-5 overflow-x-auto pb-6 -mx-5 px-5 sm:mx-0 sm:px-0 no-scrollbar snap-x snap-mandatory scroll-smooth"
           >
-            {CAROUSEL_SIGNATURES.map((item, idx) => {
+            {carouselSignatures.map((item, idx) => {
               const isAdded = !!addedItemIds[item.id];
               return (
                 <FadeUp key={item.id} delay={0.1 + idx * 0.08} distance={25} duration={0.7} className="flex-shrink-0 snap-start h-full">
@@ -407,12 +400,7 @@ export const HomepageMenuDiscovery: React.FC<HomepageMenuDiscoveryProps> = ({
                     )}
                     {item.category === 'algeriennes' && (
                       <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#131b14] border border-[#233526] text-[#cbb89d] text-[10px] font-bold uppercase tracking-wider">
-                        Terroir d’Alger
-                      </span>
-                    )}
-                    {item.category === 'carrees' && (
-                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#181410] border border-[#382b20] text-[#dfd0ba] text-[10px] font-bold uppercase tracking-wider">
-                        Carrée Algéroise
+                        {item.id.startsWith('sq-') ? 'Recette Algéroise' : 'Terroir d’Alger'}
                       </span>
                     )}
                   </div>

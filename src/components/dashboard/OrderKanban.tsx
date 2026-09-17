@@ -293,6 +293,16 @@ export const OrderKanban: React.FC = () => {
                     </button>
                   )}
 
+                  {order.status !== 'servie' && order.status !== 'annulee' && (
+                    <button
+                      onClick={() => updateOrderStatus(order.id, 'servie')}
+                      className="w-full py-2.5 rounded-full bg-[#182414] hover:bg-[#20331a] text-[#a8e092] border border-[#2d4a24] font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                    >
+                      <Check className="w-4 h-4" />
+                      <span>Marquer Livrée / Payée</span>
+                    </button>
+                  )}
+
                   {order.status !== 'annulee' && order.status !== 'servie' && (
                     <button
                       onClick={() => updateOrderStatus(order.id, 'annulee')}
@@ -379,20 +389,32 @@ export const OrderKanban: React.FC = () => {
                           ))}
                         </div>
 
-                        <div className="pt-2 border-t border-[#221e1a] flex items-center justify-between">
+                        <div className="pt-2 border-t border-[#221e1a] flex items-center justify-between gap-2">
                           <span className="text-xs font-serif font-extrabold text-[#dfd0ba]">
                             {order.total.toLocaleString('fr-DZ')} DA
                           </span>
 
-                          {actionInfo && (
-                            <button
-                              onClick={() => updateOrderStatus(order.id, nextStatus!)}
-                              className="px-3.5 py-1.5 rounded-full bg-[#dfd0ba] hover:bg-[#f3eadc] text-[#0a0a0a] font-bold text-[11px] flex items-center gap-1 transition-all cursor-pointer shadow-md active:scale-95"
-                            >
-                              <span>{actionInfo.label}</span>
-                              <ArrowRight className="w-3 h-3 text-[#0a0a0a]" />
-                            </button>
-                          )}
+                          <div className="flex items-center gap-1.5">
+                            {actionInfo && (
+                              <button
+                                onClick={() => updateOrderStatus(order.id, nextStatus!)}
+                                className="px-3 py-1 rounded-full bg-[#dfd0ba] hover:bg-[#f3eadc] text-[#0a0a0a] font-bold text-[11px] flex items-center gap-1 transition-all cursor-pointer shadow-md active:scale-95"
+                              >
+                                <span>{actionInfo.label}</span>
+                                <ArrowRight className="w-3 h-3 text-[#0a0a0a]" />
+                              </button>
+                            )}
+
+                            {order.status !== 'servie' && order.status !== 'annulee' && (
+                              <button
+                                onClick={() => updateOrderStatus(order.id, 'servie')}
+                                className="px-2.5 py-1 rounded-full bg-[#182414] hover:bg-[#23331d] text-[#a8e092] border border-[#2d4a24] font-bold text-[10px] flex items-center gap-1 transition-all cursor-pointer"
+                              >
+                                <Check className="w-3 h-3 text-[#a8e092]" />
+                                <span>Livrer</span>
+                              </button>
+                            )}
+                          </div>
                         </div>
                       </div>
                     );

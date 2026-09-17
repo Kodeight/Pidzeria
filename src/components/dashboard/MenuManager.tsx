@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useStore } from '../../context/StoreContext';
 import { MenuItem, PizzaCategory } from '../../types';
-import { Plus, Edit2, Trash2, CheckCircle, XCircle, X } from 'lucide-react';
+import { Plus, Edit2, Trash2, CheckCircle, XCircle, X, Copy } from 'lucide-react';
 
 export const MenuManager: React.FC = () => {
-  const { menuItems, addMenuItem, updateMenuItem, deleteMenuItem, toggleMenuItemAvailability } = useStore();
+  const { menuItems, addMenuItem, updateMenuItem, deleteMenuItem, duplicateMenuItem, toggleMenuItemAvailability } = useStore();
   const [editingItem, setEditingItem] = useState<MenuItem | null>(null);
   const [isAddingNew, setIsAddingNew] = useState(false);
+  const [duplicateSuccessMsg, setDuplicateSuccessMsg] = useState<string | null>(null);
 
   // Form states
   const [name, setName] = useState('');
@@ -36,6 +37,14 @@ export const MenuManager: React.FC = () => {
     setImage(item.image);
     setIngredientsStr(item.ingredients.join(', '));
     setIsAddingNew(true);
+  };
+
+  const handleDuplicate = (item: MenuItem) => {
+    const duplicated = duplicateMenuItem(item);
+    setDuplicateSuccessMsg(`Produit "${item.name}" dupliqué avec succès en "${duplicated.name}".`);
+    setTimeout(() => {
+      setDuplicateSuccessMsg(null);
+    }, 4000);
   };
 
   const handleSave = (e: React.FormEvent) => {
@@ -87,6 +96,22 @@ export const MenuManager: React.FC = () => {
         </button>
       </div>
 
+      {/* Duplicate / Feedback Notification */}
+      {duplicateSuccessMsg && (
+        <div className="p-4 rounded-2xl bg-[#142214] border border-[#2d4d24] text-[#a8e092] text-xs font-mono flex items-center justify-between shadow-xl animate-fade-in">
+          <div className="flex items-center gap-2.5">
+            <CheckCircle className="w-4 h-4 text-[#a8e092] shrink-0" />
+            <span>{duplicateSuccessMsg}</span>
+          </div>
+          <button
+            onClick={() => setDuplicateSuccessMsg(null)}
+            className="text-[#a8e092]/70 hover:text-[#a8e092] cursor-pointer p-1"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+      )}
+
       {/* Menu Table List */}
       <div className="p-6 rounded-3xl bg-[#0e0c0a] border border-[#221e1a] overflow-x-auto shadow-xl">
         <table className="w-full text-left text-xs">
@@ -114,7 +139,7 @@ export const MenuManager: React.FC = () => {
 
                 <td className="py-4">
                   <span className="px-3 py-1 rounded-full bg-[#161311] border border-[#2a241f] text-[#dfd0ba] text-[11px] font-mono capitalize">
-                    {item.category}
+                    {item.category === 'algeriennes' ? 'Pizzas Algériennes' : item.category}
                   </span>
                 </td>
 
@@ -139,13 +164,22 @@ export const MenuManager: React.FC = () => {
                 <td className="py-4 text-right">
                   <div className="flex items-center justify-end gap-2">
                     <button
+                      onClick={() => handleDuplicate(item)}
+                      title="Dupliquer ce produit"
+                      className="p-2 rounded-xl bg-[#161311] text-[#8c7e6c] hover:text-[#dfd0ba] hover:bg-[#1f1a16] border border-[#2a241f] hover:border-[#dfd0ba]/40 cursor-pointer transition-all flex items-center justify-center group"
+                    >
+                      <Copy className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                    </button>
+                    <button
                       onClick={() => handleOpenEdit(item)}
+                      title="Modifier ce produit"
                       className="p-2 rounded-xl bg-[#161311] text-[#8c7e6c] hover:text-[#dfd0ba] border border-[#2a241f] cursor-pointer transition-colors"
                     >
                       <Edit2 className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => deleteMenuItem(item.id)}
+                      title="Supprimer ce produit"
                       className="p-2 rounded-xl bg-[#161311] text-[#8c7e6c] hover:text-red-400 border border-[#2a241f] cursor-pointer transition-colors"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -204,9 +238,8 @@ export const MenuManager: React.FC = () => {
                     onChange={(e) => setCategory(e.target.value as PizzaCategory)}
                     className="w-full bg-[#161311] border border-[#2a241f] rounded-xl px-3.5 py-2.5 text-xs text-[#f7f2e7] focus:outline-none focus:border-[#dfd0ba]"
                   >
-                    <option value="italiennes">Pizzas Italiennes</option>
                     <option value="algeriennes">Pizzas Algériennes</option>
-                    <option value="carrees">Pizzas Carrées</option>
+                    <option value="italiennes">Pizzas Italiennes</option>
                     <option value="americaines">Pizzas Américaines</option>
                     <option value="accompagnements">Accompagnements</option>
                     <option value="boissons">Boissons</option>
@@ -247,12 +280,40 @@ export const MenuManager: React.FC = () => {
                 />
               </div>
 
-              <button
-                type="submit"
-                className="w-full py-3.5 rounded-full bg-[#dfd0ba] hover:bg-[#f3eadc] text-[#0a0a0a] font-bold text-xs uppercase tracking-wider transition-colors cursor-pointer shadow-lg active:scale-95"
-              >
-                Enregistrer la création
-              </button>
+              <div className="flex items-center gap-3 pt-2">
+                <button
+                  type="submit"
+                  className="flex-1 py-3.5 rounded-full bg-[#dfd0ba] hover:bg-[#f3eadc] text-[#0a0a0a] font-bold text-xs uppercase tracking-wider transition-colors cursor-pointer shadow-lg active:scale-95"
+                >
+                  {editingItem ? 'Enregistrer les modifications' : 'Enregistrer la création'}
+                </button>
+                {editingItem && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const ings = ingredientsStr.split(',').map(s => s.trim()).filter(Boolean);
+                      addMenuItem({
+                        name: `${name} (Copie)`,
+                        description,
+                        category,
+                        price,
+                        image,
+                        ingredients: ings,
+                        isAvailable: true,
+                      });
+                      setIsAddingNew(false);
+                      setEditingItem(null);
+                      setDuplicateSuccessMsg(`Création "${name}" dupliquée avec succès !`);
+                      setTimeout(() => setDuplicateSuccessMsg(null), 4000);
+                    }}
+                    className="px-5 py-3.5 rounded-full bg-[#181512] hover:bg-[#25201b] text-[#dfd0ba] border border-[#3d3328] font-bold text-xs uppercase tracking-wider transition-colors cursor-pointer flex items-center gap-2"
+                    title="Enregistrer comme nouveau produit dupliqué"
+                  >
+                    <Copy className="w-4 h-4" />
+                    <span>Dupliquer</span>
+                  </button>
+                )}
+              </div>
             </form>
           </div>
         </div>

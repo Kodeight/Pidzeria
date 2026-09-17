@@ -8,9 +8,8 @@ import { FadeUp, FadeLeft, FadeRight, ScaleReveal, StaggerReveal } from '../moti
 
 const CATEGORIES: { id: PizzaCategory | 'toutes'; label: string; flag?: string }[] = [
   { id: 'toutes', label: 'Toutes les créations' },
-  { id: 'italiennes', label: 'Pizzas Italiennes', flag: '🇮🇹' },
   { id: 'algeriennes', label: 'Pizzas Algériennes', flag: '🇩🇿' },
-  { id: 'carrees', label: 'Pizzas Carrées', flag: '🔲' },
+  { id: 'italiennes', label: 'Pizzas Italiennes', flag: '🇮🇹' },
   { id: 'americaines', label: 'Pizzas Américaines', flag: '🇺🇸' },
   { id: 'accompagnements', label: 'Accompagnements' },
   { id: 'boissons', label: 'Boissons' },
@@ -28,8 +27,9 @@ export const MenuPage: React.FC<MenuPageProps> = ({ onBackToHome, onOpenCart }) 
   // Initialize category from URL parameter if present
   const [selectedCategory, setSelectedCategory] = useState<PizzaCategory | 'toutes'>(() => {
     const params = new URLSearchParams(window.location.search);
-    const cat = params.get('category') as PizzaCategory | null;
-    if (cat && ['italiennes', 'algeriennes', 'carrees', 'americaines', 'accompagnements', 'boissons', 'desserts'].includes(cat)) {
+    let cat = params.get('category') as PizzaCategory | null;
+    if (cat === 'carrees') cat = 'algeriennes';
+    if (cat && ['italiennes', 'algeriennes', 'americaines', 'accompagnements', 'boissons', 'desserts'].includes(cat)) {
       return cat;
     }
     return 'toutes';
@@ -49,8 +49,9 @@ export const MenuPage: React.FC<MenuPageProps> = ({ onBackToHome, onOpenCart }) 
         setActiveTableNumber(num);
       }
     }
-    const catParam = params.get('category') as PizzaCategory | null;
-    if (catParam && ['italiennes', 'algeriennes', 'carrees', 'americaines', 'accompagnements', 'boissons', 'desserts'].includes(catParam)) {
+    let catParam = params.get('category') as PizzaCategory | null;
+    if (catParam === 'carrees') catParam = 'algeriennes';
+    if (catParam && ['italiennes', 'algeriennes', 'americaines', 'accompagnements', 'boissons', 'desserts'].includes(catParam)) {
       setSelectedCategory(catParam);
     }
   }, [setActiveTableNumber]);

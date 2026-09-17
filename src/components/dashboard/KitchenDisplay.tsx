@@ -6,7 +6,7 @@ export const KitchenDisplay: React.FC = () => {
   const { orders, updateOrderStatus } = useStore();
 
   const kitchenOrders = orders.filter(
-    o => o.status === 'recue' || o.status === 'acceptee' || o.status === 'en_preparation'
+    o => o.status === 'recue' || o.status === 'acceptee' || o.status === 'en_preparation' || o.status === 'prete'
   );
 
   return (
@@ -83,22 +83,34 @@ export const KitchenDisplay: React.FC = () => {
               </div>
 
               {/* Large Action Touch Buttons */}
-              <div className="pt-4 border-t border-[#221e1a] flex items-center gap-3">
-                {!isPreparing ? (
+              <div className="pt-4 border-t border-[#221e1a] flex flex-col gap-2.5">
+                {order.status !== 'en_preparation' && order.status !== 'prete' && (
                   <button
                     onClick={() => updateOrderStatus(order.id, 'en_preparation')}
-                    className="w-full py-4 rounded-full bg-[#dfd0ba] hover:bg-[#f3eadc] text-[#0a0a0a] font-black text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-xl hover:scale-[1.01] active:scale-95 transition-all cursor-pointer"
+                    className="w-full py-3.5 rounded-full bg-[#dfd0ba] hover:bg-[#f3eadc] text-[#0a0a0a] font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-xl hover:scale-[1.01] active:scale-95 transition-all cursor-pointer"
                   >
-                    <Flame className="w-5 h-5 text-[#0a0a0a]" />
+                    <Flame className="w-4 h-4 text-[#0a0a0a]" />
                     <span>Lancer la Cuisson</span>
                   </button>
-                ) : (
+                )}
+
+                {order.status === 'en_preparation' && (
                   <button
                     onClick={() => updateOrderStatus(order.id, 'prete')}
-                    className="w-full py-4 rounded-full bg-[#dfd0ba] hover:bg-[#f3eadc] text-[#0a0a0a] font-black text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-xl hover:scale-[1.01] active:scale-95 transition-all cursor-pointer"
+                    className="w-full py-3.5 rounded-full bg-[#dfd0ba] hover:bg-[#f3eadc] text-[#0a0a0a] font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-xl hover:scale-[1.01] active:scale-95 transition-all cursor-pointer"
                   >
-                    <Check className="w-5 h-5 stroke-[3] text-[#0a0a0a]" />
+                    <Check className="w-4 h-4 stroke-[3] text-[#0a0a0a]" />
                     <span>Marquer Comme Prête</span>
+                  </button>
+                )}
+
+                {order.status !== 'servie' && (
+                  <button
+                    onClick={() => updateOrderStatus(order.id, 'servie')}
+                    className="w-full py-2.5 rounded-full bg-[#182414] hover:bg-[#20331a] text-[#a8e092] border border-[#2d4a24] font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                  >
+                    <Check className="w-4 h-4 text-[#a8e092]" />
+                    <span>Marquer Servie / Livrée</span>
                   </button>
                 )}
               </div>
